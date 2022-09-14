@@ -100,10 +100,10 @@ def integer_to_english(number):
             return -1
 
 
-def sin_pos(rattle, loop_length, speed, offset = 0):
-    t = ((pygame.time.get_ticks() + offset) / 2 % loop_length) * speed # scale and loop time
+def sin_pos(rattle, loop_length, speed, time, offset = 0):
+    t = ((time + offset) / 2 % loop_length) * speed # scale and loop time
     x = t
-    y = math.sin(t/50.0) * rattle      # scale sine wave
+    y = math.sin(t/50.0) * rattle     # scale sine wave
     y = int(y)   
     return [x, y]
 
@@ -125,4 +125,6 @@ def generate_new_skymap(surface):
 def blit_skymap(surface, pos):
     current_sky = (pygame.time.get_ticks() // 89) % 20
     surface.blit(SKY_PICTURES[current_sky], pos)
+
+
 
