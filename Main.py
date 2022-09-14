@@ -1,3 +1,4 @@
+from cgitb import grey
 import math
 import random
 import sys
@@ -50,7 +51,7 @@ while RUNNING:
     ALTITUDE += SCROLL
     SCROLL = SCROLL * 0.97
 
-    SURFACE.fill((0, 0, 0))
+    SURFACE.fill((30, 30, 30))
 
     CLOUDMAP.update(SURFACE, ALTITUDE)
 

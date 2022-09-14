@@ -16,12 +16,12 @@ class Cloud(pygame.sprite.Sprite):
     def __init__(self, surface):
         super().__init__()
         
-        self.distance = random.randint(20, 500)
+        self.distance = random.randint(20, 700)
 
         self.image = pygame.Surface((self.distance, self.distance))   
         self.image.set_colorkey((0, 0, 0))
 
-        gray = gray_color(max(self.distance // 2 - 50, 20))
+        gray = gray_color(min(max(self.distance // 2 - 50, 50), 250))
         for _ in range(18):
             x = random.randint(round(self.distance * 0.16), round(self.distance * 0.84))  
             y = random.randint(round(self.distance * 0.4), round(self.distance * 0.5)) 
