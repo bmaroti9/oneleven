@@ -5,7 +5,7 @@ import time
 import random
 import sys
 import json
-from gradient import sin_pos
+from gradient import blurSurf, sin_pos
 
 from helpers import *
 
@@ -14,23 +14,28 @@ pygame.init()
 
 class Cloud(pygame.sprite.Sprite):
     def __init__(self, surface):
-        super().__init__()
+        super().__init__()            
         
-        self.distance = random.randint(20, 700)
-
-        self.image = pygame.Surface((self.distance, self.distance))   
+        self.distance = random.randint(30, 1000)
+        self.width = max(random.randint(270, 900), self.distance)
+        
+        self.image = pygame.Surface((self.width, self.distance))  
         self.image.set_colorkey((0, 0, 0))
 
-        gray = gray_color(min(max(self.distance // 2 - 50, 50), 250))
-        for _ in range(18):
-            x = random.randint(round(self.distance * 0.16), round(self.distance * 0.84))  
-            y = random.randint(round(self.distance * 0.4), round(self.distance * 0.5)) 
-            radius = random.randint(round(self.distance * 0.05), round(self.distance * 0.10))
+        #gray = gray_color(min(max(self.distance // 1.3 - 100, 100), 250))
+        gray = transition_colors((250, 250, 250), (226, 116, 139), 150 / self.distance)
 
-            pygame.draw.circle(self.image, gray, [x, y], radius)
+        magic_number = 18
         
-        x = random.randint(-self.distance // 2, surface.get_width() -self.distance // 1000)
-        y = random.randint(-10000, 10000)
+        for _ in range(magic_number):
+            x = random.randint(round(self.width * 0.18), round(self.width * 0.82))  
+            y = random.randint(round(self.distance * 0.4), round(self.distance * 0.5)) 
+            height = random.randint(round(self.distance * 0.05), round(self.distance * 0.10))
+
+            pygame.draw.ellipse(self.image, gray, Rect(x, y, self.width // magic_number * 3.5, height))
+        
+        x = random.randint(-self.width // 2, surface.get_width() -self.width // 2)
+        y = random.randint(-self.distance * 15, surface.get_height() + self.distance * 15)
 
         self.original_x = x
         self.original_y = y
@@ -39,7 +44,8 @@ class Cloud(pygame.sprite.Sprite):
         return self.distance
 
     def update(self, surface, altitude):
-        surface.blit(self.image, [self.original_x, self.original_y + altitude * (self.distance // 40)])
+        surface.blit(self.image, 
+                [self.original_x, self.original_y + altitude * (self.distance // 13 ** 2)])
         
 
 class Cloudmap(pygame.sprite.Sprite):
@@ -48,7 +54,7 @@ class Cloudmap(pygame.sprite.Sprite):
 
         self.clouds = pygame.sprite.Group()
 
-        for _ in range(200):
+        for _ in range(100):
             self.clouds.add(Cloud(surface))
         
         self.clouds.add(Balloon(surface))
@@ -64,9 +70,9 @@ class Balloon(pygame.sprite.Sprite):
     def __init__(self, surface):
         super().__init__()
 
-        self.distance = 450
+        self.distance = 700
         self.image = pygame.image.load("images/balloon.png").convert_alpha(surface)
-        self.image = pygame.transform.rotozoom(self.image, 0, 0.3)
+        self.image = pygame.transform.rotozoom(self.image, 0, 0.25)
         self.rect = self.image.get_rect()
     
     def update(self, surface, altitude):

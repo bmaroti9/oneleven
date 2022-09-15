@@ -1,4 +1,3 @@
-from cgitb import grey
 import math
 import random
 import sys
@@ -51,7 +50,11 @@ while RUNNING:
     ALTITUDE += SCROLL
     SCROLL = SCROLL * 0.97
 
-    SURFACE.fill((30, 30, 30))
+    SURFACE.fill((180, 180, 180))
+
+    #gradientRect_h(SURFACE, (172, 198, 180), (180, 180, 180), 
+     #           Rect(0, 0, SURFACE.get_width(), SURFACE.get_height()))
+
 
     CLOUDMAP.update(SURFACE, ALTITUDE)
 
