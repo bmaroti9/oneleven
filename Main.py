@@ -35,6 +35,7 @@ RUNNING = True
 
 CLOUDMAP = Cloudmap(SURFACE)
 TIME = Time()
+EVENTMAP = Eventmap()
 
 ALTITUDE = 0
 SCROLL = 0
@@ -51,6 +52,8 @@ while RUNNING:
     
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
             SCROLL = - ALTITUDE * 0.03
+    elif check_released(0):
+        EVENTMAP.add_event("balint", -ALTITUDE)
             
     ALTITUDE += SCROLL
     SCROLL = SCROLL * 0.97
@@ -61,6 +64,7 @@ while RUNNING:
      #           Rect(0, 0, SURFACE.get_width(), SURFACE.get_height()))
 
 
+    EVENTMAP.update(SURFACE, ALTITUDE)
     CLOUDMAP.update(SURFACE, ALTITUDE)
     TIME.update(SURFACE, ALTITUDE)
 

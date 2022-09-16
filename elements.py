@@ -1,3 +1,4 @@
+from os import posix_fadvise
 from re import I
 import pygame
 import math
@@ -96,6 +97,7 @@ class Time(pygame.sprite.Sprite):
 
         self.time_font = pygame.font.SysFont('texgyreadventor', 50)
         self.day_font = pygame.font.SysFont('texgyreadventor', 30)
+        self.test_font = pygame.font.SysFont('texgyreadventor', 30)
     
 
     def update(self, surface, altitude):
@@ -115,12 +117,40 @@ class Time(pygame.sprite.Sprite):
         
         blit_text(surface, (73, 158, 130), day, 
                 [35, surface.get_height() - 70], self.day_font)
+        
+        blit_text(surface, (73, 158, 130), day, 
+                [35, surface.get_height() - 70], self.day_font)
 
         a = max(110 - abs(altitude * 3), 40 - math.sqrt(abs(altitude)) * 0.3)
         
         pygame.draw.line(surface, (158, 62, 84), 
             [27, surface.get_height() - a], [27, surface.get_height() - 25], 3)
-        
+    
+
+class Floating_event(pygame.sprite.Sprite):
+    def __init__(self, text, pos):
+        super().__init__()     
+
+        self.text = text
+        self.font = pygame.font.SysFont('comicsansms', 70)
+        self.pos = pos
+    
+    def update(self, surface, altitude):
+        pos = self.pos + altitude
+        button(surface, self.font, (191, 98, 118), self.text, [surface.get_width() // 2, 
+                surface.get_height() // 2 +  pos, 1], (158, 62, 84), (230, 122, 144), -1)
 
 
+class Eventmap(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()  
+
+        self.events = pygame.sprite.Group()
+    
+    def add_event(self, text, pos):
+        self.events.add(Floating_event(text, pos))
+
+    def update(self, surface, altitude):
+        for n in self.events:
+            n.update(surface, altitude)
         
