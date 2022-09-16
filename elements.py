@@ -1,3 +1,4 @@
+from re import I
 import pygame
 import math
 from pygame.locals import*
@@ -6,10 +7,15 @@ import random
 import sys
 import json
 from gradient import blurSurf, sin_pos
+from datetime import datetime
+
 
 from helpers import *
 
 pygame.init()
+
+with open("times.txt", "r") as f:
+    TIMES = json.load(f)
 
 
 class Cloud(pygame.sprite.Sprite):
@@ -71,17 +77,50 @@ class Balloon(pygame.sprite.Sprite):
         super().__init__()
 
         self.distance = 700
-        self.image = pygame.image.load("images/balloon.png").convert_alpha(surface)
+        self.image = pygame.image.load("images/balloon2.png").convert_alpha(surface)
         self.image = pygame.transform.rotozoom(self.image, 0, 0.25)
         self.rect = self.image.get_rect()
     
     def update(self, surface, altitude):
-        y = math.sin(altitude / 30) * 20     # scale sine wave
+        y = math.sin(altitude / 100) * 40     # scale sine wave
         y = int(y)
 
         self.rect.center = [surface.get_width() // 2 + y, 
-                    surface.get_height() // 2 - altitude // 4]
+                    surface.get_height() // 2 - altitude // 15]
         
         surface.blit(self.image, self.rect)
+    
+class Time(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        self.time_font = pygame.font.SysFont('texgyreadventor', 50)
+        self.day_font = pygame.font.SysFont('texgyreadventor', 30)
+    
+
+    def update(self, surface, altitude):
+        now = datetime.now()
+
+        current_hour = int(now.strftime("%H"))
+        current_hour = now.weekday() * 24 + current_hour
+        current_time_minutes = current_hour * 60 + int(now.strftime("%M"))  
+        current_time_minutes += round(altitude)
+        
+        minutes = current_time_minutes % 60
+        hours = ((current_time_minutes - minutes) // 60) % 24
+        day = TIMES["days"][(current_time_minutes - hours - minutes) // 1440 % 7]
+
+        blit_text(surface, (73, 158, 130), "{0:0=2d}".format(hours) + ":" + "{0:0=2d}".format(minutes), 
+                [35, surface.get_height() - 130], self.time_font)
+        
+        blit_text(surface, (73, 158, 130), day, 
+                [35, surface.get_height() - 70], self.day_font)
+
+        a = max(110 - abs(altitude * 3), 40 - math.sqrt(abs(altitude)) * 0.3)
+        
+        pygame.draw.line(surface, (158, 62, 84), 
+            [27, surface.get_height() - a], [27, surface.get_height() - 25], 3)
+        
+
 
         

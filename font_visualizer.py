@@ -6,7 +6,6 @@ from pygame.locals import *
 import time
 import json
 
-from elements import *
 from designs import *
 from gradient import *
 from helpers import *
@@ -14,7 +13,7 @@ from helpers import *
 pygame.init()
 
 
-SCREEN_WIDTH = 800
+SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 710
 
 print(pygame.font.get_fonts())
@@ -49,7 +48,8 @@ while RUNNING:
     for n in FONTS:
         he = pygame.font.SysFont(str(n), 30)
         try:
-            blit_text(SURFACE, (250, 250, 250), "2022  HIHI   " + str(n), [10, x], he)
+            #blit_text(SURFACE, (250, 250, 250), "2022  HIHI   " + str(n), [10, x], he)
+            blit_text(SURFACE, (250, 250, 250), "monday         " + str(n), [10, x], he)
         except:
             continue
         x += 70

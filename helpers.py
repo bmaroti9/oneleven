@@ -95,6 +95,8 @@ def blit_text(surface, color, text, pos, font, center = 0):
         rect.topleft = pos
     if center == 1:
         rect.center = pos
+    if center == 2:
+        rect.topright = pos
     
     surface.blit(wrighting, rect)
     return rect

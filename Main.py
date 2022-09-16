@@ -34,6 +34,8 @@ pygame.display.set_caption("©2022 Dragon tail")
 RUNNING = True
 
 CLOUDMAP = Cloudmap(SURFACE)
+TIME = Time()
+
 ALTITUDE = 0
 SCROLL = 0
 
@@ -45,7 +47,10 @@ while RUNNING:
             if event.key == K_q:
                 RUNNING = False
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y
+            SCROLL += event.y * 0.90
+    
+    if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
+            SCROLL = - ALTITUDE * 0.03
             
     ALTITUDE += SCROLL
     SCROLL = SCROLL * 0.97
@@ -57,6 +62,7 @@ while RUNNING:
 
 
     CLOUDMAP.update(SURFACE, ALTITUDE)
+    TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()
     CLOCK.tick(40)
