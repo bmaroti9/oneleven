@@ -39,6 +39,7 @@ EVENTMAP = Eventmap()
 
 ALTITUDE = 0
 SCROLL = 0
+SMOOTH_SCROLL = 0
 
 while RUNNING:
     for event in pygame.event.get():
@@ -48,24 +49,26 @@ while RUNNING:
             if event.key == K_q:
                 RUNNING = False
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y * 0.90
+            SCROLL += event.y * 0.95
     
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
-            SCROLL = - ALTITUDE * 0.03
+            SCROLL = - ALTITUDE * 0.0309
+            SMOOTH_SCROLL = 0
     elif check_released(0):
         EVENTMAP.add_event("balint", -ALTITUDE)
             
-    ALTITUDE += SCROLL
     SCROLL = SCROLL * 0.97
+    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.18
+    ALTITUDE += SMOOTH_SCROLL
 
-    SURFACE.fill((180, 180, 180))
+    SURFACE.fill((210, 180, 182))
 
     #gradientRect_h(SURFACE, (172, 198, 180), (180, 180, 180), 
      #           Rect(0, 0, SURFACE.get_width(), SURFACE.get_height()))
 
 
-    EVENTMAP.update(SURFACE, ALTITUDE)
     CLOUDMAP.update(SURFACE, ALTITUDE)
+    EVENTMAP.update(SURFACE, ALTITUDE, SMOOTH_SCROLL)
     TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()

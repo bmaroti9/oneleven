@@ -135,10 +135,11 @@ class Floating_event(pygame.sprite.Sprite):
         self.font = pygame.font.SysFont('comicsansms', 70)
         self.pos = pos
     
-    def update(self, surface, altitude):
-        pos = self.pos + altitude
-        button(surface, self.font, (191, 98, 118), self.text, [surface.get_width() // 2, 
-                surface.get_height() // 2 +  pos, 1], (158, 62, 84), (230, 122, 144), -1)
+    def update(self, surface, altitude, scroll):
+        pos = self.pos + altitude * 2
+        size = min((400 / (abs(scroll) ** 2 + 0.46473782937) + 40), surface.get_height() // 2 - 10)
+        pygame.draw.rect(surface, (83, 178, 140), 
+                Rect(20, pos - size, surface.get_width() - 40, size * 2), 0, 20)
 
 
 class Eventmap(pygame.sprite.Sprite):
@@ -150,7 +151,7 @@ class Eventmap(pygame.sprite.Sprite):
     def add_event(self, text, pos):
         self.events.add(Floating_event(text, pos))
 
-    def update(self, surface, altitude):
+    def update(self, surface, altitude, scroll):
         for n in self.events:
-            n.update(surface, altitude)
+            n.update(surface, altitude, scroll)
         
