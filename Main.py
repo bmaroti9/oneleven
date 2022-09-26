@@ -40,6 +40,7 @@ EVENTMAP = Eventmap()
 ALTITUDE = 0
 SCROLL = 0
 SMOOTH_SCROLL = 0
+MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 while RUNNING:
     for event in pygame.event.get():
@@ -60,6 +61,10 @@ while RUNNING:
     SCROLL = SCROLL * 0.97
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.18
     ALTITUDE += SMOOTH_SCROLL
+    MAX.append(abs(SMOOTH_SCROLL))
+
+
+    del MAX[0]
 
     SURFACE.fill((210, 180, 182))
 
@@ -68,7 +73,7 @@ while RUNNING:
 
 
     CLOUDMAP.update(SURFACE, ALTITUDE)
-    EVENTMAP.update(SURFACE, ALTITUDE, SMOOTH_SCROLL)
+    EVENTMAP.update(SURFACE, ALTITUDE, max(MAX))
     TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()

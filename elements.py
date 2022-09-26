@@ -137,9 +137,10 @@ class Floating_event(pygame.sprite.Sprite):
     
     def update(self, surface, altitude, scroll):
         pos = self.pos + altitude * 2
-        size = min((400 / (abs(scroll) ** 2 + 0.46473782937) + 40), surface.get_height() // 2 - 10)
+        size = max((300 / max((abs(scroll) ** 2.5) * 0.2, 1)), 45)
+        
         pygame.draw.rect(surface, (83, 178, 140), 
-                Rect(20, pos - size, surface.get_width() - 40, size * 2), 0, 20)
+                Rect(20, pos - size, surface.get_width() - 40, size * 2), 0, int(47 - 0.075 * size))
 
 
 class Eventmap(pygame.sprite.Sprite):
