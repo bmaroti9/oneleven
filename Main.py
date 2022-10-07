@@ -33,6 +33,8 @@ pygame.display.set_caption("©2022 Dragon tail")
 
 RUNNING = True
 
+BLUR_SURF = colour_rect = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))         
+
 CLOUDMAP = Cloudmap(SURFACE)
 TIME = Time()
 EVENTMAP = Eventmap()
@@ -67,14 +69,17 @@ while RUNNING:
     del MAX[0]
 
     SURFACE.fill((210, 180, 182))
+    BLUR_SURF.fill((210, 180, 182))
 
     #gradientRect_h(SURFACE, (172, 198, 180), (180, 180, 180), 
      #           Rect(0, 0, SURFACE.get_width(), SURFACE.get_height()))
 
 
-    CLOUDMAP.update(SURFACE, ALTITUDE)
-    EVENTMAP.update(SURFACE, ALTITUDE, max(MAX))
-    TIME.update(SURFACE, ALTITUDE)
+    CLOUDMAP.update(BLUR_SURF, ALTITUDE)
+    EVENTMAP.update(BLUR_SURF, ALTITUDE, max(MAX))
+    TIME.update(BLUR_SURF, ALTITUDE)
+
+    SURFACE.blit(blurSurf(BLUR_SURF, max(abs(SMOOTH_SCROLL), 1)), (0, 0))
 
     pygame.display.update()
     CLOCK.tick(40)
