@@ -58,7 +58,7 @@ while RUNNING:
             SCROLL = - ALTITUDE * 0.0309
             SMOOTH_SCROLL = 0
     elif check_released(0):
-        EVENTMAP.add_event("balint", -ALTITUDE + SURFACE.get_height()  // 2)
+        EVENTMAP.add_event("balint", -ALTITUDE * 5 + SURFACE.get_height()  // 2)
             
     SCROLL = SCROLL * 0.97
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.18

@@ -148,18 +148,20 @@ class Floating_event(pygame.sprite.Sprite):
         top = pos - self.smooth_size
         bottom = pos + self.smooth_size
 
-        print(top, pos, self.plus)
-        if 120 < self.pos + altitude * 5 and top < 0:
+        if -200 < self.pos + altitude * 5 and top < 0:
             self.plus -= top * 0.3
-        elif surface.get_height() - 120 > self.pos + altitude * 5 and bottom > surface.get_height():
+        elif surface.get_height() + 200 > self.pos + altitude * 5 and bottom > surface.get_height():
             self.plus += (surface.get_height() - bottom) * 0.3
         else:
             self.plus = self.plus * 0.98
         
         self.smooth += (self.plus - self.smooth) * 0.06
         
-        pygame.draw.rect(surface, (100, 198, 161), Rect(10, pos - self.smooth_size, 
-            surface.get_width() - 20, self.smooth_size * 2), 0, int(47 - 0.09 * size))
+        color = transition_colors((0, 50, 110), (190, 149, 170), 
+                self.smooth_size / (surface.get_height() // 2))
+
+        pygame.draw.rect(surface, color, Rect(self.smooth_size * 1.1, pos - self.smooth_size * 0.96, 
+            surface.get_width() - self.smooth_size * 2.2, self.smooth_size * 1.92), 0, int(47 - 0.1 * size))
 
 
 class Eventmap(pygame.sprite.Sprite):
