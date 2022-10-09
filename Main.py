@@ -58,7 +58,7 @@ while RUNNING:
             SCROLL = - ALTITUDE * 0.0309
             SMOOTH_SCROLL = 0
     elif check_released(0):
-        EVENTMAP.add_event("balint", -ALTITUDE)
+        EVENTMAP.add_event("balint", -ALTITUDE + SURFACE.get_height()  // 2)
             
     SCROLL = SCROLL * 0.97
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.18
@@ -79,7 +79,7 @@ while RUNNING:
     EVENTMAP.update(BLUR_SURF, ALTITUDE, max(MAX))
     TIME.update(BLUR_SURF, ALTITUDE)
 
-    SURFACE.blit(blurSurf(BLUR_SURF, max(abs(SMOOTH_SCROLL), 1)), (0, 0))
+    SURFACE.blit(blurSurf(BLUR_SURF, max(abs(SMOOTH_SCROLL) * 0.6, 1)), (0, 0))
 
     pygame.display.update()
     CLOCK.tick(40)
