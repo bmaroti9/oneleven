@@ -42,7 +42,7 @@ EVENTMAP = Eventmap()
 ALTITUDE = 0
 SCROLL = 0
 SMOOTH_SCROLL = 0
-MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 while RUNNING:
     for event in pygame.event.get():

@@ -138,9 +138,14 @@ class Floating_event(pygame.sprite.Sprite):
         self.smooth = 30
         self.smooth_size = 0
     
-    def update(self, surface, altitude, scroll):
-        pos = self.pos + self.smooth + altitude * 5
-        size = max((300 / max((abs(scroll) ** 4) * 0.2, 1)), 45)
+    def update(self, surface, altitude, scroll, below):
+        if below != self:
+            self.pos = below.pos + below.smooth + below.smooth_size + 140 + self.smooth_size + self.smooth
+            pos = self.pos + altitude * 5
+        else:
+            pos = self.pos + self.smooth + altitude * 5
+        
+        size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
         #size = max(min(400 - abs(surface.get_height() // 2 - pos), surface.get_height() // 2), 45)
 
         self.smooth_size += (size - self.smooth_size) * 0.1
@@ -148,20 +153,28 @@ class Floating_event(pygame.sprite.Sprite):
         top = pos - self.smooth_size
         bottom = pos + self.smooth_size
 
-        if -200 < self.pos + altitude * 5 and top < 0:
-            self.plus -= top * 0.3
-        elif surface.get_height() + 200 > self.pos + altitude * 5 and bottom > surface.get_height():
-            self.plus += (surface.get_height() - bottom) * 0.3
+        height = surface.get_height()
+
+        if 350 - self.smooth_size < pos and top < 0:
+            self.plus -= top * 0.15
+        elif height + self.smooth_size - 350 > pos and bottom > height:
+            self.plus += (height - bottom) * 0.15
         else:
-            self.plus = self.plus * 0.98
+            self.plus = self.plus * 0.97
         
-        self.smooth += (self.plus - self.smooth) * 0.06
+        self.smooth += (self.plus - self.smooth) * 0.2
         
-        color = transition_colors((0, 50, 110), (190, 149, 170), 
+        color = transition_colors((0, 50, 110), (195, 149, 170), 
                 self.smooth_size / (surface.get_height() // 2))
 
-        pygame.draw.rect(surface, color, Rect(self.smooth_size * 1.1, pos - self.smooth_size * 0.96, 
-            surface.get_width() - self.smooth_size * 2.2, self.smooth_size * 1.92), 0, int(47 - 0.1 * size))
+        coolsize = self.smooth_size * 1.1
+        coolheight = self.smooth_size * 0.96
+
+        pygame.draw.rect(surface, color, Rect(coolsize, pos - coolheight, 
+            surface.get_width() - coolsize * 2, coolheight * 2), 0, int(47 - 0.1 * size))
+    
+    def get_height(self):
+        return self.pos
 
 
 class Eventmap(pygame.sprite.Sprite):
@@ -172,8 +185,12 @@ class Eventmap(pygame.sprite.Sprite):
     
     def add_event(self, text, pos):
         self.events.add(Floating_event(text, pos))
+        self.events = sorted(self.events, key=Floating_event.get_height)
+        self.events = pygame.sprite.Group(self.events)
 
     def update(self, surface, altitude, scroll):
+        x = -1
         for n in self.events:
-            n.update(surface, altitude, scroll)
+            n.update(surface, altitude, scroll, self.events.sprites()[max(0, x)])
+            x += 1
         
