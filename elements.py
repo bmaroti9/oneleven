@@ -1,5 +1,5 @@
 from os import posix_fadvise
-from re import I
+from re import I, X
 import pygame
 import math
 from pygame.locals import*
@@ -135,15 +135,28 @@ class Floating_event(pygame.sprite.Sprite):
         self.font = pygame.font.SysFont('comicsansms', 70)
         self.pos = pos
         self.plus = 0
+        self.absolute_plus = 0
         self.smooth = 30
         self.smooth_size = 0
     
     def update(self, surface, altitude, scroll, below):
         if below != self:
-            self.pos = below.pos + below.smooth + below.smooth_size + 140 + self.smooth_size + self.smooth
-            pos = self.pos + altitude * 5
+            real_dis = (self.pos + self.plus + self.absolute_plus) - \
+                 (below.pos + below.plus + below.absolute_plus)
+            wanted_dis = below.smooth_size + self.smooth_size + 100
+            x = real_dis - wanted_dis
+
+            print(below.plus + self.plus, below.plus, self.plus, 'A', 
+                    self.absolute_plus, 'x', x, real_dis, wanted_dis)
+            if (below.plus + self.plus) > 0:
+                self.absolute_plus = -x
+            else:
+                print('hihi')
+                below.absolute_plus = x
+            
+            pos = self.pos + self.plus + self.absolute_plus + altitude * 5
         else:
-            pos = self.pos + self.smooth + altitude * 5
+            pos = self.pos + self.smooth + self.absolute_plus + altitude * 5
         
         size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
         #size = max(min(400 - abs(surface.get_height() // 2 - pos), surface.get_height() // 2), 45)
@@ -160,7 +173,7 @@ class Floating_event(pygame.sprite.Sprite):
         elif height + self.smooth_size - 350 > pos and bottom > height:
             self.plus += (height - bottom) * 0.15
         else:
-            self.plus = self.plus * 0.97
+            self.plus = self.plus * 0.95
         
         self.smooth += (self.plus - self.smooth) * 0.2
         
@@ -172,6 +185,12 @@ class Floating_event(pygame.sprite.Sprite):
 
         pygame.draw.rect(surface, color, Rect(coolsize, pos - coolheight, 
             surface.get_width() - coolsize * 2, coolheight * 2), 0, int(47 - 0.1 * size))
+        
+        pygame.draw.line(surface, (200, 0, 0), (0, pos), (surface.get_width(), pos), 10)
+        pygame.draw.line(surface, (0, 200, 0), (0, pos + self.absolute_plus), 
+                (surface.get_width(), pos + self.absolute_plus), 6)
+        pygame.draw.line(surface, (0, 0, 200), (0, pos + self.plus), 
+                (surface.get_width(), pos + self.plus), 4)
     
     def get_height(self):
         return self.pos
