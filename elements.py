@@ -186,11 +186,11 @@ class Floating_event(pygame.sprite.Sprite):
         pygame.draw.rect(surface, color, Rect(coolsize, pos - coolheight, 
             surface.get_width() - coolsize * 2, coolheight * 2), 0, int(47 - 0.1 * size))
         
-        pygame.draw.line(surface, (200, 0, 0), (0, pos), (surface.get_width(), pos), 10)
-        pygame.draw.line(surface, (0, 200, 0), (0, pos + self.absolute_plus), 
-                (surface.get_width(), pos + self.absolute_plus), 6)
-        pygame.draw.line(surface, (0, 0, 200), (0, pos + self.plus), 
-                (surface.get_width(), pos + self.plus), 4)
+        #pygame.draw.line(surface, (200, 0, 0), (0, pos), (surface.get_width(), pos), 10)
+        #pygame.draw.line(surface, (0, 200, 0), (0, pos + self.absolute_plus), 
+         #       (surface.get_width(), pos + self.absolute_plus), 6)
+        #pygame.draw.line(surface, (0, 0, 200), (0, pos + self.plus), 
+         #       (surface.get_width(), pos + self.plus), 4)
     
     def get_height(self):
         return self.pos

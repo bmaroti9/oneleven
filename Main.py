@@ -10,6 +10,7 @@ from elements import *
 from designs import *
 from gradient import *
 from helpers import *
+from experimental import *
 
 pygame.init()
 
@@ -76,10 +77,10 @@ while RUNNING:
 
 
     CLOUDMAP.update(BLUR_SURF, ALTITUDE)
-    EVENTMAP.update(BLUR_SURF, ALTITUDE, max(MAX))
-    TIME.update(BLUR_SURF, ALTITUDE)
-
     SURFACE.blit(blurSurf(BLUR_SURF, max(abs(SMOOTH_SCROLL) * 0.6, 1)), (0, 0))
+    EVENTMAP.update(SURFACE, ALTITUDE, max(MAX))
+    TIME.update(SURFACE, ALTITUDE)
+    #SCROLL += circle_scroll(SURFACE) ** 3 * 0.000005
 
     pygame.display.update()
     CLOCK.tick(40)
