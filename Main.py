@@ -6,7 +6,7 @@ from pygame.locals import *
 import time
 import json
 
-from elements import *
+from cards import *
 from designs import *
 from gradient import *
 from helpers import *
@@ -36,9 +36,9 @@ RUNNING = True
 
 BLUR_SURF = colour_rect = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))         
 
-CLOUDMAP = Cloudmap(SURFACE)
-TIME = Time()
-EVENTMAP = Eventmap()
+#CLOUDMAP = Cloudmap(SURFACE)
+#TIME = Time()
+#EVENTMAP = Eventmap()
 
 ALTITUDE = 0
 SCROLL = 0
@@ -54,33 +54,36 @@ while RUNNING:
                 RUNNING = False
         if event.type == pygame.MOUSEWHEEL:
             SCROLL += event.y * 0.95
-    
+    '''
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
             SCROLL = - ALTITUDE * 0.0309
             SMOOTH_SCROLL = 0
     elif check_released(0):
         EVENTMAP.add_event("balint", -ALTITUDE * 5 + SURFACE.get_height()  // 2)
-            
+    '''  
+    
     SCROLL = SCROLL * 0.97
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.18
     ALTITUDE += SMOOTH_SCROLL
     MAX.append(abs(SMOOTH_SCROLL))
-
 
     del MAX[0]
 
     SURFACE.fill((210, 180, 182))
     BLUR_SURF.fill((210, 180, 182))
 
-    #gradientRect_h(SURFACE, (172, 198, 180), (180, 180, 180), 
-     #           Rect(0, 0, SURFACE.get_width(), SURFACE.get_height()))
+    draw_rombuses(SURFACE, (100, 250, 100), 200, 350, ALTITUDE * 0.2)
+    draw_rombuses(SURFACE, (250, 100, 100), 140, 200, ALTITUDE * 0.4)
+    draw_rombuses(SURFACE, (250, 250, 100), 100, 120, ALTITUDE * 0.8)
+    draw_rombuses(SURFACE, (150, 150, 150), 30, 40, ALTITUDE * 1.4)
 
-
+    '''
     CLOUDMAP.update(BLUR_SURF, ALTITUDE)
     SURFACE.blit(blurSurf(BLUR_SURF, max(abs(SMOOTH_SCROLL) * 0.6, 1)), (0, 0))
     EVENTMAP.update(SURFACE, ALTITUDE, max(MAX))
     TIME.update(SURFACE, ALTITUDE)
     #SCROLL += circle_scroll(SURFACE) ** 3 * 0.000005
+    '''
 
     pygame.display.update()
     CLOCK.tick(40)
