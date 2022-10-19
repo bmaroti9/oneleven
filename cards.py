@@ -7,6 +7,7 @@ import sys
 import json
 from gradient import blurSurf, sin_pos
 from datetime import datetime
+from screen_shake import *
 
 
 from helpers import *
@@ -24,17 +25,33 @@ def rombus(rect, color, surface):
     points = [[width_half, rect[1]], [width, height_half], [width_half, height], [rect[0], height_half]]
     pygame.draw.polygon(surface, color, points)
 
-def draw_rombuses(surface, color, width, height, pos_add):
-    xnumber = surface.get_width() // width + 3
-    ynumber = surface.get_height() // height + 3
 
-    addon = -height // 2
+def draw_rombuses(surface, color, width, height, pos_add):
+    xnumber = surface.get_width() // width + 2
+    ynumber = surface.get_height() // height + 2
 
     for y in range(ynumber):
         for x in range(xnumber):
-            addon = -addon
-            rombus([x * (width / 2 + 50),y * (height / 2 + 100) + \
-                    addon - 500 + pos_add % (height + 200), width, height], color, surface)
-            rombus([x * (width / 2 + 50) - 10, y * 
-                    (height / 2 + 100) + addon - 505 + pos_add % (height + 200), width, height], 
-                    transition_colors(color, (250, 250, 250), 0.4), surface)
+            rombus([x * width - 52 + pos_add[0], (y - 1) * height - 25 + pos_add[1] % height, 
+                    width, height], transition_colors(color, (0, 0, 0), 0.2), surface)
+            
+            rombus([x * width - 52 + pos_add[0], (y - 1) * height - 25 + pos_add[1] % height, 
+                    width - 5, height - 8], color, surface)
+
+class Time_map(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()        
+
+        self.smooth_pos = 0
+    
+    def update(self, surface, altitude):
+        volume = int((altitude - self.smooth_pos) * 0.3)
+        print(volume)
+        self.smooth_pos += (altitude - self.smooth_pos) * 0.5
+
+        offset = [0, 0]
+        if volume != 0:
+            offset = next(shake(volume, max(volume // 4, 2), min(volume // 2, 1, 30)))
+        print(offset)
+        
+        draw_rombuses(surface, (227, 78, 30), 90, 130, offset)

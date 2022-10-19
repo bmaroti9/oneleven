@@ -39,6 +39,7 @@ BLUR_SURF = colour_rect = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 #CLOUDMAP = Cloudmap(SURFACE)
 #TIME = Time()
 #EVENTMAP = Eventmap()
+TIME_MAP = Time_map()
 
 ALTITUDE = 0
 SCROLL = 0
@@ -53,7 +54,7 @@ while RUNNING:
             if event.key == K_q:
                 RUNNING = False
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y * 0.95
+            SCROLL += event.y * 2.4 #0.95
     '''
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
             SCROLL = - ALTITUDE * 0.0309
@@ -63,19 +64,16 @@ while RUNNING:
     '''  
     
     SCROLL = SCROLL * 0.97
-    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.18
+    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.25
     ALTITUDE += SMOOTH_SCROLL
     MAX.append(abs(SMOOTH_SCROLL))
 
     del MAX[0]
 
-    SURFACE.fill((210, 180, 182))
-    BLUR_SURF.fill((210, 180, 182))
+    SURFACE.fill((253, 119, 33))
+    BLUR_SURF.fill((253, 119, 33))
 
-    draw_rombuses(SURFACE, (100, 250, 100), 200, 350, ALTITUDE * 0.2)
-    draw_rombuses(SURFACE, (250, 100, 100), 140, 200, ALTITUDE * 0.4)
-    draw_rombuses(SURFACE, (250, 250, 100), 100, 120, ALTITUDE * 0.8)
-    draw_rombuses(SURFACE, (150, 150, 150), 30, 40, ALTITUDE * 1.4)
+    TIME_MAP.update(SURFACE, ALTITUDE)    
 
     '''
     CLOUDMAP.update(BLUR_SURF, ALTITUDE)
