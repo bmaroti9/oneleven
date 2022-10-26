@@ -43,16 +43,8 @@ class Time_map(pygame.sprite.Sprite):
         super().__init__()        
 
         self.smooth_pos = 0
-        self.shake = repeat([0, 0])
     
     def update(self, surface, altitude):
-        volume = abs(int((altitude - self.smooth_pos) * 0.3))
-        print(volume)
-        self.smooth_pos += (altitude - self.smooth_pos) * 0.8
+        self.smooth_pos += (altitude - self.smooth_pos) * 0.4
 
-        if volume > 0.6 and every_ticks(3):
-            self.shake = shake(4, 3, 3)
-        hihi = next(self.shake)
-        print(hihi[0])
-        
-        draw_rombuses(surface, (227, 78, 30), 90, 130, [hihi[0], self.smooth_pos])
+        draw_rombuses(surface, (227, 78, 30), 90, 130, [0, self.smooth_pos])
