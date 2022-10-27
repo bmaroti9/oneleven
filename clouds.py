@@ -18,6 +18,7 @@ pygame.init()
 with open("times.txt", "r") as f:
     TIMES = json.load(f)
 
+FONT1 = pygame.font.SysFont('andalemono', 50)
 
 class Cloud(pygame.sprite.Sprite):
     def __init__(self, surface):
@@ -135,47 +136,45 @@ class Floating_event(pygame.sprite.Sprite):
         self.font = pygame.font.SysFont('comicsansms', 70)
         self.pos = pos
         self.plus = 0
-        self.absolute_plus = 0
         self.smooth = 30
         self.smooth_size = 0
     
-    def update(self, surface, altitude, scroll, below):
+    def update(self, surface, altitude, scroll, below, n):
         if below != self:
-            real_dis = (self.pos + self.plus + self.absolute_plus) - \
-                 (below.pos + below.plus + below.absolute_plus)
+            real_dis = (self.pos + self.plus) - \
+                 (below.pos + below.plus)
             wanted_dis = below.smooth_size + self.smooth_size + 100
-            x = real_dis - wanted_dis
-
-            print(below.plus + self.plus, below.plus, self.plus, 'A', 
-                    self.absolute_plus, 'x', x, real_dis, wanted_dis)
-            if (below.plus + self.plus) > 0:
-                self.absolute_plus = -x
-            else:
-                print('hihi')
-                below.absolute_plus = x
+            if real_dis > wanted_dis:
+                self.pos -= real_dis - wanted_dis
+            if real_dis < wanted_dis:
+                self.pos += wanted_dis - real_dis
             
-            pos = self.pos + self.plus + self.absolute_plus + altitude * 5
-        else:
-            pos = self.pos + self.smooth + self.absolute_plus + altitude * 5
-        
-        size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
-        #size = max(min(400 - abs(surface.get_height() // 2 - pos), surface.get_height() // 2), 45)
-
-        self.smooth_size += (size - self.smooth_size) * 0.1
+        pos = self.pos + self.smooth + altitude * 5
 
         top = pos - self.smooth_size
         bottom = pos + self.smooth_size
 
         height = surface.get_height()
-
-        if 350 - self.smooth_size < pos and top < 0:
+        
+        if 0 - self.smooth_size < pos - self.smooth and top < 0:
             self.plus -= top * 0.15
-        elif height + self.smooth_size - 350 > pos and bottom > height:
+        elif height + self.smooth_size - 0 > pos - self.smooth and bottom > height:
             self.plus += (height - bottom) * 0.15
         else:
             self.plus = self.plus * 0.95
+
+        if top > -self.smooth_size // 2 and bottom < surface.get_height() + 50:
+            size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
+            print('t', top, bottom)
+        else:
+            size = (self.smooth_size // 2 - self.smooth_size) * 0.2
+            print('f', top, bottom)
         
-        self.smooth += (self.plus - self.smooth) * 0.2
+        #size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
+        
+        self.smooth_size += (size - self.smooth_size) * 0.1
+        
+        self.smooth += (self.plus - self.smooth) * 0.15
         
         color = transition_colors((0, 50, 110), (195, 149, 170), 
                 self.smooth_size / (surface.get_height() // 2))
@@ -185,6 +184,8 @@ class Floating_event(pygame.sprite.Sprite):
 
         pygame.draw.rect(surface, color, Rect(coolsize, pos - coolheight, 
             surface.get_width() - coolsize * 2, coolheight * 2), 0, int(47 - 0.1 * size))
+        
+        blit_text(surface, (200, 0, 0), n + '   ' + str(pos), [50, pos - coolheight], FONT1)
         
         #pygame.draw.line(surface, (200, 0, 0), (0, pos), (surface.get_width(), pos), 10)
         #pygame.draw.line(surface, (0, 200, 0), (0, pos + self.absolute_plus), 
@@ -200,16 +201,15 @@ class Eventmap(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()  
 
-        self.events = pygame.sprite.Group()
+        self.events = []
     
     def add_event(self, text, pos):
-        self.events.add(Floating_event(text, pos))
+        self.events.append(Floating_event(text, pos))
         self.events = sorted(self.events, key=Floating_event.get_height)
-        self.events = pygame.sprite.Group(self.events)
 
     def update(self, surface, altitude, scroll):
         x = -1
         for n in self.events:
-            n.update(surface, altitude, scroll, self.events.sprites()[max(0, x)])
+            n.update(surface, altitude, scroll, self.events[max(0, x)], str(x + 1))
             x += 1
         
