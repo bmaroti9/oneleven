@@ -151,24 +151,25 @@ class Floating_event(pygame.sprite.Sprite):
             
         pos = self.pos + self.smooth + altitude * 5
 
-        top = pos - self.smooth_size
-        bottom = pos + self.smooth_size
+        top = pos - self.smooth - self.smooth_size
+        bottom = pos - self.smooth + self.smooth_size
 
         height = surface.get_height()
         
-        if 0 - self.smooth_size < pos - self.smooth and top < 0:
+        if top < 0:
+            print('t1', top, bottom)
             self.plus -= top * 0.15
-        elif height + self.smooth_size - 0 > pos - self.smooth and bottom > height:
+        elif bottom > height:
             self.plus += (height - bottom) * 0.15
+            print('t2', top, bottom)
         else:
             self.plus = self.plus * 0.95
-
-        if top > -50 and bottom < surface.get_height() + 50:
-            size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
-            print('t', top, bottom)
-        else:
-            size = self.smooth_size - (self.smooth_size - 50) * 0.01
             print('f', top, bottom)
+
+        if pos > 0 and pos < surface.get_height():
+            size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
+        else:
+            size = 50
         
         #size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
         
