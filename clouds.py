@@ -163,11 +163,11 @@ class Floating_event(pygame.sprite.Sprite):
         else:
             self.plus = self.plus * 0.95
 
-        if top > -50 and bottom < surface.get_height() + 50:
+        if top > -self.smooth_size // 2 and bottom < surface.get_height() + 50:
             size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
             print('t', top, bottom)
         else:
-            size = self.smooth_size - (self.smooth_size - 50) * 0.01
+            size = (self.smooth_size // 2 - self.smooth_size) * 0.2
             print('f', top, bottom)
         
         #size = max((300 / max((abs(scroll) ** 5) * 0.2, 1)), 45)
