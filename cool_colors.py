@@ -35,7 +35,7 @@ class dot(pygame.sprite.Sprite):
         self.pos = pos
 
     def update(self, surface, dots):
-        if random.randint(0, 1) == 0:
+        if random.randint(0, 0) == 0:
             for n in dots:
                 if n != self:
                     dis = distance(self.pos, n.pos) * 400
