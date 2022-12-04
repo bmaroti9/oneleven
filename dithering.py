@@ -11,11 +11,19 @@ from gradient import *
 from helpers import *
 from experimental import *
 
-SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 675
+image = pygame.image.load("images/black_and_white7.png")  
+original_array = pygame.surfarray.array3d(image)
+color_array = pygame.surfarray.array3d(image)
+black = pygame.Surface((image.get_width(), image.get_height()))      
+array = pygame.surfarray.array3d(black)
+width, height, _ = array.shape
 
-FONT1 = pygame.font.SysFont('texgyrechorus', 50)
+SCREEN_WIDTH = width
+SCREEN_HEIGHT = height
 
+POINTS = []
+
+FONT1 = pygame.font.SysFont('texgyrechorus', 47)
 
 CLOCK = pygame.time.Clock()
 SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -83,16 +91,16 @@ def check_9bright(original_array, new_array, color_array, pos):
 
 
 def working_pos():
-    x = random.randint(1, 1198)
-    y = random.randint(1, 673)
+    x = random.randint(1, SCREEN_WIDTH - 2)
+    y = random.randint(1, SCREEN_HEIGHT - 2)
     return [x, y]
 
 
 def pick_random_points(array):
     items = []
-    for n in range(200):
-        x = random.randint(0, 1199)
-        y = random.randint(0, 674)
+    for n in range(400):
+        x = random.randint(0, SCREEN_WIDTH - 1)
+        y = random.randint(0, SCREEN_HEIGHT - 1)
         items.append(array[x, y, 0])
     
     return items
@@ -105,9 +113,8 @@ def random10brightness():
     x = sorted(x)
     return x
 
-def calculate_unprecise(array):
-    points = pick_random_points(array)
-    r10b = random10brightness()
+def calculate_unprecise(array, random10, points):
+    r10b = random10
 
     unprecise = 0
 
@@ -118,36 +125,68 @@ def calculate_unprecise(array):
             l = min(l, abs(n - i))
         unprecise += l
 
-    return unprecise, r10b
+    return [unprecise, r10b]
 
 def find_best_10(array, number):
     best = []
     least_unprecise = math.inf
 
-    for n in range(number):
-        x = calculate_unprecise(array)
-        if x[0] < least_unprecise:
-            least_unprecise = x[0]
-            best = x[1]
+    for n in range(number // 100):
+        for _ in range(100):
+            z = random10brightness()
+            x = calculate_unprecise(array, z, POINTS)
+            if x[0] < least_unprecise:
+                least_unprecise = x[0]
+                best = x[1]
+        SURFACE.fill((210, 225, 235))
+        blit_text(SURFACE, (100, 100, 100), str(round(n / (number / 100) * 100)) + '%', 
+                [SURFACE.get_width() // 2, SURFACE.get_height() // 2], FONT1, 1)
+        
+        blit_text(SURFACE, (100, 100, 100), str(best), 
+                [SURFACE.get_width() // 2, SURFACE.get_height() - 100], FONT1, 1)
+        
+
+        blit_text(SURFACE, (100, 100, 100), str(least_unprecise), 
+                [SURFACE.get_width() // 2, SURFACE.get_height() - 50], FONT1, 1)
+        
+        
+        pygame.display.update()
     
     return best
 
+def tweak_10bright(array, number):
+    global TEN_BRIGHT
+    for n in range(number):
+        hihi = random.randint(0, 9)
+        x = list(TEN_BRIGHT)
+        x[hihi] += random.randint(-16, 16)
+        u = calculate_unprecise(array, x, POINTS)
+        now = calculate_unprecise(array, TEN_BRIGHT, POINTS)
 
+        if u[0] < now[0]:
+            print('no', u[0], now[0])
+            TEN_BRIGHT = list(u[1])
+        
+        SURFACE.fill((210, 225, 235))
+        blit_text(SURFACE, (100, 100, 100), str(round(n / number * 100)) + '%', 
+                [SURFACE.get_width() // 2, SURFACE.get_height() // 2], FONT1, 1)
+        
+        blit_text(SURFACE, (100, 100, 100), str(TEN_BRIGHT), 
+                [SURFACE.get_width() // 2, SURFACE.get_height() - 100], FONT1, 1)
+        
+        blit_text(SURFACE, (100, 100, 100), str(now[0]), 
+                [SURFACE.get_width() // 2, SURFACE.get_height() - 50], FONT1, 1)
+        
+        pygame.display.update()
 
-image = pygame.image.load("images/balck_and_white2.png")  
-original_array = pygame.surfarray.array3d(image)
-color_array = pygame.surfarray.array3d(image)
-black = pygame.Surface((image.get_width(), image.get_height()))      
-array = pygame.surfarray.array3d(black)
-width, height, _ = array.shape
+        
+POINTS = pick_random_points(original_array)
 
-for n in range(100):
-    TEN_BRIGHT = find_best_10(array, 100)
-    SURFACE.fill((210, 225, 235))
-    blit_text(SURFACE, (100, 100, 100), str(n) + '%', 
-            [SURFACE.get_width() // 2, SURFACE.get_height() // 2], FONT1, 1)
-    pygame.display.update()
+TEN_BRIGHT = find_best_10(original_array, 3000)
 
+tweak_10bright(original_array, 2000)
+
+TEN_BRIGHT[0] = TEN_BRIGHT[0] * 0.5
 
 print(TEN_BRIGHT)
 
@@ -165,13 +204,13 @@ while RUNNING:
 
     SURFACE.fill((210, 225, 235))
 
-    for n in range(1198):
+    for n in range(SCREEN_WIDTH - 2):
         check_9bright(original_array, array, color_array, [X, Y])
         X += 1
     X = 1
     Y += 1
 
-    if Y == 673:
+    if Y == SCREEN_HEIGHT - 2:
         Y = 1
 
     hihi = pygame.mouse.get_pressed(3)[0]
