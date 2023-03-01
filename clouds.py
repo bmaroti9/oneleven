@@ -31,7 +31,7 @@ class Cloud(pygame.sprite.Sprite):
         self.image.set_colorkey((0, 0, 0))
 
         #gray = gray_color(min(max(self.distance // 1.3 - 100, 100), 250))
-        gray = transition_colors((250, 250, 250), (226, 116, 139), 150 / self.distance)
+        gray = transition_colors((245, 245, 245), (226, 116, 139), 150 / self.distance)
 
         magic_number = 18
         
@@ -62,7 +62,7 @@ class Cloudmap(pygame.sprite.Sprite):
 
         self.clouds = pygame.sprite.Group()
 
-        for _ in range(100):
+        for _ in range(120):
             self.clouds.add(Cloud(surface))
         
         self.clouds.add(Balloon(surface))
@@ -107,19 +107,19 @@ class Time(pygame.sprite.Sprite):
         current_hour = int(now.strftime("%H"))
         current_hour = now.weekday() * 24 + current_hour
         current_time_minutes = current_hour * 60 + int(now.strftime("%M"))  
-        current_time_minutes += round(altitude)
+        current_time_minutes += round(altitude * 3.1)
         
         minutes = current_time_minutes % 60
         hours = ((current_time_minutes - minutes) // 60) % 24
         day = TIMES["days"][(current_time_minutes - hours - minutes) // 1440 % 7]
-
-        blit_text(surface, (73, 158, 130), "{0:0=2d}".format(hours) + ":" + "{0:0=2d}".format(minutes), 
+        #(73, 158, 130),
+        blit_text(surface, (255, 255, 255), "{0:0=2d}".format(hours) + ":" + "{0:0=2d}".format(minutes), 
                 [35, surface.get_height() - 130], self.time_font)
         
-        blit_text(surface, (73, 158, 130), day, 
+        blit_text(surface, (255, 255, 255), day, 
                 [35, surface.get_height() - 70], self.day_font)
         
-        blit_text(surface, (73, 158, 130), day, 
+        blit_text(surface, (255, 255, 255), day, 
                 [35, surface.get_height() - 70], self.day_font)
 
         a = max(110 - abs(altitude * 3), 40 - math.sqrt(abs(altitude)) * 0.3)

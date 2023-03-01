@@ -11,6 +11,7 @@ from designs import *
 from gradient import *
 from helpers import *
 from experimental import *
+from tiles import *
 
 pygame.init()
 
@@ -22,8 +23,8 @@ FONT5 = pygame.font.SysFont('latinmodernmonoprop', 30)
 FONT6 = pygame.font.SysFont('nanumgothic', 22)
 FONT7 = pygame.font.SysFont("ubuntu", 36)
 
-SCREEN_WIDTH = 350
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1364
+SCREEN_HEIGHT = 715
 
 print(pygame.font.get_fonts())
 
@@ -48,6 +49,8 @@ SCROLL = 0
 SMOOTH_SCROLL = 0
 MAX = [0, 0, 0, 0, 0]
 
+TILE = Tile('hihi', 0)
+
 while RUNNING:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -56,13 +59,14 @@ while RUNNING:
             if event.key == K_q:
                 RUNNING = False
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y * 0.95 #0.95
+            SCROLL += event.y * 4 #0.95
     
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
-            SCROLL = - ALTITUDE * 0.0309
+            SCROLL = -ALTITUDE * 0.03093
             SMOOTH_SCROLL = 0
     elif check_released(0):
-        EVENTMAP.add_event("balint", -ALTITUDE * 5 + SURFACE.get_height()  // 3)
+        #EVENTMAP.add_event("balint", -ALTITUDE * 5 + SURFACE.get_height()  // 3)
+        x = 0
     
     SCROLL = SCROLL * 0.97
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.5
@@ -71,17 +75,13 @@ while RUNNING:
 
     del MAX[0]
 
-    SURFACE.fill((253, 119, 33))
-    BLUR_SURF.fill(BACK_COLOR)
-
-    #TIME_MAP.update(SURFACE, ALTITUDE)    
+    SURFACE.fill((5, 10, 30))
+    BLUR_SURF.fill((5, 10, 25))
 
     
-    CLOUDMAP.update(BLUR_SURF, ALTITUDE)
-    SURFACE.blit(blurSurf(BLUR_SURF, max(abs(SMOOTH_SCROLL) * 0.6, 1)), (0, 0))
-    EVENTMAP.update(SURFACE, ALTITUDE, max(MAX))
+    SURFACE.blit(blurSurf(BLUR_SURF, max(abs(SMOOTH_SCROLL) * 0.4, 1)), (0, 0))
+    TILE.update(SURFACE, ALTITUDE, TILE)
     TIME.update(SURFACE, ALTITUDE)
-    #SCROLL += circle_scroll(SURFACE) ** 3 * 0.000005
 
     pygame.display.update()
     CLOCK.tick(40)

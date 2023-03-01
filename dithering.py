@@ -11,7 +11,7 @@ from gradient import *
 from helpers import *
 from experimental import *
 
-image = pygame.image.load("images/black_and_white7.png")  
+image = pygame.image.load("images/black_and_white9.png")  
 original_array = pygame.surfarray.array3d(image)
 color_array = pygame.surfarray.array3d(image)
 black = pygame.Surface((image.get_width(), image.get_height()))      
