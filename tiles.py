@@ -35,9 +35,10 @@ class Tile(pygame.sprite.Sprite):
 
         coolsize = self.size * 1.1
         coolheight = self.size * 0.26
+        print(self.size)
 
-        color = transition_colors((9, 20, 60), (63, 78, 232), 
-                self.size / (surface.get_height() // 2))
+        color = transition_colors((30, 51, 190), (9, 20, 60), 
+                (abs(self.size - 500)) / 550)
 
-        pygame.draw.rect(surface, (9, 20, 60), Rect(coolsize, real_pos - coolheight, 
-            surface.get_width() - coolsize * 2, coolheight * 2), 0, int(47 - 0.0375 * self.size))
+        pygame.draw.rect(surface, color, Rect(coolsize, real_pos - coolheight, 
+            surface.get_width() - coolsize * 2, coolheight * 2), 0, int(5 - 0.003 * self.size))
