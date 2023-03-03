@@ -107,7 +107,7 @@ class Time(pygame.sprite.Sprite):
         current_hour = int(now.strftime("%H"))
         current_hour = now.weekday() * 24 + current_hour
         current_time_minutes = current_hour * 60 + int(now.strftime("%M"))  
-        current_time_minutes += round(altitude * 3.1)
+        current_time_minutes += round(altitude)
         
         minutes = current_time_minutes % 60
         hours = ((current_time_minutes - minutes) // 60) % 24
@@ -122,10 +122,11 @@ class Time(pygame.sprite.Sprite):
         blit_text(surface, (255, 255, 255), day, 
                 [35, surface.get_height() - 70], self.day_font)
 
-        a = max(110 - abs(altitude * 3), 40 - math.sqrt(abs(altitude)) * 0.3)
+        #a = max(110 - abs(altitude * 3), 40 - math.sqrt(abs(altitude)) * 0.3)
+        a = 90 / math.sqrt(max(abs(altitude), 1))
         
         pygame.draw.line(surface, (158, 62, 84), 
-            [27, surface.get_height() - a], [27, surface.get_height() - 25], 3)
+            [27, surface.get_height() - a - 25], [27, surface.get_height() - 25], 3)
     
 
 class Floating_event(pygame.sprite.Sprite):

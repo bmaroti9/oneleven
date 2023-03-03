@@ -49,7 +49,7 @@ SCROLL = 0
 SMOOTH_SCROLL = 0
 MAX = [0, 0, 0, 0, 0]
 
-TILE = Tile('hihi', 0)
+TILE = Tile('hihi', SCREEN_HEIGHT / 2 - 0.38)
 
 while RUNNING:
     for event in pygame.event.get():
@@ -59,7 +59,7 @@ while RUNNING:
             if event.key == K_q:
                 RUNNING = False
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y * 4 #0.95
+            SCROLL += event.y * 15 #0.95
     
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
             SCROLL = -ALTITUDE * 0.03093
@@ -76,11 +76,8 @@ while RUNNING:
     del MAX[0]
 
     SURFACE.fill((5, 10, 30))
-    BLUR_SURF.fill((5, 10, 25))
-
     
-    SURFACE.blit(blurSurf(BLUR_SURF, max(abs(SMOOTH_SCROLL) * 0.4, 1)), (0, 0))
-    TILE.update(SURFACE, ALTITUDE, TILE)
+    ALTITUDE += TILE.update(SURFACE, ALTITUDE, TILE, max(MAX))
     TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()

@@ -18,27 +18,36 @@ class Tile(pygame.sprite.Sprite):
         self.pos = pos
         self.size = 50
     
-    def update(self, surface, altitude,  closest):
-        real_pos = self.pos + altitude * 5
+    def update(self, surface, altitude, closest, speed):
+        change_altitude = 0
+
+        real_pos = self.pos + altitude
         target = surface.get_height() // 2
         distance = target - real_pos
         
-        if distance != 0:
+        wanted = surface.get_width() - 150
+        if distance != 0 and abs(distance) < 300:
             if closest == self:
-                self.pos += distance * min(max(0.09, 7 / abs(distance)), 1.1)
-
-            wanted = max(min((1000 / (abs(distance) ** 2)), surface.get_width() - 150), 150)
-        else:
-            wanted = surface.get_width() - 150
-         
+                change_altitude += (distance * min(max(0.08, 18 / abs(distance)), 1.1))
+                distance -= change_altitude
+            if distance != 0:
+                wanted = max(min((920 / (abs(distance) ** 2)), surface.get_width() - 150), 190)
+        elif abs(distance) > 300:
+            wanted = 190
+            
         self.size += (wanted - self.size) * 0.1
 
         coolsize = self.size * 1.1
         coolheight = self.size * 0.26
-        print(self.size)
 
-        color = transition_colors((30, 51, 190), (9, 20, 60), 
-                (abs(self.size - 500)) / 550)
+        color = transition_colors((30, 51, 190), (9, 20, 50), 
+                (abs(self.size - 500)) / 500)
 
         pygame.draw.rect(surface, color, Rect(coolsize, real_pos - coolheight, 
             surface.get_width() - coolsize * 2, coolheight * 2), 0, int(5 - 0.003 * self.size))
+
+        return change_altitude
+
+    def draw_content(self, pos):
+        x = 0
+
