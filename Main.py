@@ -47,9 +47,10 @@ BACK_COLOR = (240, 180, 230)
 ALTITUDE = 0
 SCROLL = 0
 SMOOTH_SCROLL = 0
-MAX = [0, 0, 0, 0, 0]
+MAX = [0, 0, 0]
+FOCUS_TIME = 0
 
-TILE = Tile('hihi', SCREEN_HEIGHT / 2 - 0.38)
+TILE_SPACE = Tile_space()
 
 while RUNNING:
     for event in pygame.event.get():
@@ -59,26 +60,28 @@ while RUNNING:
             if event.key == K_q:
                 RUNNING = False
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y * 15 #0.95
+            SCROLL += event.y * 20 #0.95
     
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
             SCROLL = -ALTITUDE * 0.03093
             SMOOTH_SCROLL = 0
     elif check_released(0):
-        #EVENTMAP.add_event("balint", -ALTITUDE * 5 + SURFACE.get_height()  // 3)
-        x = 0
+        TILE_SPACE.add_tile(FOCUS_TIME)
+        
     
     SCROLL = SCROLL * 0.97
-    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.5
+    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.3
     ALTITUDE += SMOOTH_SCROLL
-    MAX.append(abs(SMOOTH_SCROLL))
+    MAX.append(SMOOTH_SCROLL)
 
     del MAX[0]
 
-    SURFACE.fill((5, 10, 30))
+    SURFACE.fill(get_colors()[0])
     
-    ALTITUDE += TILE.update(SURFACE, ALTITUDE, TILE, max(MAX))
-    TIME.update(SURFACE, ALTITUDE)
+    #ALTITUDE += TILE.update(SURFACE, FOCUS_TIME, TILE)
+    HIHI = TILE_SPACE.update(SURFACE, FOCUS_TIME)
+    ALTITUDE += HIHI
+    FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()
     CLOCK.tick(40)

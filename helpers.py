@@ -102,6 +102,8 @@ def blit_text(surface, color, text, pos, font, center = 0):
         rect.center = pos
     if center == 2:
         rect.topright = pos
+    if center == 3:
+        rect.midtop = pos
     
     surface.blit(wrighting, rect)
     return rect
@@ -287,5 +289,8 @@ def every_ticks(gap):
         return True
     return False
 
-
+def get_colors():
+    #color: background   big tile     small tile     theme          date color
+    x = [(5, 10, 30), (9, 20, 50), (30, 51, 190), (168, 62, 90), (255, 255, 255)]
+    return x
     

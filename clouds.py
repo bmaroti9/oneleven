@@ -107,26 +107,29 @@ class Time(pygame.sprite.Sprite):
         current_hour = int(now.strftime("%H"))
         current_hour = now.weekday() * 24 + current_hour
         current_time_minutes = current_hour * 60 + int(now.strftime("%M"))  
+        precise_time = current_time_minutes + altitude
         current_time_minutes += round(altitude)
         
         minutes = current_time_minutes % 60
         hours = ((current_time_minutes - minutes) // 60) % 24
         day = TIMES["days"][(current_time_minutes - hours - minutes) // 1440 % 7]
         #(73, 158, 130),
-        blit_text(surface, (255, 255, 255), "{0:0=2d}".format(hours) + ":" + "{0:0=2d}".format(minutes), 
+        blit_text(surface, get_colors()[4], "{0:0=2d}".format(hours) + ":" + "{0:0=2d}".format(minutes), 
                 [35, surface.get_height() - 130], self.time_font)
         
-        blit_text(surface, (255, 255, 255), day, 
+        blit_text(surface, get_colors()[4], day, 
                 [35, surface.get_height() - 70], self.day_font)
         
-        blit_text(surface, (255, 255, 255), day, 
+        blit_text(surface, get_colors()[4], day, 
                 [35, surface.get_height() - 70], self.day_font)
 
         #a = max(110 - abs(altitude * 3), 40 - math.sqrt(abs(altitude)) * 0.3)
         a = 90 / math.sqrt(max(abs(altitude), 1))
         
-        pygame.draw.line(surface, (158, 62, 84), 
+        pygame.draw.line(surface, get_colors()[3], 
             [27, surface.get_height() - a - 25], [27, surface.get_height() - 25], 3)
+    
+        return precise_time
     
 
 class Floating_event(pygame.sprite.Sprite):
