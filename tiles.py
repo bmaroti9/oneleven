@@ -18,7 +18,7 @@ class Tile(pygame.sprite.Sprite):
 
         self.title_font = pygame.font.SysFont('texgyreadventor', 20)
 
-    def update(self, surface, focus_time, closest):
+    def update(self, surface, focus_time, smooth_scroll):
         real_pos = focus_time - self.time
         
         change_altitude = 0
@@ -26,19 +26,21 @@ class Tile(pygame.sprite.Sprite):
         #real_pos = self.pos + altitude
         target = surface.get_height() // 2
         distance = target - real_pos
+        speed = 0
         
         wanted = 1215
-        if distance != 0 and abs(distance) < 350:
+        if distance != 0 and abs(distance) < surface.get_height() / 2 and not smooth_scroll:
             #if closest == self:
-            change_altitude = (distance * min(max(0.09, 20 / abs(distance)), 1))
-            if abs(distance) < 30:
-                change_altitude = distance * 1.1
+            change_altitude = (distance * min(max(0.15, 15 / abs(distance)), 1))
+            wanted = max(1000, 1215 / max(math.sqrt(abs(distance)) * 0.7 - abs(change_altitude), 1))
+            if abs(distance) < 100:
+                change_altitude = distance
+                speed = 0.5
 
-            wanted = max(1000, 1215 / max(abs(distance - change_altitude), 1))
         elif abs(distance) > 300:
             wanted = 1000
             
-        self.size += (wanted - self.size) * 0.28
+        self.size += (wanted - self.size) * 0.22
 
         coolsize = self.size * 1.1
         coolheight = self.size * 0.33 - 80
@@ -52,7 +54,7 @@ class Tile(pygame.sprite.Sprite):
         self.draw_content(surface, real_pos - coolheight - 5, surface.get_width() - coolsize,
                              min(1, 30 / (1215 - self.size)), color)
 
-        return change_altitude
+        return [change_altitude, speed]
 
     def draw_content(self, surface, top, side, vis, tile_color):
         if vis > 0.06:
@@ -73,9 +75,12 @@ class Tile_space(pygame.sprite.Sprite):
         x = Tile(focus_time + 3)
         self.tiles.append(x)
     
-    def update(self, surface, focus_time):
+    def update(self, surface, focus_time, smooth_scroll):
         alt_change = 0
+        speed = 1
         for n in self.tiles:
-            alt_change += n.update(surface, focus_time + 360, 0)
+            hihi = n.update(surface, focus_time + 360, smooth_scroll)
+            alt_change += hihi[0]
+            speed -= hihi[1]
 
-        return alt_change * 0.88
+        return [alt_change * 0.88, speed]

@@ -293,4 +293,3 @@ def get_colors():
     #color: background   big tile     small tile     theme          date color
     x = [(5, 10, 30), (9, 20, 50), (30, 51, 190), (168, 62, 90), (255, 255, 255)]
     return x
-    
