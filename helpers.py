@@ -289,7 +289,18 @@ def every_ticks(gap):
         return True
     return False
 
+#color: background   big tile     small tile     theme          date color
+COLORS = [
+    [(5, 10, 30), (9, 20, 50), (30, 51, 190), (168, 62, 90), (255, 255, 255)],
+    [(176, 189, 164), (105, 209, 15), (85, 143, 34), (133, 168, 103), (23, 26, 22)],
+    [(240, 240, 240), (164, 183, 237), (252, 197, 198), (178, 72, 100), (100, 100, 100)]
+]
+
+THEME = 0
+
+def set_theme(x):
+    global THEME
+    THEME = x
+
 def get_colors():
-    #color: background   big tile     small tile     theme          date color
-    x = [(5, 10, 30), (9, 20, 50), (30, 51, 190), (168, 62, 90), (255, 255, 255)]
-    return x
+    return COLORS[THEME]

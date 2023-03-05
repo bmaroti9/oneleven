@@ -31,14 +31,14 @@ class Tile(pygame.sprite.Sprite):
         wanted = 1215
         if distance != 0 and abs(distance) < surface.get_height() / 2 and not smooth_scroll:
             #if closest == self:
-            change_altitude = (distance * min(max(0.15, 15 / abs(distance)), 1))
-            wanted = max(1000, 1215 / max(math.sqrt(abs(distance)) * 0.7 - abs(change_altitude), 1))
-            if abs(distance) < 100:
-                change_altitude = distance
-                speed = 0.5
+            change_altitude = (distance * min(max(0.15, 20 / abs(distance)), 1))
+            wanted = max(950, 1215 / max(math.sqrt(abs(distance)) * 0.7 - abs(change_altitude), 1))
+            if abs(distance) < 60:
+                change_altitude = distance * 0.3
+                speed = 0.35
 
         elif abs(distance) > 300:
-            wanted = 1000
+            wanted = 950
             
         self.size += (wanted - self.size) * 0.22
 
@@ -46,7 +46,7 @@ class Tile(pygame.sprite.Sprite):
         coolheight = self.size * 0.33 - 80
 
         color = transition_colors(get_colors()[1], get_colors()[2], 
-                (abs(self.size - 1180)) / 380)
+                (abs(self.size - 1180)) / 300)
 
         pygame.draw.rect(surface, color, Rect(coolsize, real_pos - coolheight, 
             surface.get_width() - coolsize * 2, coolheight * 2), 0, int(1 - 0.00 * (self.size - 1000)))

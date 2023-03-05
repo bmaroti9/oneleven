@@ -47,34 +47,41 @@ BACK_COLOR = (240, 180, 230)
 ALTITUDE = 0.01
 SCROLL = 0
 SMOOTH_SCROLL = 0
-MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 FOCUS_TIME = 0
 
 FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 
 TILE_SPACE = Tile_space()
-TILE_SPACE.add_tile(FOCUS_TIME)
-TILE_SPACE.add_tile(FOCUS_TIME + 650)
+
+for n in range(10):
+    TILE_SPACE.add_tile(FOCUS_TIME + n * 650)
 
 while RUNNING:
+    SCROLLING = 0
     for event in pygame.event.get():
         if event.type == QUIT:
             RUNNING = False
         if event.type == KEYDOWN:
             if event.key == K_q:
                 RUNNING = False
+            if event.key == K_0:
+                set_theme(0)
+            if event.key == K_1:
+                set_theme(1)
+            if event.key == K_2:
+                set_theme(2)
         if event.type == pygame.MOUSEWHEEL:
             SCROLL += event.y * 40 #0.95
             if not MAX.__contains__(1):
                 SCROLLING = 1
-        else:
-            SCROLLING = 0
     
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
-            SCROLL = -ALTITUDE * 0.03093
-            SMOOTH_SCROLL = 0
+        SCROLL = -ALTITUDE * 0.03093
+        SMOOTH_SCROLL = 0
     elif check_released(0):
-        TILE_SPACE.add_tile(FOCUS_TIME)
+        #TILE_SPACE.add_tile(FOCUS_TIME)
+        pass
         
     
     SCROLL = SCROLL * 0.973
