@@ -66,8 +66,8 @@ class Tile_space(pygame.sprite.Sprite):
         change_speed = 0
         for n in self.tiles:
             x = est_time + (surface.get_height() / 2) - n.time
-            if abs(x) < 350:
-                change_speed += (x * 0.015)
+            if abs(x) < 200:
+                change_speed += x * 0.0002
         return change_speed
 
     def refine(self, focus_time):

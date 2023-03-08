@@ -313,7 +313,7 @@ def brute_force_altitude(v):
     while hihi > 0:
         v = v * (1 - (1 / abs(v)))
         alt += v
-        if abs(v) < 0.001 or abs(v): # no idea why abs(v) works but it does
+        if abs(v) < 0.001: # no idea why abs(v) works but it does
             hihi = 0
         else:
             hihi -= 1

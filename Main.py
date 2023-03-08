@@ -88,12 +88,12 @@ while RUNNING:
     SURFACE.fill(get_colors()[0])
 
     if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.45:
-        x = brute_force_altitude(SMOOTH_SCROLL) - 50
+        x = brute_force_altitude(-SMOOTH_SCROLL)
         marker(x, SURFACE)
         print(x)
         SMOOTH_SCROLL += TILE_SPACE.any_close(FOCUS_TIME + x, SURFACE, abs(SMOOTH_SCROLL))
-    else:
-        ALTITUDE += TILE_SPACE.refine(FOCUS_TIME)
+    #else:
+     #   ALTITUDE += TILE_SPACE.refine(FOCUS_TIME)
     
     TILE_SPACE.update(SURFACE, FOCUS_TIME, SMOOTH_SCROLL)
     FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
