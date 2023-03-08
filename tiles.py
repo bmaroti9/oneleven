@@ -15,33 +15,22 @@ class Tile(pygame.sprite.Sprite):
         self.time = time_point
         self.size = 1000
         self.pos = 0
+        self.wanted = 1200
 
         self.title_font = pygame.font.SysFont('texgyreadventor', 20)
 
-    def update(self, surface, focus_time, smooth_scroll):
+    def size_adjust(self, surface, focus_time):
         real_pos = focus_time - self.time
-        
-        change_altitude = 0
-
-        #real_pos = self.pos + altitude
         target = surface.get_height() // 2
-        distance = target - real_pos
-        speed = 0
+        distance = target - real_pos + 3
         
-        wanted = 1215
-        if distance != 0 and abs(distance) < surface.get_height() / 2 and not smooth_scroll:
-            #if closest == self:
-            change_altitude = (distance * min(max(0.15, 20 / abs(distance)), 1))
-            wanted = max(950, 1215 / max(math.sqrt(abs(distance)) * 0.7 - abs(change_altitude), 1))
-            if abs(distance) < 60:
-                change_altitude = distance * 0.3
-                speed = 0.35
+        self.wanted = 1215
+        if abs(distance) > 300:
+            self.wanted = 950
 
-        elif abs(distance) > 300:
-            wanted = 950
-            
-        self.size += (wanted - self.size) * 0.22
-
+    def update(self, surface, focus_time):
+        self.size += (self.wanted - self.size) * 0.22
+        real_pos = focus_time - self.time
         coolsize = self.size * 1.1
         coolheight = self.size * 0.33 - 80
 
@@ -53,8 +42,6 @@ class Tile(pygame.sprite.Sprite):
         
         self.draw_content(surface, real_pos - coolheight - 5, surface.get_width() - coolsize,
                              min(1, 30 / (1215 - self.size)), color)
-
-        return [change_altitude, speed]
 
     def draw_content(self, surface, top, side, vis, tile_color):
         if vis > 0.06:
@@ -72,15 +59,36 @@ class Tile_space(pygame.sprite.Sprite):
         self.tiles = []
     
     def add_tile(self, focus_time):
-        x = Tile(focus_time + 3)
+        x = Tile(focus_time)
         self.tiles.append(x)
     
-    def update(self, surface, focus_time, smooth_scroll):
-        alt_change = 0
-        speed = 1
+    def any_close(self, est_time, surface, speed):
+        change_speed = 0
         for n in self.tiles:
-            hihi = n.update(surface, focus_time + 360, smooth_scroll)
-            alt_change += hihi[0]
-            speed -= hihi[1]
+            x = est_time + (surface.get_height() / 2) - n.time
+            if abs(x) < 350:
+                change_speed += (x * 0.015)
+        return change_speed
 
-        return [alt_change * 0.88, speed]
+    def refine(self, focus_time):
+        change_altitude = 0
+        for n in self.tiles:
+            real_pos = focus_time - n.time
+            if abs(real_pos) < 0:
+                change_altitude -= real_pos * 0.2
+        return change_altitude
+    
+    def update(self, surface, focus_time, smooth_scroll):
+        if abs(smooth_scroll) > 18:
+            for n in self.tiles:
+                n.wanted = 950
+                n.update(surface, focus_time + 360)
+        else:
+            for n in self.tiles:
+                n.size_adjust(surface, focus_time + 360)
+                n.update(surface, focus_time + 360)
+
+def marker(pos, surface):
+    real_pos = pos + surface.get_height() // 2
+    pygame.draw.circle(surface, (250, 0, 250), [20, surface.get_height() // 2], 5)
+    pygame.draw.circle(surface, (250, 250, 250), [20, real_pos], 5)

@@ -304,3 +304,17 @@ def set_theme(x):
 
 def get_colors():
     return COLORS[THEME]
+
+def brute_force_altitude(v):
+    hihi = 200
+    if v == 0:
+        hihi = 0
+    alt = 0
+    while hihi > 0:
+        v = v * (1 - (1 / abs(v)))
+        alt += v
+        if abs(v) < 0.001 or abs(v): # no idea why abs(v) works but it does
+            hihi = 0
+        else:
+            hihi -= 1
+    return alt

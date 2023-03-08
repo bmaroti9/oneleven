@@ -35,14 +35,9 @@ pygame.display.set_caption("©2022 Dragon tail")
 
 RUNNING = True
 
-BLUR_SURF = colour_rect = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))         
-
 CLOUDMAP = Cloudmap(SURFACE)
 TIME = Time()
 EVENTMAP = Eventmap()
-#TIME_MAP = Time_map()
-
-BACK_COLOR = (240, 180, 230)
 
 ALTITUDE = 0.01
 SCROLL = 0
@@ -72,7 +67,7 @@ while RUNNING:
             if event.key == K_2:
                 set_theme(2)
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y * 40 #0.95
+            SCROLL += event.y * 33 #0.95
             if not MAX.__contains__(1):
                 SCROLLING = 1
     
@@ -80,11 +75,10 @@ while RUNNING:
         SCROLL = -ALTITUDE * 0.03093
         SMOOTH_SCROLL = 0
     elif check_released(0):
-        #TILE_SPACE.add_tile(FOCUS_TIME)
-        pass
+        TILE_SPACE.add_tile(FOCUS_TIME + brute_force_altitude(SMOOTH_SCROLL))
         
-    
-    SCROLL = SCROLL * 0.973
+    #SCROLL = SCROLL * 0.965
+    SCROLL = SCROLL * (1 - (1 / max(abs(SCROLL), 0.001)))
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL
     MAX.append(SCROLLING)
@@ -92,11 +86,16 @@ while RUNNING:
     del MAX[0]
 
     SURFACE.fill(get_colors()[0])
+
+    if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.45:
+        x = brute_force_altitude(SMOOTH_SCROLL) - 50
+        marker(x, SURFACE)
+        print(x)
+        SMOOTH_SCROLL += TILE_SPACE.any_close(FOCUS_TIME + x, SURFACE, abs(SMOOTH_SCROLL))
+    else:
+        ALTITUDE += TILE_SPACE.refine(FOCUS_TIME)
     
-    #ALTITUDE += TILE.update(SURFACE, FOCUS_TIME, TILE)
-    HIHI = TILE_SPACE.update(SURFACE, FOCUS_TIME, MAX.__contains__(1))
-    ALTITUDE += HIHI[0]
-    SCROLL = SCROLL * HIHI[1]
+    TILE_SPACE.update(SURFACE, FOCUS_TIME, SMOOTH_SCROLL)
     FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()
