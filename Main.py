@@ -92,7 +92,6 @@ while RUNNING:
     del MAX[0]
 
     SURFACE.fill(get_colors()[0])
-    print(MAX.__contains__(1))
     
     #ALTITUDE += TILE.update(SURFACE, FOCUS_TIME, TILE)
     HIHI = TILE_SPACE.update(SURFACE, FOCUS_TIME, MAX.__contains__(1))
