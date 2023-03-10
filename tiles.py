@@ -21,7 +21,7 @@ class Tile(pygame.sprite.Sprite):
 
     def size_adjust(self, surface, distance, smooth_scroll):
         self.wanted = 1215
-        if abs(distance) > surface.get_height() / 2 or smooth_scroll > 30:
+        if abs(distance) > surface.get_height() / 2 or smooth_scroll > 19:
             self.wanted = 950
 
     def update(self, surface, focus_time, smooth_scroll):
