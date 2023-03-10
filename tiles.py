@@ -19,18 +19,23 @@ class Tile(pygame.sprite.Sprite):
 
         self.title_font = pygame.font.SysFont('texgyreadventor', 20)
 
-    def size_adjust(self, surface, focus_time):
+    def size_adjust(self, surface, distance, smooth_scroll):
+        self.wanted = 1215
+        if abs(distance) > surface.get_height() / 2 or smooth_scroll > 30:
+            self.wanted = 950
+
+    def update(self, surface, focus_time, smooth_scroll):
         real_pos = focus_time - self.time
         target = surface.get_height() // 2
         distance = target - real_pos + 3
-        
-        self.wanted = 1215
-        if abs(distance) > 300:
-            self.wanted = 950
 
-    def update(self, surface, focus_time):
-        self.size += (self.wanted - self.size) * 0.22
-        real_pos = focus_time - self.time
+        self.size_adjust(surface, distance, smooth_scroll)
+
+        if distance < surface.get_height() * 1.7:
+            self.size += (self.wanted - self.size) * 0.22
+            self.texture(surface, real_pos)
+    
+    def texture(self, surface, real_pos):
         coolsize = self.size * 1.1
         coolheight = self.size * 0.33 - 80
 
@@ -62,31 +67,18 @@ class Tile_space(pygame.sprite.Sprite):
         x = Tile(focus_time)
         self.tiles.append(x)
     
-    def any_close(self, est_time, surface, speed):
-        change_speed = 0
-        for n in self.tiles:
-            x = est_time + (surface.get_height() / 2) - n.time
-            if abs(x) < 200:
-                change_speed += x * 0.0002
-        return change_speed
-
-    def refine(self, focus_time):
-        change_altitude = 0
+    def any_close(self, est_time, focus_time):
+        requested_altitude = None
         for n in self.tiles:
             real_pos = focus_time - n.time
-            if abs(real_pos) < 0:
-                change_altitude -= real_pos * 0.2
-        return change_altitude
-    
+            if abs(real_pos - est_time) < 200:
+                requested_altitude = real_pos
+        return requested_altitude
+
     def update(self, surface, focus_time, smooth_scroll):
-        if abs(smooth_scroll) > 18:
-            for n in self.tiles:
-                n.wanted = 950
-                n.update(surface, focus_time + 360)
-        else:
-            for n in self.tiles:
-                n.size_adjust(surface, focus_time + 360)
-                n.update(surface, focus_time + 360)
+        for n in self.tiles:
+            n.update(surface, focus_time + 360, smooth_scroll)
+            
 
 def marker(pos, surface):
     real_pos = pos + surface.get_height() // 2

@@ -46,10 +46,9 @@ MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 FOCUS_TIME = 0
 
 FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
-
 TILE_SPACE = Tile_space()
 
-for n in range(10):
+for n in range(20):
     TILE_SPACE.add_tile(FOCUS_TIME + n * 650)
 
 while RUNNING:
@@ -72,30 +71,28 @@ while RUNNING:
                 SCROLLING = 1
     
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
-        SCROLL = -ALTITUDE * 0.03093
-        SMOOTH_SCROLL = 0
+        pass
     elif check_released(0):
-        TILE_SPACE.add_tile(FOCUS_TIME + brute_force_altitude(SMOOTH_SCROLL))
+        TILE_SPACE.add_tile(FOCUS_TIME + find_end_altitude(-SMOOTH_SCROLL))
+        print(find_end_altitude(SMOOTH_SCROLL))
         
     #SCROLL = SCROLL * 0.965
-    SCROLL = SCROLL * (1 - (1 / max(abs(SCROLL), 0.001)))
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL
+    SCROLL -= sign_function(SCROLL)
     MAX.append(SCROLLING)
 
     del MAX[0]
 
     SURFACE.fill(get_colors()[0])
 
-    if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.45:
-        x = brute_force_altitude(-SMOOTH_SCROLL)
-        marker(x, SURFACE)
-        print(x)
-        SMOOTH_SCROLL += TILE_SPACE.any_close(FOCUS_TIME + x, SURFACE, abs(SMOOTH_SCROLL))
-    #else:
-     #   ALTITUDE += TILE_SPACE.refine(FOCUS_TIME)
+    if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.1:
+        x = find_end_altitude(SMOOTH_SCROLL)
+        requested_altitude = TILE_SPACE.any_close(x, FOCUS_TIME)
+        if requested_altitude != None:
+            SCROLL += change_speed(SMOOTH_SCROLL, requested_altitude)
     
-    TILE_SPACE.update(SURFACE, FOCUS_TIME, SMOOTH_SCROLL)
+    TILE_SPACE.update(SURFACE, FOCUS_TIME, abs(SMOOTH_SCROLL))
     FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()

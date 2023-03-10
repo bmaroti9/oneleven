@@ -305,16 +305,27 @@ def set_theme(x):
 def get_colors():
     return COLORS[THEME]
 
-def brute_force_altitude(v):
-    hihi = 200
-    if v == 0:
-        hihi = 0
-    alt = 0
-    while hihi > 0:
-        v = v * (1 - (1 / abs(v)))
-        alt += v
-        if abs(v) < 0.001: # no idea why abs(v) works but it does
-            hihi = 0
-        else:
-            hihi -= 1
-    return alt
+def find_end_altitude(v):
+    # t = v because: t = v / 1
+    s = ((0.5 * (v ** 2)) - abs(v / 2)) * sign_function(v * -10000)
+
+    return s
+
+def required_speed(s):
+    # t = v because: t = v / 1
+    v = math.sqrt(abs(s) / 0.5) * sign_function(s * -1000)
+    return v
+
+def change_speed(v_current, s):
+    v_wanted = required_speed(s)
+    delta_v = v_wanted - v_current
+    a = delta_v * 0.7
+    return a
+
+
+def sign_function(a):
+    if a >= 1:
+        return 1
+    elif a <= -1:
+        return -1
+    return a
