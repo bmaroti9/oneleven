@@ -48,7 +48,7 @@ FOCUS_TIME = 0
 FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 TILE_SPACE = Tile_space()
 
-for n in range(20):
+for n in range(10):
     TILE_SPACE.add_tile(FOCUS_TIME + n * 650)
 
 while RUNNING:
@@ -66,7 +66,7 @@ while RUNNING:
             if event.key == K_2:
                 set_theme(2)
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y * 33 #0.95
+            SCROLL += event.y * 34 #0.95
             if not MAX.__contains__(1):
                 SCROLLING = 1
     
@@ -92,7 +92,7 @@ while RUNNING:
         if requested_altitude != None:
             SCROLL += change_speed(SMOOTH_SCROLL, requested_altitude)
     
-    TILE_SPACE.update(SURFACE, FOCUS_TIME, abs(SMOOTH_SCROLL))
+    TILE_SPACE.update(SURFACE, FOCUS_TIME, SMOOTH_SCROLL)
     FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()

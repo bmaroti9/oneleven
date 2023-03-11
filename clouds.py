@@ -123,8 +123,7 @@ class Time(pygame.sprite.Sprite):
         blit_text(surface, get_colors()[4], day, 
                 [35, surface.get_height() - 70], self.day_font)
 
-        #a = max(110 - abs(altitude * 3), 40 - math.sqrt(abs(altitude)) * 0.3)
-        a = 90 / math.sqrt(max(abs(altitude), 1))
+        a = max(110 - abs(altitude * 3), 40 - math.sqrt(abs(altitude)) * 0.3)
         
         pygame.draw.line(surface, get_colors()[3], 
             [27, surface.get_height() - a - 25], [27, surface.get_height() - 25], 3)

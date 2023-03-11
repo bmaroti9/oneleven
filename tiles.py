@@ -20,8 +20,8 @@ class Tile(pygame.sprite.Sprite):
         self.title_font = pygame.font.SysFont('texgyreadventor', 20)
 
     def size_adjust(self, surface, distance, smooth_scroll):
-        self.wanted = 1215
-        if abs(distance) > surface.get_height() / 2 or smooth_scroll > 19:
+        self.wanted = 1215  #1215
+        if abs(distance) > surface.get_height() / 2 or abs(smooth_scroll) > 19:
             self.wanted = 950
 
     def update(self, surface, focus_time, smooth_scroll):
@@ -31,22 +31,27 @@ class Tile(pygame.sprite.Sprite):
 
         self.size_adjust(surface, distance, smooth_scroll)
 
-        if distance < surface.get_height() * 1.7:
-            self.size += (self.wanted - self.size) * 0.22
-            self.texture(surface, real_pos)
+        if distance < surface.get_height() * 1.3:
+            #self.texture(surface, real_pos + smooth_scroll, smooth_scroll * 0.3)
+            self.size += (self.wanted - self.size) * 0.17
+            self.texture(surface, real_pos, 0)
     
-    def texture(self, surface, real_pos):
+    def texture(self, surface, real_pos, mode):
         coolsize = self.size * 1.1
         coolheight = self.size * 0.33 - 80
-
-        color = transition_colors(get_colors()[1], get_colors()[2], 
-                (abs(self.size - 1180)) / 300)
-
-        pygame.draw.rect(surface, color, Rect(coolsize, real_pos - coolheight, 
-            surface.get_width() - coolsize * 2, coolheight * 2), 0, int(1 - 0.00 * (self.size - 1000)))
         
-        self.draw_content(surface, real_pos - coolheight - 5, surface.get_width() - coolsize,
-                             min(1, 30 / (1215 - self.size)), color)
+        if mode == 0:
+            color = transition_colors(get_colors()[1], get_colors()[2], 
+                    (abs(self.size - 1180)) / 200)
+        else:
+            color = get_colors()[3]
+
+        pygame.draw.rect(surface, color, Rect(coolsize + mode, real_pos - coolheight, 
+            surface.get_width() - coolsize * 2, coolheight * 2), 0, 1)
+        
+        if mode == 0:
+            self.draw_content(surface, real_pos - coolheight - 5, surface.get_width() - coolsize,
+                                min(1, 30 / (1215 - self.size)), color)
 
     def draw_content(self, surface, top, side, vis, tile_color):
         if vis > 0.06:
@@ -71,7 +76,7 @@ class Tile_space(pygame.sprite.Sprite):
         requested_altitude = None
         for n in self.tiles:
             real_pos = focus_time - n.time
-            if abs(real_pos - est_time) < 200:
+            if abs(real_pos - est_time) < 300:
                 requested_altitude = real_pos
         return requested_altitude
 
