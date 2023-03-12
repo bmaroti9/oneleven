@@ -9,8 +9,10 @@ import json
 from helpers import *
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, time_point):
+    def __init__(self, time_point, app = 0):
         super().__init__()     
+
+        self.app = app
 
         self.time = time_point
         self.size = 1000
@@ -40,18 +42,16 @@ class Tile(pygame.sprite.Sprite):
         coolsize = self.size * 1.1
         coolheight = self.size * 0.33 - 80
         
-        if mode == 0:
-            color = transition_colors(get_colors()[1], get_colors()[2], 
+        
+        color = transition_colors(get_colors()[1], get_colors()[2], 
                     (abs(self.size - 1180)) / 200)
-        else:
-            color = get_colors()[3]
 
         pygame.draw.rect(surface, color, Rect(coolsize + mode, real_pos - coolheight, 
             surface.get_width() - coolsize * 2, coolheight * 2), 0, 1)
         
-        if mode == 0:
-            self.draw_content(surface, real_pos - coolheight - 5, surface.get_width() - coolsize,
-                                min(1, 30 / (1215 - self.size)), color)
+    
+        self.draw_content(surface, real_pos - coolheight - 5, surface.get_width() - coolsize,
+                            min(1, 30 / (1215 - self.size)), color)
 
     def draw_content(self, surface, top, side, vis, tile_color):
         if vis > 0.06:

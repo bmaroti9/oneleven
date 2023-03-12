@@ -12,16 +12,9 @@ from gradient import *
 from helpers import *
 from experimental import *
 from tiles import *
+from pixelart import *
 
 pygame.init()
-
-FONT1 = pygame.font.SysFont('andalemono', 50)
-FONT2 = pygame.font.SysFont("ubuntu", 30)
-FONT3 = pygame.font.SysFont('nanumgothic', 25)
-FONT4 = pygame.font.SysFont("ubuntu", 27)
-FONT5 = pygame.font.SysFont('latinmodernmonoprop', 30)
-FONT6 = pygame.font.SysFont('nanumgothic', 22)
-FONT7 = pygame.font.SysFont("ubuntu", 36)
 
 SCREEN_WIDTH = 1364
 SCREEN_HEIGHT = 715
@@ -48,7 +41,9 @@ FOCUS_TIME = 0
 FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 TILE_SPACE = Tile_space()
 
-for n in range(10):
+#APPS = [Pixel_art()]
+
+for n in range(50):
     TILE_SPACE.add_tile(FOCUS_TIME + n * 650)
 
 while RUNNING:
@@ -65,6 +60,8 @@ while RUNNING:
                 set_theme(1)
             if event.key == K_2:
                 set_theme(2)
+            if event.key == K_3:
+                set_theme(3)
         if event.type == pygame.MOUSEWHEEL:
             SCROLL += event.y * 34 #0.95
             if not MAX.__contains__(1):
