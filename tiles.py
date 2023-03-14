@@ -24,7 +24,7 @@ class Tile(pygame.sprite.Sprite):
     def size_adjust(self, surface, distance, smooth_scroll):
         self.wanted = 1215  #1215
         if abs(distance) > surface.get_height() / 2 or abs(smooth_scroll) > 19:
-            self.wanted = 950
+            self.wanted = 950 - abs(smooth_scroll) * 0.1
 
     def update(self, surface, focus_time, smooth_scroll):
         real_pos = focus_time - self.time
@@ -33,17 +33,22 @@ class Tile(pygame.sprite.Sprite):
 
         self.size_adjust(surface, distance, smooth_scroll)
 
-        if distance < surface.get_height() * 1.3:
+        if abs(distance) < surface.get_height() * 1.3:
             #self.texture(surface, real_pos + smooth_scroll, smooth_scroll * 0.3)
             self.size += (self.wanted - self.size) * 0.17
-            self.texture(surface, real_pos, 0)
+            self.texture(surface, real_pos, 0, smooth_scroll)
     
-    def texture(self, surface, real_pos, mode):
+    def texture(self, surface, real_pos, mode, smooth_scroll):
         coolsize = self.size * 1.1
         coolheight = self.size * 0.33 - 80
         
-        
-        color = transition_colors(get_colors()[1], get_colors()[2], 
+        if random.randint(random.randint(-2, 0), 120000 // max(abs(smooth_scroll ** 2), 1)) == 0:
+            c = get_colors()[3]
+            coolsize = coolsize * 2
+            coolheight = coolheight * 0.8
+        else:
+            c = get_colors()[2]
+        color = transition_colors(get_colors()[1], c, 
                     (abs(self.size - 1180)) / 200)
 
         pygame.draw.rect(surface, color, Rect(coolsize + mode, real_pos - coolheight, 
@@ -68,8 +73,8 @@ class Tile_space(pygame.sprite.Sprite):
 
         self.tiles = []
     
-    def add_tile(self, focus_time):
-        x = Tile(focus_time)
+    def add_tile(self, focus_time, app):
+        x = Tile(focus_time, app)
         self.tiles.append(x)
     
     def any_close(self, est_time, focus_time):

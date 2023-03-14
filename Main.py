@@ -41,10 +41,10 @@ FOCUS_TIME = 0
 FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 TILE_SPACE = Tile_space()
 
-#APPS = [Pixel_art()]
+APPS = [Pixel_art()]
 
-for n in range(50):
-    TILE_SPACE.add_tile(FOCUS_TIME + n * 650)
+for n in range(2000):
+    TILE_SPACE.add_tile(FOCUS_TIME + n * 650, APPS[0])
 
 while RUNNING:
     SCROLLING = 0

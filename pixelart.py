@@ -22,7 +22,7 @@ class Pixel_art(pygame.sprite.Sprite):
                                         0), (255, 255, 255), (0, 0, 0), (0, 50, 15),
 ]
         self.font = pygame.font.SysFont('texgyreadventor', 40)
-        self.canvas = pygame.surface((180, 180))
+        self.canvas = pygame.Surface((180, 180))
         self.gridsize = 30
         self.grid = []
         for n in range((self.canvas.get_height() // self.gridsize)):
