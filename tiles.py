@@ -15,16 +15,17 @@ class Tile(pygame.sprite.Sprite):
         self.app = app
 
         self.time = time_point
-        self.size = 1000
+        self.size = 950
         self.pos = 0
         self.wanted = 1200
+        #self.image = pygame.image.load("images/air_balloon1.png")  
 
         self.title_font = pygame.font.SysFont('texgyreadventor', 20)
 
     def size_adjust(self, surface, distance, smooth_scroll):
         self.wanted = 1215  #1215
-        if abs(distance) > surface.get_height() / 2 or abs(smooth_scroll) > 19:
-            self.wanted = 950 - abs(smooth_scroll) * 0.1
+        if abs(distance) > surface.get_height() / 2 or abs(smooth_scroll) > 24:
+            self.wanted = 1050 - abs(distance) * 0.2
 
     def update(self, surface, focus_time, smooth_scroll):
         real_pos = focus_time - self.time
@@ -36,22 +37,16 @@ class Tile(pygame.sprite.Sprite):
         if abs(distance) < surface.get_height() * 1.3:
             #self.texture(surface, real_pos + smooth_scroll, smooth_scroll * 0.3)
             self.size += (self.wanted - self.size) * 0.17
-            self.texture(surface, real_pos, 0, smooth_scroll)
+            self.texture(surface, real_pos)
     
-    def texture(self, surface, real_pos, mode, smooth_scroll):
+    def texture(self, surface, real_pos):
         coolsize = self.size * 1.1
         coolheight = self.size * 0.33 - 80
         
-        if random.randint(random.randint(-2, 0), 120000 // max(abs(smooth_scroll ** 2), 1)) == 0:
-            c = get_colors()[3]
-            coolsize = coolsize * 2
-            coolheight = coolheight * 0.8
-        else:
-            c = get_colors()[2]
-        color = transition_colors(get_colors()[1], c, 
+        color = transition_colors(get_colors()[1], get_colors()[2], 
                     (abs(self.size - 1180)) / 200)
 
-        pygame.draw.rect(surface, color, Rect(coolsize + mode, real_pos - coolheight, 
+        pygame.draw.rect(surface, color, Rect(coolsize, real_pos - coolheight, 
             surface.get_width() - coolsize * 2, coolheight * 2), 0, 1)
         
     

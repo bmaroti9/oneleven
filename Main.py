@@ -43,7 +43,7 @@ TILE_SPACE = Tile_space()
 
 APPS = [Pixel_art()]
 
-for n in range(2000):
+for n in range(200):
     TILE_SPACE.add_tile(FOCUS_TIME + n * 650, APPS[0])
 
 while RUNNING:
@@ -63,17 +63,19 @@ while RUNNING:
             if event.key == K_3:
                 set_theme(3)
         if event.type == pygame.MOUSEWHEEL:
-            SCROLL += event.y * 34 #0.95
+            if abs(SCROLL) < 90:
+                SCROLL += event.y * 20 #29, 10
             if not MAX.__contains__(1):
                 SCROLLING = 1
     
     if detect_click_rect(0, Rect(27, SURFACE.get_height() - 110, 140, SURFACE.get_height() - 25)):
         pass
     elif check_released(0):
-        TILE_SPACE.add_tile(FOCUS_TIME + find_end_altitude(-SMOOTH_SCROLL))
+        TILE_SPACE.add_tile(FOCUS_TIME + find_end_altitude(-SMOOTH_SCROLL), 0)
         print(find_end_altitude(SMOOTH_SCROLL))
         
     #SCROLL = SCROLL * 0.965
+    
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL
     SCROLL -= sign_function(SCROLL)
@@ -82,6 +84,8 @@ while RUNNING:
     del MAX[0]
 
     SURFACE.fill(get_colors()[0])
+    #blit_image(SURFACE, "images/black_and_white9.png", 
+     #          [SURFACE.get_width() / 2 - 80, SURFACE.get_height() / 2 + ALTITUDE * 0.02], 1.1)
 
     if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.1:
         x = find_end_altitude(SMOOTH_SCROLL)
@@ -93,4 +97,4 @@ while RUNNING:
     FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()
-    CLOCK.tick(40)
+    CLOCK.tick(60)
