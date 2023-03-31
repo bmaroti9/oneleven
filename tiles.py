@@ -10,10 +10,10 @@ from helpers import *
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, time_point, surface, app = 0):
-        super().__init__()     
+        super().__init__()
 
         self.surf = pygame.Surface((1320, 660))
-        self.app = app(self.surf, "images/black_and_white" + str(random.randint(1, 12)) + ".png") 
+        self.app = app(self.surf, "images/black_and_white" + str(random.randint(1, 12)) + ".png")
 
         self.time = time_point
         self.size = 280
@@ -22,7 +22,7 @@ class Tile(pygame.sprite.Sprite):
 
     def size_adjust(self, surface, distance, smooth_scroll):
         wanted = 330
-        if abs(distance) > surface.get_height() / 2 or abs(smooth_scroll) > 24:
+        if abs(distance) > surface.get_height() / 2 or abs(smooth_scroll) > 26:
             wanted = 300 - abs(distance) * 0.08
         self.size += (wanted - self.size) * 0.17
 
@@ -34,21 +34,21 @@ class Tile(pygame.sprite.Sprite):
         if abs(distance) < surface.get_height():
             self.size_adjust(surface, distance, smooth_scroll)
             self.texture(surface, real_pos)
-    
+
     def texture(self, surface, real_pos):
         coolsize = self.size * 2
         coolheight = self.size
-        
+
         mid = surface.get_width() // 2
         top = real_pos - coolheight - 5    #REVERSE FOR SIDEWAYS SCROLLING
         side = mid - coolsize
 
         self.app.update(self.surf)
-        surface.blit(pygame.transform.scale(self.surf.convert_alpha(), 
+        surface.blit(pygame.transform.scale(self.surf.convert_alpha(),
                                 [int(coolsize * 2), int(coolheight * 2)]), [side, top + 5])
-        blit_text(surface, get_colors()[3], 'new tab', [surface.get_width() / 2, top], 
+        blit_text(surface, get_colors()[3], 'new tab', [surface.get_width() / 2, top],
                    self.title_font, 3)
-        blit_text(surface, get_colors()[4], 'chromium', [side + 20, top], 
+        blit_text(surface, get_colors()[4], 'chromium', [side + 20, top],
                    self.title_font, 0)
 
 class Tile_space(pygame.sprite.Sprite):
@@ -56,11 +56,11 @@ class Tile_space(pygame.sprite.Sprite):
         super().__init__()
 
         self.tiles = []
-    
+
     def add_tile(self, focus_time, surface, app):
         x = Tile(focus_time, surface, app)
         self.tiles.append(x)
-    
+
     def any_close(self, est_time, focus_time):
         requested_altitude = None
         for n in self.tiles:
@@ -72,7 +72,7 @@ class Tile_space(pygame.sprite.Sprite):
     def update(self, surface, focus_time, smooth_scroll):
         for n in self.tiles:
             n.update(surface, focus_time + 360, smooth_scroll)
-            
+
 
 def marker(pos, surface):
     real_pos = pos + surface.get_height() // 2
