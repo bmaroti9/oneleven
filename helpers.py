@@ -297,14 +297,22 @@ COLORS = [
     [(20, 20, 20), (80, 70, 40), (189, 165, 49), (250, 250, 250), (189, 165, 49)]
 ]
 
-THEME = 0
+THEME = COLORS[0]
+
+def random_theme():
+    global THEME
+    x = []
+    for n in range(5):
+        x.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+    print(x)
+    THEME = x
 
 def set_theme(x):
     global THEME
-    THEME = x
+    THEME = COLORS[x]
 
 def get_colors():
-    return COLORS[THEME]
+    return THEME
 
 def find_end_altitude(v):
     # t = v because: t = v / 1
@@ -330,3 +338,17 @@ def sign_function(a):
     elif a <= -1:
         return -1
     return a
+
+KEY = None
+
+def log_key(event):
+    global KEY
+    if event.key == pygame.K_BACKSPACE:
+        #TALK_WORD = TALK_WORD[:-1]
+        KEY = -1
+    else:
+        KEY = event.unicode
+
+def get_key():
+    global KEY
+    return KEY

@@ -42,9 +42,9 @@ FOCUS_TIME = 0
 FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 TILE_SPACE = Tile_space()
 
-APPS = [Image_viewer]
+APPS = [Folder, Image_viewer]
 
-for n in range(20):
+for n in range(10):
     TILE_SPACE.add_tile(FOCUS_TIME + n * 660, SURFACE, APPS[0])
 
 while RUNNING:
@@ -63,6 +63,8 @@ while RUNNING:
                 set_theme(2)
             if event.key == K_3:
                 set_theme(3)
+            if event.key == K_9:
+                random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 130:
                 SCROLL += event.y * 15 #20
@@ -98,4 +100,4 @@ while RUNNING:
     FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 
     pygame.display.update()
-    CLOCK.tick(60)
+    CLOCK.tick(65)
