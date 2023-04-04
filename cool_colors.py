@@ -33,24 +33,28 @@ class dot(pygame.sprite.Sprite):
 
         self.color = (random.randint(0, 254), random.randint(0, 254), random.randint(0, 254))
         self.pos = pos
+        self.others = []
+    
+    def sync_others(self, dots):
+        for n in dots:
+            if n != self:
+                self.others.append(n)
 
-    def update(self, surface, dots):
-        if random.randint(0, 0) == 0:
-            for n in dots:
-                if n != self:
-                    dis = distance(self.pos, n.pos) * 400
-                    affect =  dis - color_dif(self.color, n.color) ** 2
+    def update(self, surface):
+        for n in self.others:
+            dis = distance(self.pos, n.pos) * 400
+            affect =  dis - color_dif(self.color, n.color) ** 2
 
-                    direction = calculate_angle(n.pos, self.pos)
-                    change = rotating_position(0, affect * (0.001 / len(dots)), direction, [0, 0])
+            direction = calculate_angle(n.pos, self.pos)
+            change = rotating_position(0, affect * (0.001 / len(self.others)), direction, [0, 0])
 
-                    self.pos[0] += change[0]
-                    self.pos[1] += change[1]
-        
-            self.pos[0] += 1000 / self.pos[0]
-            self.pos[0] -= 1000 / (SURFACE.get_width() - self.pos[0])
-            self.pos[1] += 1000 / self.pos[1]
-            self.pos[1] -= 1000 / (SURFACE.get_height() - self.pos[1])
+            self.pos[0] += change[0]
+            self.pos[1] += change[1]
+    
+        self.pos[0] += 1000 / self.pos[0]
+        self.pos[0] -= 1000 / (SURFACE.get_width() - self.pos[0])
+        self.pos[1] += 1000 / self.pos[1]
+        self.pos[1] -= 1000 / (SURFACE.get_height() - self.pos[1])
 
         pygame.draw.circle(surface, self.color, self.pos, 5)
 
@@ -73,9 +77,11 @@ while RUNNING:
 
     if check_released(0):
         DOTS.add(dot(list(pygame.mouse.get_pos())))
+        for n in DOTS:
+            n.sync_others(DOTS)
 
     for n in DOTS:
-        n.update(SURFACE, DOTS)
+        n.update(SURFACE)
 
     pygame.display.update()
     CLOCK.tick(40)

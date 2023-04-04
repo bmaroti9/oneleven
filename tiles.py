@@ -22,9 +22,9 @@ class Tile(pygame.sprite.Sprite):
 
     def size_adjust(self, surface, distance, smooth_scroll):
         wanted = 330
-        if abs(distance) > surface.get_height() / 2 or abs(smooth_scroll) > 28:
+        if abs(distance) > surface.get_height() / 2 - 200 or abs(smooth_scroll) > 24:
             wanted = 300 - abs(distance) * 0.08
-        self.size += (wanted - self.size) * 0.17
+        self.size += (wanted - self.size) * 0.3
 
     def update(self, surface, focus_time, smooth_scroll):
         real_pos = focus_time - self.time
