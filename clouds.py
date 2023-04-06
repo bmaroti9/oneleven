@@ -1,13 +1,8 @@
-from os import posix_fadvise
-from re import I, X
 import pygame
 import math
 from pygame.locals import*
-import time
 import random
-import sys
 import json
-from gradient import blurSurf, sin_pos
 from datetime import datetime
 
 

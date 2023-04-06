@@ -1,19 +1,11 @@
-import math
-import random
-import sys
 import pygame
 from pygame.locals import *
-import time
-import json
 
 from clouds import *
-from designs import *
-from gradient import *
 from helpers import *
-from experimental import *
 from tiles import *
-from pixelart import *
 from apps import *
+
 
 pygame.init()
 pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEWHEEL])
@@ -55,15 +47,15 @@ while RUNNING:
         if event.type == KEYDOWN:
             if event.key == K_q:
                 RUNNING = False
-            if event.key == K_0:
+            elif event.key == K_0:
                 set_theme(0)
-            if event.key == K_1:
+            elif event.key == K_1:
                 set_theme(1)
-            if event.key == K_2:
+            elif event.key == K_2:
                 set_theme(2)
-            if event.key == K_3:
+            elif event.key == K_3:
                 set_theme(3)
-            if event.key == K_9:
+            elif event.key == K_9:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 130:
@@ -81,7 +73,7 @@ while RUNNING:
 
     SURFACE.fill(get_colors()[0])
 
-    if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.3:
+    if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.2:
         x = find_end_altitude(SMOOTH_SCROLL)
         requested_altitude = TILE_SPACE.any_close(x, FOCUS_TIME)
         if requested_altitude != None:

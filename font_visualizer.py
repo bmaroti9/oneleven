@@ -1,10 +1,5 @@
-import math
-import random
-import sys
 import pygame
 from pygame.locals import *
-import time
-import json
 
 from designs import *
 from gradient import *

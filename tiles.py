@@ -1,10 +1,6 @@
-import math
-import random
-import sys
 import pygame
 from pygame.locals import *
-import time
-import json
+from os import listdir
 
 from helpers import *
 
@@ -77,6 +73,14 @@ class Tile_space(pygame.sprite.Sprite):
         for n in self.tiles:
             n.update(surface, focus_time + 360, smooth_scroll)
 
+class Directory_manager(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        self.path = "."
+
+    def load_directory(self):
+        dirct = listdir(self.path)
 
 def marker(pos, surface):
     real_pos = pos + surface.get_height() // 2
