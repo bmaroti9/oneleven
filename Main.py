@@ -59,7 +59,7 @@ while RUNNING:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 130:
-                SCROLL += event.y * 15 #20
+                SCROLL += event.y * 10 #20
             if not MAX.__contains__(1):
                 SCROLLING = 1
 
