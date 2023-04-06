@@ -21,23 +21,24 @@ SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 pygame.display.set_caption("©2022 Dragon tail")
 
-RUNNING = True
-
-TIME = Time()
-
 ALTITUDE = 0.01
 SCROLL = 0
 SMOOTH_SCROLL = 0
 MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 FOCUS_TIME = 0
+RUNNING = True
+
+TIME = Time()
 
 FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 TILE_SPACE = Tile_space()
+DIRECTORY_MANAGER = Directory_manager()
+DIRECTORY_MANAGER.load_directory(TILE_SPACE, FOCUS_TIME)
 
-APPS = [Folder, Image_viewer]
+APPS = [Folder, Unloadable, Image_viewer]
 
-for n in range(10):
-    TILE_SPACE.add_tile(FOCUS_TIME + n * 660, SURFACE, APPS[0])
+#for n in range(10):
+ #   TILE_SPACE.add_tile(FOCUS_TIME + n * 660, APPS[1])
 
 while RUNNING:
     SCROLLING = 0
@@ -59,10 +60,13 @@ while RUNNING:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 130:
-                SCROLL += event.y * 10 #20
+                SCROLL += event.y * 30 #10
             if not MAX.__contains__(1):
                 SCROLLING = 1
-
+    
+    if check_released(0):
+        DIRECTORY_MANAGER.forward()
+        DIRECTORY_MANAGER.load_directory(TILE_SPACE, FOCUS_TIME)
 
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL
@@ -81,6 +85,7 @@ while RUNNING:
 
     TILE_SPACE.update(SURFACE, FOCUS_TIME, SMOOTH_SCROLL)
     FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
+    DIRECTORY_MANAGER.update(SURFACE)
 
     pygame.display.update()
     CLOCK.tick(65)

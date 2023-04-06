@@ -44,7 +44,7 @@ while RUNNING:
         he = pygame.font.SysFont(str(n), 50)
         try:
             #blit_text(SURFACE, (250, 250, 250), "2022  HIHI   " + str(n), [10, x], he)
-            blit_text(SURFACE, (250, 250, 250), "0123456789%      " + str(n), [10, x], he)
+            blit_text(SURFACE, (250, 250, 250), "Images      " + str(n), [10, x], he)
         except:
             continue
         x += 70

@@ -66,40 +66,6 @@ def arc_circle2(surface, center, font, number, radius, width, percent, color, t_
     #filled_arc(surface, center, color, radius, width, 90, 90 + (-360 * percent))
     blit_text(surface, t_color, str(number), center, font, 1)
 
-def integer_to_english(number):
-    if number>=1 and number<=1000:
-        a = ['','one','two','three','four','five','six',
-                'seven','eight','nine','ten','eleven','twelve','thirteen','fourteen',
-                        'fifteen','sixteen','seventeen','eighteen','nineteen','twenty ','thirty ',
-                        'fourty ','fifty ','sixty ','seventy ','eighty ','ninty ']
-        if number<=20:
-            if number%10==0: return a[number]
-            else: return a[number]
-        elif number<100:
-            b=number-20
-            r=b%10
-            b//=10
-            return a[20+b]+a[r]
-        elif number<1000:
-            if number%100==0:
-                b=number//100
-                return a[b]+' hundred'
-            else:
-                r=number%100
-                b=number//100
-                if r<=20:
-                    return a[b]+' hundred'+' and '+a[r]
-                else:
-                    r=r-20
-                    d=r//10
-                    r%=10
-                    return a[b]+' hundred'+' and '+a[20+d]+a[r]
-        elif number==1000:
-            return 'one thousand'
-        else:
-            return -1
-
-
 def sin_pos(rattle, loop_length, speed, time, offset = 0):
     t = ((time + offset) / 2 % loop_length) * speed # scale and loop time
     x = t
@@ -142,3 +108,12 @@ def blurSurf(surface, amt):
     surf = pygame.transform.smoothscale(surf, surf_size)
     return surf
 
+def uniform_colors(number):
+    first_c = []
+    first_c.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+    first_c.append((255 - first_c[0][0], 255 - first_c[0][1], 255 - first_c[0][2]))
+    colors = []
+    for n in range(number):
+        h = random.randint(0, 1) * 255
+        colors.append(transition_colors(random.choice(first_c), (h, h, h), random.randint(0, 100) / 100))
+    return colors
