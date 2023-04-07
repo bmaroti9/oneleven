@@ -30,7 +30,7 @@ class Folder(pygame.sprite.Sprite):
         self.points[0] = 0
         self.surf = pygame.Surface((surface.get_width(), surface.get_height()))
         self.surf.fill((0, 0, 0))
-        c = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        c = [255 - self.colors[0][0], 255 - self.colors[0][1], 255 - self.colors[0][2]]
         for n in range(len(self.contents)):
             pygame.draw.rect(self.surf, self.colors[n], 
                 Rect(self.points[n], 0, self.surf.get_width() - self.points[n], self.surf.get_height()))
@@ -77,7 +77,6 @@ class Image_viewer(pygame.sprite.Sprite):
     def __init__(self, surface, path):
         super().__init__()
 
-        print(path)
         self.image = pygame.image.load(path)
         scalex = surface.get_width() / self.image.get_width()
         scaley = surface.get_height() / self.image.get_height()

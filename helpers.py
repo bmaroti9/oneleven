@@ -2,6 +2,7 @@ import pygame
 import math
 from pygame.locals import*
 import random
+from datetime import datetime
 
 pygame.init()
 
@@ -349,3 +350,6 @@ def log_key(event):
 def get_key():
     global KEY
     return KEY
+
+def get_precise_date(t):
+    return datetime.fromtimestamp(t)

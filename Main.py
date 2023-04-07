@@ -65,6 +65,7 @@ while RUNNING:
                 SCROLLING = 1
     
     if check_released(0):
+        FOCUS_TIME = TIME.update(SURFACE, 0)
         DIRECTORY_MANAGER.forward()
         DIRECTORY_MANAGER.load_directory(TILE_SPACE, FOCUS_TIME)
 
@@ -84,7 +85,7 @@ while RUNNING:
             SCROLL += change_speed(SMOOTH_SCROLL, requested_altitude)
 
     TILE_SPACE.update(SURFACE, FOCUS_TIME, SMOOTH_SCROLL)
-    FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
+    #FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
     DIRECTORY_MANAGER.update(SURFACE)
 
     pygame.display.update()

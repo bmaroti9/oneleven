@@ -95,6 +95,8 @@ class Time(pygame.sprite.Sprite):
         self.day_font = pygame.font.SysFont('texgyreadventor', 30)
         self.test_font = pygame.font.SysFont('texgyreadventor', 30)
     
+    def get_precise_time(x):
+        0
 
     def update(self, surface, altitude):
         now = datetime.now()

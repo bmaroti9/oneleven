@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
-from os import listdir
-from os.path import isfile, join, basename
+from os import listdir, stat
+from os.path import isfile, join, basename, getmtime
+from datetime import datetime
 
 from helpers import *
 from apps import *
@@ -66,10 +67,10 @@ class Tile_space(pygame.sprite.Sprite):
     def set_tiles(self, paths, focus_time):
         self.tiles = []
 
-        time = focus_time
         for n in paths:
-            self.add_tile(time, n)
-            time += 660
+            t = getmtime(n)
+            x = datetime.fromtimestamp(t)
+            self.add_tile(t, n)
 
     def add_tile(self, focus_time, path):
         x = Tile(focus_time, path)
