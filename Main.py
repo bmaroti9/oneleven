@@ -1,5 +1,7 @@
 import pygame
 from pygame.locals import *
+from datetime import datetime
+import time
 
 from clouds import *
 from helpers import *
@@ -28,12 +30,9 @@ MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 FOCUS_TIME = 0
 RUNNING = True
 
-TIME = Time()
-
-FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
 TILE_SPACE = Tile_space()
 DIRECTORY_MANAGER = Directory_manager()
-DIRECTORY_MANAGER.load_directory(TILE_SPACE, FOCUS_TIME)
+DIRECTORY_MANAGER.load_directory(TILE_SPACE)
 
 APPS = [Folder, Unloadable, Image_viewer]
 
@@ -60,14 +59,12 @@ while RUNNING:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 130:
-                SCROLL += event.y * 30 #10
+                SCROLL += event.y * 28 #10
             if not MAX.__contains__(1):
                 SCROLLING = 1
     
-    if check_released(0):
-        FOCUS_TIME = TIME.update(SURFACE, 0)
-        DIRECTORY_MANAGER.forward()
-        DIRECTORY_MANAGER.load_directory(TILE_SPACE, FOCUS_TIME)
+    if detect_click_rect(0, Rect(50, 50, SURFACE.get_width() - 100, SURFACE.get_height() - 100)):
+        DIRECTORY_MANAGER.forward(TILE_SPACE)
 
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL
@@ -80,13 +77,12 @@ while RUNNING:
 
     if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.2:
         x = find_end_altitude(SMOOTH_SCROLL)
-        requested_altitude = TILE_SPACE.any_close(x, FOCUS_TIME)
+        requested_altitude = TILE_SPACE.any_close(x, ALTITUDE)
         if requested_altitude != None:
             SCROLL += change_speed(SMOOTH_SCROLL, requested_altitude)
 
-    TILE_SPACE.update(SURFACE, FOCUS_TIME, SMOOTH_SCROLL)
-    #FOCUS_TIME = TIME.update(SURFACE, ALTITUDE)
-    DIRECTORY_MANAGER.update(SURFACE)
+    TILE_SPACE.update(SURFACE, ALTITUDE, SMOOTH_SCROLL)
+    DIRECTORY_MANAGER.update(SURFACE, TILE_SPACE)
 
     pygame.display.update()
     CLOCK.tick(65)

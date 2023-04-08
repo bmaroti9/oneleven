@@ -30,7 +30,7 @@ class Folder(pygame.sprite.Sprite):
         self.points[0] = 0
         self.surf = pygame.Surface((surface.get_width(), surface.get_height()))
         self.surf.fill((0, 0, 0))
-        c = [255 - self.colors[0][0], 255 - self.colors[0][1], 255 - self.colors[0][2]]
+        c = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         for n in range(len(self.contents)):
             pygame.draw.rect(self.surf, self.colors[n], 
                 Rect(self.points[n], 0, self.surf.get_width() - self.points[n], self.surf.get_height()))

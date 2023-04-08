@@ -5,7 +5,6 @@ import random
 import json
 from datetime import datetime
 
-
 from helpers import *
 
 pygame.init()

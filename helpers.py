@@ -53,7 +53,7 @@ def speed_in_direction(speed, direction, original_real_speed):
     return add_speed(original_real_speed, valami)
 
 
-def button(surface, font, color, text, pos, rect_color, tuch_color, width, mouse_add=[0, 0]):
+def button(surface, font, color, text, pos, rect_color, tuch_color, width, mouse_add=[0, 0], rounded = 1):
     clicked = False
     
     wrighting = font.render(text, True, color)
@@ -68,10 +68,8 @@ def button(surface, font, color, text, pos, rect_color, tuch_color, width, mouse
 
     saint_rect[0] -= 5
     saint_rect[2] += 10
-    saint_rect[1] -= 5
-    saint_rect[3] += 10
-
-    pygame.draw.rect(surface, rect_color, saint_rect, width)
+    saint_rect[1] += 5
+    saint_rect[3] -= 3
 
     mouse_pos = [pygame.mouse.get_pos()[0] + mouse_add[0],
                  pygame.mouse.get_pos()[1] + mouse_add[1]]
@@ -81,10 +79,14 @@ def button(surface, font, color, text, pos, rect_color, tuch_color, width, mouse
                            ) and mouse_pos[1] < (saint_rect[1] + saint_rect[3])
 
     if hihi and haha:
+        pygame.draw.rect(surface, tuch_color, saint_rect, width, rounded)
         a = check_released(3)
         if a:
             clicked = True
         wrighting = font.render(text, True, tuch_color)
+    else:
+        if rect_color != None:    
+            pygame.draw.rect(surface, rect_color, saint_rect, width, rounded)
 
     surface.blit(wrighting, rect)
     return clicked
@@ -102,6 +104,8 @@ def blit_text(surface, color, text, pos, font, center = 0):
         rect.topright = pos
     if center == 3:
         rect.midtop = pos
+    if center == 4:
+        rect.midleft= pos
     
     surface.blit(wrighting, rect)
     return rect
