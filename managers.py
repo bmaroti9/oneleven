@@ -21,10 +21,9 @@ class Tile_space(pygame.sprite.Sprite):
             t = getmtime(n)
             self.add_tile(t, n)
         
-        for n in range(-1000, 1000):
+        for n in range(-360, 360):
             end_date = date.today() + timedelta(days=n)
-            unixtime = time.mktime(end_date.timetuple())
-            self.add_marker(unixtime)
+            self.add_marker(end_date)
 
         self.tiles = sorted(self.tiles, key=Tile.get_my_time)
 
@@ -41,8 +40,12 @@ class Tile_space(pygame.sprite.Sprite):
                 last = False
                 index += 1
         del self.tiles[-1]
+
+        for n in self.tiles:
+            if n.close_setting < 110:
+                n.temp_time += timedelta(days=-1)
+                n.sync()
                     
-        #self.tiles = self.tiles.reverse()
         i = -self.tiles[0].close_setting
         for n in self.tiles:
             i += n.push
@@ -92,20 +95,39 @@ class Directory_manager(pygame.sprite.Sprite):
             self.load_directory(tile_space)
     
     def backward(self, tile_space):
+        before = str(self.path)
         z = self.path.split('/')
         back = len(z[-1]) + 1
         self.path = self.path[:len(self.path) - back]
-        print(self.path)
-        self.load_directory(tile_space)
-    
+        if self.path == '':
+            self.path = '.'
+        if before != self.path:
+            self.load_directory(tile_space)
+        
+
     def update(self, surface, tile_space):
         p = get_closest()
-        if p.push > 200:
+        if p != None and p.push > 200:
             x = self.path + '/' + p.name
-            j = blit_text(surface, (255, 255, 255), x, [0, -4], self.font)
+            pos = 5
+            s = x.split('/')
+            for n in range(len(s)):
+                if n == len(s) - 1:
+                    c = get_colors()[3]
+                else:
+                    c = (255, 255, 255)
+                hihi = button(surface, self.font, c, s[n] + '/', [pos, -4, 0], 
+                    None, get_colors()[3], 1, [0, 0], 15)
+                if hihi:
+                    v = s[:(n + 1)]
+                    print(v, s, n)
+                    self.path = '/'.join(v)
+                    self.load_directory(tile_space)
+                pos += test_text_rect(s[n] + '/', self.font).right + 8
+            
             blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, -4], self.font, 2)
-            b = button(surface, self.font, (255, 255, 255), '<', [j.right + 10, -4, 0], 
-                    None, get_colors()[3], 1, [0, 0], 8)
+            b = button(surface, self.font, (255, 255, 255), '<', [pos + 8, -4, 0], 
+                    None, get_colors()[3], 1, [0, 0], 15)
             if b:
                 self.backward(tile_space)
             elif detect_click_rect(0, Rect(50, 50, surface.get_width() - 100, surface.get_height() - 100)):

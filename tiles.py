@@ -1,4 +1,5 @@
 import pygame
+import json
 from pygame.locals import *
 from os import listdir, stat
 from os.path import isfile, join, basename, getmtime
@@ -7,6 +8,9 @@ from datetime import timedelta, datetime, date
 
 from helpers import *
 from apps import *
+
+with open("times.txt", "r") as f:
+    TIMES = json.load(f)
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, time_point, path):
@@ -22,7 +26,7 @@ class Tile(pygame.sprite.Sprite):
 
         self.time = time_point
         self.real_time = time.ctime(time_point)
-        self.abs_time = self.real_time[10:16]
+        self.abs_time = self.real_time[0:3] + self.real_time[10:16]
 
         self.pos = 0
         self.size = 280
@@ -74,13 +78,20 @@ class Date_Marker(pygame.sprite.Sprite):
 
         self.close_setting = 100 #when scrolling will jump on it
         self.push = 47 #push the ones next to it farther away
-        self.time = time_point
-        self.real_time = time.ctime(time_point)
-        self.blit_time = self.real_time[0:8] + str(int(self.real_time[8:10]) - 1)
-        self.abs_time = self.real_time[10:16]
-
+        self.temp_time = time_point
+        self.time = time.mktime(self.temp_time.timetuple())
+        self.real_time = time.ctime(self.time)
+        
         self.font = pygame.font.SysFont('texgyreadventor', 30)
     
+    def sync(self):
+        self.time = time.mktime(self.temp_time.timetuple())
+        self.real_time = time.ctime(self.time)
+        day = TIMES["interpret_d"].index(self.real_time[0:3])
+        eth = TIMES["interpret_m"].index(self.real_time[4:7])
+        self.blit_time = self.real_time[20:26] + ' ' + TIMES['months'][eth] + self.real_time[8:10]
+        self.blit_time = self.blit_time + '     ' + TIMES['days'][day]
+
     def update(self, surface, altitude, smooth_scroll):
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
@@ -110,7 +121,7 @@ def decide_tile_app(name):
     else:
         return Folder
     
-CLOSEST = ['', None]
+CLOSEST = None
 
 def set_closest(me):
     global CLOSEST

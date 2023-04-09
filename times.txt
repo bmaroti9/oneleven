@@ -2,5 +2,8 @@
     "months": ["January", "February", "March", "April", "May", 
                 "June", "July", "August", "September", "October", "November", "December"],
 
-    "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+
+    "interpret_d": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "interpret_m": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 }
