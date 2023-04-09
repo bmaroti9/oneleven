@@ -7,7 +7,7 @@ from clouds import *
 from helpers import *
 from tiles import *
 from apps import *
-
+from managers import *
 
 pygame.init()
 pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEWHEEL])
@@ -62,9 +62,6 @@ while RUNNING:
                 SCROLL += event.y * 28 #10
             if not MAX.__contains__(1):
                 SCROLLING = 1
-    
-    if detect_click_rect(0, Rect(50, 50, SURFACE.get_width() - 100, SURFACE.get_height() - 100)):
-        DIRECTORY_MANAGER.forward(TILE_SPACE)
 
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL
