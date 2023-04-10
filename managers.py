@@ -7,6 +7,7 @@ from datetime import timedelta, datetime, date
 
 from helpers import *
 from tiles import *
+from gradient import *
 
 class Tile_space(pygame.sprite.Sprite):
     def __init__(self):
@@ -80,6 +81,7 @@ class Directory_manager(pygame.sprite.Sprite):
         self.font = pygame.font.SysFont('texgyreadventor', 20)
 
     def load_directory(self, tile_space):
+        generate_palette()
         dirct = listdir(self.path)
         paths = []
         for n in dirct:
@@ -104,7 +106,6 @@ class Directory_manager(pygame.sprite.Sprite):
         if before != self.path:
             self.load_directory(tile_space)
         
-
     def update(self, surface, tile_space):
         p = get_closest()
         if p != None and p.push > 200:
@@ -120,9 +121,12 @@ class Directory_manager(pygame.sprite.Sprite):
                     None, get_colors()[3], 1, [0, 0], 15)
                 if hihi:
                     v = s[:(n + 1)]
-                    print(v, s, n)
+                    before = self.path
                     self.path = '/'.join(v)
-                    self.load_directory(tile_space)
+                    if before != self.path and not isfile(self.path) and self.path != '':
+                        self.load_directory(tile_space)
+                    else:
+                        self.path = before
                 pos += test_text_rect(s[n] + '/', self.font).right + 8
             
             blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, -4], self.font, 2)

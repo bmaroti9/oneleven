@@ -117,3 +117,16 @@ def uniform_colors(number):
         h = random.randint(0, 1) * 255
         colors.append(transition_colors(random.choice(first_c), (h, h, h), random.randint(0, 100) / 100))
     return colors
+
+PALETTE = [(0, 0, 0), (0, 0, 0)]
+
+def generate_palette():
+    global PALETTE
+    PALETTE = []
+    PALETTE.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+    PALETTE.append((255 - PALETTE[0][0], 255 - PALETTE[0][1], 255 - PALETTE[0][2]))
+
+def get_color():
+    h = random.randint(0, 1) * 255
+    color = transition_colors(random.choice(PALETTE), (h, h, h), random.randint(0, 100) / 100)
+    return color
