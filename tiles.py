@@ -76,6 +76,7 @@ class Date_Marker(pygame.sprite.Sprite):
     def __init__(self, time_point):
         super().__init__()
 
+        self.name = ''
         self.close_setting = 100 #when scrolling will jump on it
         self.push = 47 #push the ones next to it farther away
         self.temp_time = time_point
@@ -91,6 +92,8 @@ class Date_Marker(pygame.sprite.Sprite):
         eth = TIMES["interpret_m"].index(self.real_time[4:7])
         self.blit_time = self.real_time[20:26] + ' ' + TIMES['months'][eth] + self.real_time[7:10]
         self.blit_time = self.blit_time + '     ' + TIMES['days'][day]
+        self.abs_time = ''
+
 
     def update(self, surface, altitude, smooth_scroll):
         real_pos = altitude - self.pos

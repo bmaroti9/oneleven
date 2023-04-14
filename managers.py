@@ -79,7 +79,8 @@ class Directory_manager(pygame.sprite.Sprite):
 
         self.path = "."
         self.altitudes = []
-        self.font = pygame.font.SysFont('texgyreadventor', 20)
+        self.font1 = pygame.font.SysFont('texgyreadventor', 20)
+        self.font2 = pygame.font.SysFont('freemono', 30)
 
     def load_directory(self, tile_space):
         generate_palette()
@@ -113,7 +114,7 @@ class Directory_manager(pygame.sprite.Sprite):
         
     def update(self, surface, tile_space, altitude):
         p = get_closest()
-        if p != None and p.push > 200:
+        if p != None:
             x = self.path + '/' + p.name
             pos = 5
             s = x.split('/')
@@ -122,7 +123,15 @@ class Directory_manager(pygame.sprite.Sprite):
                     c = get_colors()[3]
                 else:
                     c = (255, 255, 255)
-                hihi = button(surface, self.font, c, s[n] + '/', [pos, -4, 0], 
+                text = '/' + s[n]
+                font = self.font1
+                y = 10
+                #print(text)
+                if text == '/.':
+                    text = '▢'
+                    font = self.font2
+                    y = 13
+                hihi = button(surface, font, c, text, [pos, y, 2], 
                     None, get_colors()[3], 1, [0, 0], 15)
                 if hihi:
                     v = s[:(n + 1)]
@@ -132,10 +141,10 @@ class Directory_manager(pygame.sprite.Sprite):
                         self.load_directory(tile_space)
                     else:
                         self.path = before
-                pos += test_text_rect(s[n] + '/', self.font).right + 8
+                pos += test_text_rect(text, font).right + 8
             
-            blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, -4], self.font, 2)
-            b = button(surface, self.font, (255, 255, 255), '<', [pos + 8, -4, 0], 
+            blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, -4], self.font1, 2)
+            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, -4, 0], 
                     None, get_colors()[3], 1, [0, 0], 15)
             if b:
                 self.backward(tile_space, altitude)

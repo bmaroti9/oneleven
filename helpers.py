@@ -63,6 +63,8 @@ def button(surface, font, color, text, pos, rect_color, tuch_color, width, mouse
         rect.topleft = [pos[0], pos[1]]
     elif pos[2] == 1:
         rect.center = [pos[0], pos[1]]
+    elif pos[2] == 2:
+        rect.midleft = [pos[0], pos[1]]
 
     saint_rect = Rect(rect[0], rect[1], rect[2], rect[3])
 
