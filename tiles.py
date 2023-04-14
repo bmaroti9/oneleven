@@ -34,7 +34,7 @@ class Tile(pygame.sprite.Sprite):
         self.title_font = pygame.font.SysFont('texgyreadventor', 20)
 
     def size_adjust(self, surface, distance, smooth_scroll):
-        wanted = 330
+        wanted = 337
         if abs(distance) > surface.get_height() / 2 - 200 or abs(smooth_scroll) > 24:
             wanted = 300 - abs(distance) * 0.08
         self.size += (wanted - self.size) * 0.3
@@ -56,7 +56,7 @@ class Tile(pygame.sprite.Sprite):
         coolheight = self.size
 
         mid = surface.get_width() // 2
-        top = real_pos - coolheight - 5    #REVERSE FOR SIDEWAYS SCROLLING
+        top = real_pos - coolheight + 4    #REVERSE FOR SIDEWAYS SCROLLING
         side = mid - coolsize
 
         self.app.update(self.surf)
@@ -89,7 +89,7 @@ class Date_Marker(pygame.sprite.Sprite):
         self.real_time = time.ctime(self.time)
         day = TIMES["interpret_d"].index(self.real_time[0:3])
         eth = TIMES["interpret_m"].index(self.real_time[4:7])
-        self.blit_time = self.real_time[20:26] + ' ' + TIMES['months'][eth] + self.real_time[8:10]
+        self.blit_time = self.real_time[20:26] + ' ' + TIMES['months'][eth] + self.real_time[7:10]
         self.blit_time = self.blit_time + '     ' + TIMES['days'][day]
 
     def update(self, surface, altitude, smooth_scroll):

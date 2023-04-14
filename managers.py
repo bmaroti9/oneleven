@@ -78,6 +78,7 @@ class Directory_manager(pygame.sprite.Sprite):
         super().__init__()
 
         self.path = "."
+        self.altitudes = []
         self.font = pygame.font.SysFont('texgyreadventor', 20)
 
     def load_directory(self, tile_space):
@@ -90,13 +91,15 @@ class Directory_manager(pygame.sprite.Sprite):
             paths.append(x)
         tile_space.set_tiles(paths, 0)
     
-    def forward(self, tile_space):
+    def forward(self, tile_space, altitude):
         x = self.path + '/' + get_closest().name
         if not isfile(x):
             self.path = x
             self.load_directory(tile_space)
+            self.altitudes.append(altitude)
+            set_wanted(0)
     
-    def backward(self, tile_space):
+    def backward(self, tile_space, altitude):
         before = str(self.path)
         z = self.path.split('/')
         back = len(z[-1]) + 1
@@ -105,8 +108,10 @@ class Directory_manager(pygame.sprite.Sprite):
             self.path = '.'
         if before != self.path:
             self.load_directory(tile_space)
+            set_wanted(self.altitudes[-1])
+            del self.altitudes[-1]
         
-    def update(self, surface, tile_space):
+    def update(self, surface, tile_space, altitude):
         p = get_closest()
         if p != None and p.push > 200:
             x = self.path + '/' + p.name
@@ -133,6 +138,21 @@ class Directory_manager(pygame.sprite.Sprite):
             b = button(surface, self.font, (255, 255, 255), '<', [pos + 8, -4, 0], 
                     None, get_colors()[3], 1, [0, 0], 15)
             if b:
-                self.backward(tile_space)
+                self.backward(tile_space, altitude)
             elif detect_click_rect(0, Rect(50, 50, surface.get_width() - 100, surface.get_height() - 100)):
-                self.forward(tile_space)
+                self.forward(tile_space, altitude)
+
+WANTED = None
+
+def set_wanted(altitude):
+    global WANTED
+    WANTED = altitude
+
+def reload():
+    global WANTED
+    x = WANTED
+    WANTED = None
+    if x == None:
+        return None
+    else:
+        return x
