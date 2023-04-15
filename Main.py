@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from datetime import datetime
+from datetime import datetime, date
 import time
 
 from clouds import *
@@ -8,6 +8,7 @@ from helpers import *
 from tiles import *
 from apps import *
 from managers import *
+from inputs import *
 
 pygame.init()
 pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEWHEEL])
@@ -34,10 +35,14 @@ DIRECTORY_MANAGER.load_directory(TILE_SPACE)
 
 APPS = [Folder, Unloadable, Image_viewer]
 
+#TILE_SPACE.add_tile(getmtime('hihi.eml'), 'hihi.eml')
+
 RUNNING = True
 while RUNNING:
     SCROLLING = 0
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    upload_event(events)
+    for event in events:
         if event.type == QUIT:
             RUNNING = False
         if event.type == KEYDOWN:

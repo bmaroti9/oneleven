@@ -6,6 +6,7 @@ from os.path import isfile, join, basename
 
 from helpers import *
 from gradient import uniform_colors
+from inputs import *
 
 
 class Folder(pygame.sprite.Sprite):
@@ -53,7 +54,6 @@ class Folder(pygame.sprite.Sprite):
         return texts
     
     def update(self, surface):
-        surface.fill((0, 0, 0))
         surface.blit(self.surf, [0, 0])
         
 class Unloadable(pygame.sprite.Sprite):
@@ -70,7 +70,6 @@ class Unloadable(pygame.sprite.Sprite):
         self.surf = self.surf.convert_alpha()
     
     def update(self, surface):
-        surface.fill((0, 0, 0))
         surface.blit(self.surf, [0, 0])
 
 class Image_viewer(pygame.sprite.Sprite):
@@ -89,3 +88,24 @@ class Image_viewer(pygame.sprite.Sprite):
     def update(self, surface):
         surface.fill((200, 200, 200))
         surface.blit(self.image, self.rect)
+
+class Email(pygame.sprite.Sprite):
+    def __init__(self, surface, path):
+        super().__init__()
+
+        self.color = (200, 200, 200)
+        self.font = pygame.font.SysFont('texgyreadventor', 40)
+        self.font_color = (0, 0, 0)
+        self.wirghting = ''
+    
+    def update(self, surface):
+        surface.fill(self.color)
+        event = get_event()
+        if len(self.wirghting) > 0:
+            x = event.unicode()
+            if x == pygame.K_BACKSPACE:
+                self.wirghting = self.wirghting[:-1]
+            else:
+                self.wirghting = self.wirghting + x
+        #print(self.wirghting)
+

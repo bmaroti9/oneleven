@@ -80,7 +80,6 @@ class Directory_manager(pygame.sprite.Sprite):
         self.path = "."
         self.altitudes = []
         self.font1 = pygame.font.SysFont('texgyreadventor', 20)
-        self.font2 = pygame.font.SysFont('freemono', 30)
 
     def load_directory(self, tile_space):
         generate_palette()
@@ -119,29 +118,25 @@ class Directory_manager(pygame.sprite.Sprite):
             pos = 5
             s = x.split('/')
             for n in range(len(s)):
-                if n == len(s) - 1:
+                if n == len(s) - 2:
                     c = get_colors()[3]
                 else:
                     c = (255, 255, 255)
                 text = '/' + s[n]
-                font = self.font1
-                y = 10
-                #print(text)
                 if text == '/.':
-                    text = '▢'
-                    font = self.font2
-                    y = 13
-                hihi = button(surface, font, c, text, [pos, y, 2], 
+                    text = '~~~'
+
+                hihi = button(surface, self.font1, c, text, [pos, 12, 2], 
                     None, get_colors()[3], 1, [0, 0], 15)
                 if hihi:
                     v = s[:(n + 1)]
                     before = self.path
                     self.path = '/'.join(v)
-                    if before != self.path and not isfile(self.path) and self.path != '':
+                    if before != self.path and not isfile(self.path) and self.path != '' and text != '/':
                         self.load_directory(tile_space)
                     else:
                         self.path = before
-                pos += test_text_rect(text, font).right + 8
+                pos += test_text_rect(text, self.font1).right + 8
             
             blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, -4], self.font1, 2)
             b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, -4, 0], 

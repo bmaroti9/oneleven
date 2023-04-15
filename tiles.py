@@ -23,6 +23,7 @@ class Tile(pygame.sprite.Sprite):
         app = decide_tile_app(path)
         
         self.app = app(self.surf, path)
+        self.app.update(self.surf)
 
         self.time = time_point
         self.real_time = time.ctime(time_point)
@@ -49,6 +50,7 @@ class Tile(pygame.sprite.Sprite):
             self.texture(surface, real_pos)
 
             if abs(distance) < 200:
+                self.app.update(self.surf)
                 set_closest(self)
             
     def texture(self, surface, real_pos):
@@ -59,7 +61,6 @@ class Tile(pygame.sprite.Sprite):
         top = real_pos - coolheight + 4    #REVERSE FOR SIDEWAYS SCROLLING
         side = mid - coolsize
 
-        self.app.update(self.surf)
         surface.blit(pygame.transform.scale(self.surf.convert_alpha(),
                               [int(coolsize * 2), int(coolheight * 2)]), [side, top + 5])
         '''
@@ -112,8 +113,8 @@ class Date_Marker(pygame.sprite.Sprite):
         return -self.time #we want the most reccent on the top so its necessary to flip
     
 
-FROM = ['.png']
-TO = [Image_viewer]
+FROM = ['.png', '.eml']
+TO = [Image_viewer, Email]
 
 def decide_tile_app(name):
     if isfile(name):
