@@ -95,7 +95,7 @@ class Email(pygame.sprite.Sprite):
         super().__init__()
 
         self.color = (200, 200, 200)
-        self.font = pygame.font.SysFont('umepminchos3', 30)
+        self.font = pygame.font.SysFont('mathjaxmain', 30)
         self.font_color = (0, 0, 0)
         self.wirghting = 'hihi'
     
@@ -104,7 +104,7 @@ class Email(pygame.sprite.Sprite):
         events = get_event()
         end_pos = textbox(surface, self.wirghting, 
                             surface.get_width(), [5, 5], self.font, self.font_color)[1]
-        if len(self.wirghting) > 0:
+        if len(self.wirghting) > -1:
             for event in events:
                 if event.type == KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
