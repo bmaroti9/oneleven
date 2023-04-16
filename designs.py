@@ -13,9 +13,10 @@ def textbox(surface, text, max_width, pos, font, color):
     a = text.split(" ")
     startx = pos[0]
     starty = pos[1]
+    pos[0] -= 12
     maximum = startx + max_width
     for n in a:
-        pos[0] += 10
+        pos[0] += 12
         b = font.render(n, True, color)
 
         assert max_width > b.get_width() + 10

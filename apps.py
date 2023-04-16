@@ -7,6 +7,7 @@ from os.path import isfile, join, basename
 from helpers import *
 from gradient import uniform_colors
 from inputs import *
+from designs import textbox
 
 
 class Folder(pygame.sprite.Sprite):
@@ -94,18 +95,24 @@ class Email(pygame.sprite.Sprite):
         super().__init__()
 
         self.color = (200, 200, 200)
-        self.font = pygame.font.SysFont('texgyreadventor', 40)
+        self.font = pygame.font.SysFont('umepminchos3', 30)
         self.font_color = (0, 0, 0)
-        self.wirghting = ''
+        self.wirghting = 'hihi'
     
     def update(self, surface):
         surface.fill(self.color)
-        event = get_event()
+        events = get_event()
+        end_pos = textbox(surface, self.wirghting, 
+                            surface.get_width(), [5, 5], self.font, self.font_color)[1]
         if len(self.wirghting) > 0:
-            x = event.unicode()
-            if x == pygame.K_BACKSPACE:
-                self.wirghting = self.wirghting[:-1]
-            else:
-                self.wirghting = self.wirghting + x
-        #print(self.wirghting)
+            for event in events:
+                if event.type == KEYDOWN:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.wirghting = self.wirghting[:-1]
+                    else:
+                        self.wirghting += event.unicode
+            if every_ticks(800, 400):
+                pygame.draw.line(surface, self.font_color, [end_pos[0] + 2, end_pos[1] + 3], 
+                                 [end_pos[0] + 2, end_pos[1] + 28], 2)
+        
 

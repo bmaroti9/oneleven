@@ -29,6 +29,9 @@ SCROLL = -28
 SMOOTH_SCROLL = 0
 MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+events = pygame.event.get()
+upload_event(events)
+
 TILE_SPACE = Tile_space()
 DIRECTORY_MANAGER = Directory_manager()
 DIRECTORY_MANAGER.load_directory(TILE_SPACE)

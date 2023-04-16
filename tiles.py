@@ -19,7 +19,7 @@ class Tile(pygame.sprite.Sprite):
         self.close_setting = 300 #when scrolling will jump on it
         self.push = 325 #push the ones next to it farther away
         self.name = basename(path)
-        self.surf = pygame.Surface((1320, 660))
+        self.surf = pygame.Surface((1340, 670))
         app = decide_tile_app(path)
         
         self.app = app(self.surf, path)

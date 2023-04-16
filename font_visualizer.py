@@ -41,10 +41,10 @@ while RUNNING:
 
     x = ALTITUDE
     for n in FONTS:
-        he = pygame.font.SysFont(str(n), 50)
+        he = pygame.font.SysFont(str(n), 30)
         try:
             #blit_text(SURFACE, (250, 250, 250), "2022  HIHI   " + str(n), [10, x], he)
-            blit_text(SURFACE, (250, 250, 250), "■ □ ▢ ▣" + str(n), [10, x], he)
+            blit_text(SURFACE, (250, 250, 250), "Hello this is Balint the.   " + str(n), [10, x], he)
         except:
             continue
         x += 70

@@ -288,8 +288,8 @@ def gray_color(hihi):
     a = (hihi, hihi, hihi)
     return a
 
-def every_ticks(gap):
-    if pygame.time.get_ticks() % gap == 0:
+def every_ticks(gap, limit = 0):
+    if pygame.time.get_ticks() % gap <= limit:
         return True
     return False
 
