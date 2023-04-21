@@ -36,8 +36,6 @@ TILE_SPACE = Tile_space()
 DIRECTORY_MANAGER = Directory_manager()
 DIRECTORY_MANAGER.load_directory(TILE_SPACE)
 
-APPS = [Folder, Unloadable, Image_viewer]
-
 #TILE_SPACE.add_tile(getmtime('hihi.eml'), 'hihi.eml')
 
 RUNNING = True

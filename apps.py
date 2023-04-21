@@ -95,7 +95,7 @@ class Email(pygame.sprite.Sprite):
         super().__init__()
 
         self.color = (200, 200, 200)
-        self.font = pygame.font.SysFont('mathjaxmain', 30)
+        self.font = pygame.font.SysFont('texgyreadventor', 30)
         self.font_color = (0, 0, 0)
         self.wirghting = 'hihi'
     
