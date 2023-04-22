@@ -21,7 +21,7 @@ class Tile_space(pygame.sprite.Sprite):
         for n in paths:
             t = getmtime(n)
             self.add_tile(t, n)
-        
+
         for n in range(-360, 360):
             end_date = date.today() + timedelta(days=n)
             self.add_marker(end_date)
@@ -46,7 +46,7 @@ class Tile_space(pygame.sprite.Sprite):
             if n.close_setting < 110:
                 n.temp_time += timedelta(days=-1)
                 n.sync()
-                    
+
         i = -self.tiles[0].close_setting
         for n in self.tiles:
             i += n.push
@@ -56,7 +56,7 @@ class Tile_space(pygame.sprite.Sprite):
     def add_tile(self, time, path):
         x = Tile(time, path)
         self.tiles.append(x)
-    
+
     def add_marker(self, time):
         x = Date_Marker(time)
         self.tiles.append(x)
@@ -90,15 +90,17 @@ class Directory_manager(pygame.sprite.Sprite):
             x = x[2:]
             paths.append(x)
         tile_space.set_tiles(paths, 0)
-    
+        set_closest(None)
+
     def forward(self, tile_space, altitude):
         x = self.path + '/' + get_closest().name
         if not isfile(x):
+            print('twice')
             self.path = x
             self.load_directory(tile_space)
             self.altitudes.append(altitude)
             set_wanted(0)
-    
+
     def backward(self, tile_space, altitude):
         before = str(self.path)
         z = self.path.split('/')
@@ -110,7 +112,7 @@ class Directory_manager(pygame.sprite.Sprite):
             self.load_directory(tile_space)
             set_wanted(self.altitudes[-1])
             del self.altitudes[-1]
-        
+
     def update(self, surface, tile_space, altitude):
         p = get_closest()
         if p != None:
@@ -126,7 +128,7 @@ class Directory_manager(pygame.sprite.Sprite):
                 if text == '/.':
                     text = '~~~'
 
-                hihi = button(surface, self.font1, c, text, [pos, 12, 2], 
+                hihi = button(surface, self.font1, c, text, [pos, 12, 2],
                     None, get_colors()[3], 1, [0, 0], 15)
                 if hihi:
                     v = s[:(n + 1)]
@@ -137,9 +139,9 @@ class Directory_manager(pygame.sprite.Sprite):
                     else:
                         self.path = before
                 pos += test_text_rect(text, self.font1).right + 8
-            
-            blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, -4], self.font1, 2)
-            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, -4, 0], 
+
+            blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, 2], self.font1, 2)
+            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, 2, 0],
                     None, get_colors()[3], 1, [0, 0], 15)
             if b:
                 self.backward(tile_space, altitude)
