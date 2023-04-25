@@ -140,8 +140,8 @@ class Directory_manager(pygame.sprite.Sprite):
                         self.path = before
                 pos += test_text_rect(text, self.font1).right + 8
 
-            blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, 2], self.font1, 2)
-            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, 2, 0],
+            blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, -4], self.font1, 2)
+            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, -4, 0],
                     None, get_colors()[3], 1, [0, 0], 15)
             if b:
                 self.backward(tile_space, altitude)
