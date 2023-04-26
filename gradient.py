@@ -108,9 +108,9 @@ def blurSurf(surface, amt):
     surf = pygame.transform.smoothscale(surf, surf_size)
     return surf
 
-def uniform_colors(number):
+def uniform_colors(number, c):
     first_c = []
-    first_c.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+    first_c.append(c)
     first_c.append((255 - first_c[0][0], 255 - first_c[0][1], 255 - first_c[0][2]))
     colors = []
     for n in range(number):
@@ -130,3 +130,9 @@ def get_color():
     h = random.randint(0, 1) * 255
     color = transition_colors(random.choice(PALETTE), (h, h, h), random.randint(0, 100) / 100)
     return color
+
+def file_color(name):
+    c = []
+    for n in range(3):
+        c.append(generate_number_from_string(name, 255, n))
+    return c

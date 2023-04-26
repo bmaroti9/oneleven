@@ -3,6 +3,7 @@ import math
 from pygame.locals import*
 import random
 from datetime import datetime
+import hashlib
 
 pygame.init()
 
@@ -359,3 +360,17 @@ def get_key():
 
 def get_precise_date(t):
     return datetime.fromtimestamp(t)
+
+def generate_number_from_string(t, l, c = 0):
+    primes = [
+        [137873, 264871, 455789],
+        [813503, 141991, 734233], 
+        [540613, 352217, 956999]
+    ]
+
+    num = 0
+    x = list(t)
+    for n in x:
+        f = ((ord(n) * primes[c][0]) + primes[c][1]) % primes[c][2]
+        num += f
+    return num % l

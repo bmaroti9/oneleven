@@ -5,7 +5,7 @@ from os import listdir
 from os.path import isfile, join, basename
 
 from helpers import *
-from gradient import uniform_colors
+from gradient import uniform_colors, file_color
 from inputs import *
 from designs import textbox
 
@@ -19,7 +19,7 @@ class Folder(pygame.sprite.Sprite):
             self.contents = self.contents[:9]
         self.contents = self.shorten(self.contents)
 
-        self.colors = uniform_colors(len(self.contents))
+        self.colors = uniform_colors(len(self.contents), file_color(self.name))
         self.points = []
         self.font = pygame.font.SysFont('texgyreadventor', 120)
         self.font_200 = pygame.font.SysFont('texgyreadventor', 200)
@@ -63,7 +63,7 @@ class Unloadable(pygame.sprite.Sprite):
 
         self.font_200 = pygame.font.SysFont('texgyreadventor', 200)
         self.name = basename(path)
-        self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        self.color = file_color(self.name)
         self.surf = pygame.Surface((surface.get_width(), surface.get_height()))
         self.surf.fill(self.color)
         c = [255 - self.color[0], 255 - self.color[1], 255 - self.color[2]]
