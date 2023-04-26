@@ -24,8 +24,7 @@ SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 pygame.display.set_caption("©2022 Dragon tail")
 
-ALTITUDE = 0.01
-INIT_Y = 0
+ALTITUDE = 0
 SCROLL = -28
 SMOOTH_SCROLL = 0
 MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -62,19 +61,13 @@ while RUNNING:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 200:
-                INIT_Y += event.y * 20 #10
+                SCROLL += event.y * 17 #10
+                SCROLL = SCROLL * 0.93
             if not MAX.__contains__(1):
                 SCROLLING = 1
-
-    if abs(INIT_Y) > 36:
-        SCROLL = (INIT_Y - SMOOTH_SCROLL) * 0.85
-    else:
-        SCROLL = SCROLL * 0.7
-
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL
     SCROLL -= sign_function(SCROLL)
-    INIT_Y -= sign_function(INIT_Y)
     MAX.append(SCROLLING)
 
     z = reload()

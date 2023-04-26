@@ -67,6 +67,7 @@ class Tile_space(pygame.sprite.Sprite):
             real_pos = focus_time - n.pos
             if abs(real_pos - est_time) < n.close_setting:
                 requested_altitude = real_pos
+                set_closest(n)
         return requested_altitude
 
     def update(self, surface, focus_time, smooth_scroll):
@@ -95,7 +96,6 @@ class Directory_manager(pygame.sprite.Sprite):
     def forward(self, tile_space, altitude):
         x = self.path + '/' + get_closest().name
         if not isfile(x):
-            print('twice')
             self.path = x
             self.load_directory(tile_space)
             self.altitudes.append(altitude)
