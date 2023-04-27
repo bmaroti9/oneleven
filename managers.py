@@ -88,7 +88,7 @@ class Directory_manager(pygame.sprite.Sprite):
         paths = []
         for n in dirct:
             x = self.path + '/' + n
-            x = x[2:]
+            #x = x[2:]
             paths.append(x)
         tile_space.set_tiles(paths, 0)
         set_closest(None)

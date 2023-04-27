@@ -5,6 +5,7 @@ import pygame
 from pygame.locals import *
 import time
 import json
+from os.path import isfile, join, basename, getmtime
 
 from helpers import *
 
@@ -131,8 +132,18 @@ def get_color():
     color = transition_colors(random.choice(PALETTE), (h, h, h), random.randint(0, 100) / 100)
     return color
 
-def file_color(name):
+def file_color(path, back = 1):
+    pathy = path.split('/')
+    x = pathy.index(basename(path))
+    name = pathy[x - back]
     c = []
     for n in range(3):
         c.append(generate_number_from_string(name, 255, n))
-    return c
+    first_c = []
+    first_c.append(c)
+    first_c.append((255 - first_c[0][0], 255 - first_c[0][1], 255 - first_c[0][2]))
+    h = generate_number_from_string(path, 1, 0) * 255
+    hihi = transition_colors(first_c[generate_number_from_string(path, 1, 2)], (h, h, h), 
+                                generate_number_from_string(path, 100, 1) / 100)
+    #print(path, '/', name, '/', c)
+    return hihi

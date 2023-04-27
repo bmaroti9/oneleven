@@ -19,13 +19,13 @@ class Folder(pygame.sprite.Sprite):
             self.contents = self.contents[:9]
         self.contents = self.shorten(self.contents)
 
-        self.colors = uniform_colors(len(self.contents), file_color(self.name))
+        #self.colors = uniform_colors(len(self.contents), file_color(path,  0))
         self.points = []
         self.font = pygame.font.SysFont('texgyreadventor', 120)
         self.font_200 = pygame.font.SysFont('texgyreadventor', 200)
 
         for n in self.contents:
-            self.points.append(random.randint(0, surface.get_width()))
+            self.points.append(generate_number_from_string(path + '/' + n, surface.get_width()))
         self.points.append(surface.get_width())
 
         self.points = sorted(self.points)
@@ -34,9 +34,10 @@ class Folder(pygame.sprite.Sprite):
         self.surf.fill((0, 0, 0))
         c = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         for n in range(len(self.contents)):
-            pygame.draw.rect(self.surf, self.colors[n], 
+            colorx = file_color(path + '/' + self.contents[n])
+            pygame.draw.rect(self.surf, colorx, 
                 Rect(self.points[n], 0, self.surf.get_width() - self.points[n], self.surf.get_height()))
-            c = [255 - self.colors[n][0], 255 - self.colors[n][1], 255 - self.colors[n][2]]
+            c = [255 - colorx[0], 255 - colorx[1], 255 - colorx[2]]
             wrighting = self.font.render(self.contents[n], True, c)
             
             width = self.points[n + 1] - self.points[n]
@@ -63,7 +64,7 @@ class Unloadable(pygame.sprite.Sprite):
 
         self.font_200 = pygame.font.SysFont('texgyreadventor', 200)
         self.name = basename(path)
-        self.color = file_color(self.name)
+        self.color = file_color(path)
         self.surf = pygame.Surface((surface.get_width(), surface.get_height()))
         self.surf.fill(self.color)
         c = [255 - self.color[0], 255 - self.color[1], 255 - self.color[2]]
