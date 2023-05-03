@@ -19,7 +19,7 @@ class Tile(pygame.sprite.Sprite):
         self.close_setting = 300 #when scrolling will jump on it
         self.push = 325 #push the ones next to it farther away
         self.name = basename(path)
-        self.surf = pygame.Surface((1340, 670))
+        self.surf = pygame.Surface((1348, 674))
         app = decide_tile_app(path)
         
         self.app = app(self.surf, path)
@@ -31,8 +31,6 @@ class Tile(pygame.sprite.Sprite):
 
         self.pos = 0
         self.size = 280
-
-        self.title_font = pygame.font.SysFont('texgyreadventor', 20)
 
     def size_adjust(self, surface, distance, smooth_scroll):
         wanted = 337
@@ -48,6 +46,9 @@ class Tile(pygame.sprite.Sprite):
         if abs(distance) < surface.get_height():
             self.size_adjust(surface, distance, smooth_scroll)
             self.texture(surface, real_pos)
+            if abs(distance) < self.close_setting:    
+                self.app.update(self.surf)
+                set_closest(self)
 
     def texture(self, surface, real_pos):
         coolsize = self.size * 2
@@ -59,12 +60,7 @@ class Tile(pygame.sprite.Sprite):
 
         surface.blit(pygame.transform.scale(self.surf.convert_alpha(),
                               [int(coolsize * 2), int(coolheight * 2)]), [side, top + 5])
-        '''
-        blit_text(surface, get_colors()[3], 'new tab', [surface.get_width() / 2, top],
-                   self.title_font, 3)
-        blit_text(surface, get_colors()[4], 'chromium', [side + 20, top],
-                   self.title_font, 0)
-        '''
+        
     
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip
@@ -80,7 +76,7 @@ class Date_Marker(pygame.sprite.Sprite):
         self.time = time.mktime(self.temp_time.timetuple())
         self.real_time = time.ctime(self.time)
         
-        self.font = pygame.font.SysFont('texgyreadventor', 30)
+        self.font = pygame.font.Font('fonts/static/Raleway-ExtraLightItalic.ttf', 33)
     
     def sync(self):
         self.time = time.mktime(self.temp_time.timetuple())
@@ -98,9 +94,10 @@ class Date_Marker(pygame.sprite.Sprite):
         distance = target - real_pos + 3
 
         if abs(distance) < surface.get_height():
-            blit_text(surface, get_colors()[3], str(self.blit_time), [20, real_pos], self.font, 4)
             pygame.draw.line(surface, get_colors()[3], 
                                 [20, real_pos + 10], [surface.get_width() - 60, real_pos + 10])
+            blit_text(surface, get_colors()[3], str(self.blit_time), [20, real_pos - 2], self.font, 4)
+            set_closest(self)
         
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip

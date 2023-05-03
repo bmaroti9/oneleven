@@ -22,7 +22,7 @@ CLOCK = pygame.time.Clock()
 
 SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-pygame.display.set_caption("©2022 Dragon tail")
+pygame.display.set_caption("©2022-2023 Eternal")
 
 ALTITUDE = 0
 SCROLL = -28
@@ -59,8 +59,8 @@ while RUNNING:
             elif event.key == K_9:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
-            if abs(SCROLL) < 200:
-                SCROLL += event.y * 17 #10
+            if abs(SCROLL) < 150:
+                SCROLL += event.y * 17
                 SCROLL = SCROLL * 0.93
             if not MAX.__contains__(1):
                 SCROLLING = 1

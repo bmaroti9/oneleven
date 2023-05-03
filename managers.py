@@ -67,7 +67,6 @@ class Tile_space(pygame.sprite.Sprite):
             real_pos = focus_time - n.pos
             if abs(real_pos - est_time) < n.close_setting:
                 requested_altitude = real_pos
-                set_closest(n)
         return requested_altitude
 
     def update(self, surface, focus_time, smooth_scroll):
@@ -80,7 +79,8 @@ class Directory_manager(pygame.sprite.Sprite):
 
         self.path = "."
         self.altitudes = []
-        self.font1 = pygame.font.SysFont('texgyreadventor', 20)
+        #self.font1 = pygame.font.SysFont('texgyreadventor', 20)
+        self.font1 = pygame.font.Font('fonts/static/Raleway-ExtraLight.ttf', 22)
 
     def load_directory(self, tile_space):
         generate_palette()
@@ -140,8 +140,8 @@ class Directory_manager(pygame.sprite.Sprite):
                         self.path = before
                 pos += test_text_rect(text, self.font1).right + 8
 
-            blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, -4], self.font1, 2)
-            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, -4, 0],
+            blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, 2], self.font1, 2)
+            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, -1, 0],
                     None, get_colors()[3], 1, [0, 0], 15)
             if b:
                 self.backward(tile_space, altitude)
