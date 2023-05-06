@@ -95,7 +95,7 @@ class Directory_manager(pygame.sprite.Sprite):
 
     def forward(self, tile_space, altitude):
         x = self.path + '/' + get_closest().name
-        if not isfile(x):
+        if not isfile(x) and get_closest().close_setting > 200:
             self.path = x
             self.load_directory(tile_space)
             self.altitudes.append(altitude)

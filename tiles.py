@@ -97,7 +97,8 @@ class Date_Marker(pygame.sprite.Sprite):
             pygame.draw.line(surface, get_colors()[3], 
                                 [20, real_pos + 10], [surface.get_width() - 60, real_pos + 10])
             blit_text(surface, get_colors()[3], str(self.blit_time), [20, real_pos - 2], self.font, 4)
-            set_closest(self)
+            if abs(distance) < self.close_setting:
+                set_closest(self)
         
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip
