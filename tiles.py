@@ -8,6 +8,7 @@ from datetime import timedelta, datetime, date
 
 from helpers import *
 from apps import *
+from settings import *
 
 with open("times.txt", "r") as f:
     TIMES = json.load(f)
@@ -16,26 +17,22 @@ class Tile(pygame.sprite.Sprite):
     def __init__(self, time_point, path):
         super().__init__()
 
-        self.close_setting = 300 #when scrolling will jump on it
-        self.push = 325 #push the ones next to it farther away
+        self.path = path
         self.name = basename(path)
-        self.surf = pygame.Surface((1348, 674))
-        app = decide_tile_app(path)
-        
-        self.app = app(self.surf, path)
-        self.app.update(self.surf)
+
+        self.set_my_surf()
 
         self.time = time_point
         self.real_time = time.ctime(time_point)
         self.abs_time = self.real_time[0:3] + self.real_time[10:16]
 
         self.pos = 0
-        self.size = 280
+        self.size = self.full_set
 
     def size_adjust(self, surface, distance, smooth_scroll):
-        wanted = 337
-        if abs(distance) > surface.get_height() / 2 - 200 or abs(smooth_scroll) > 24:
-            wanted = 300 - abs(distance) * 0.08
+        wanted = self.full_set
+        if abs(distance) > surface.get_height() / 2 * 0.6 or abs(smooth_scroll) > 24:
+            wanted = self.full_set - abs(distance) * 0.08
         self.size += (wanted - self.size) * 0.2
 
     def update(self, surface, altitude, smooth_scroll):
@@ -61,7 +58,17 @@ class Tile(pygame.sprite.Sprite):
         surface.blit(pygame.transform.scale(self.surf.convert_alpha(),
                               [int(coolsize * 2), int(coolheight * 2)]), [side, top + 5])
         
-    
+    def set_my_surf(self):
+        self.full_set = full_set_get()
+        self.close_setting = self.full_set * 0.8 #when scrolling will jump on it
+        self.push = self.full_set * 1.1 #push the ones next to it farther away
+        print(self.full_set)
+        self.surf = pygame.Surface((4 * self.full_set, 2 * self.full_set))
+        app = decide_tile_app(self.path)
+        
+        self.app = app(self.surf, self.path)
+        self.app.update(self.surf)
+
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip
 
@@ -86,7 +93,6 @@ class Date_Marker(pygame.sprite.Sprite):
         self.blit_time = self.real_time[20:26] + ' ' + TIMES['months'][eth] + self.real_time[7:10]
         self.blit_time = self.blit_time + '     ' + TIMES['days'][day]
         self.abs_time = ''
-
 
     def update(self, surface, altitude, smooth_scroll):
         real_pos = altitude - self.pos

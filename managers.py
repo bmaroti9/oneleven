@@ -46,9 +46,14 @@ class Tile_space(pygame.sprite.Sprite):
             if n.close_setting < 110:
                 n.temp_time += timedelta(days=-1)
                 n.sync()
-
+        
+        self.space(origin)
+    
+    def space(self, origin):
         i = -self.tiles[0].close_setting
         for n in self.tiles:
+            if n.close_setting != 100:    
+                n.set_my_surf()
             i += n.push
             n.pos = origin - i
             i += n.push

@@ -9,18 +9,19 @@ from tiles import *
 from apps import *
 from managers import *
 from inputs import *
+from settings import *
 
 pygame.init()
 pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEWHEEL])
 
-SCREEN_WIDTH = 1364
-SCREEN_HEIGHT = 715
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1020
 
 print(pygame.font.get_fonts())
 
 CLOCK = pygame.time.Clock()
 
-SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 
 pygame.display.set_caption("©2022-2023 Eternal")
 
@@ -32,10 +33,10 @@ MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 events = pygame.event.get()
 upload_event(events)
 
+full_set_initialize(SURFACE)
 TILE_SPACE = Tile_space()
 DIRECTORY_MANAGER = Directory_manager()
 DIRECTORY_MANAGER.load_directory(TILE_SPACE)
-#TILE_SPACE.add_tile(getmtime('hihi.eml'), 'hihi.eml')
 
 RUNNING = True
 while RUNNING:
@@ -60,10 +61,15 @@ while RUNNING:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 150:
-                SCROLL += event.y * 17
+                SCROLL += event.y * full_set_get() / 10
                 SCROLL = SCROLL * 0.93
             if not MAX.__contains__(1):
                 SCROLLING = 1
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 2:
+                full_set_change()
+                TILE_SPACE.space(0)
+
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL
     SCROLL -= sign_function(SCROLL)
