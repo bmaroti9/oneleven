@@ -33,7 +33,7 @@ class Tile(pygame.sprite.Sprite):
         wanted = self.full_set / 2
         if abs(distance) > surface.get_height() / 2 * 0.6 or abs(smooth_scroll) > 24:
             wanted = self.full_set / 2 - abs(distance) * 0.15
-        self.size += (wanted - self.size) * 0.2
+        self.size += (wanted - self.size) * 0.1
 
     def update(self, surface, altitude, smooth_scroll):
         real_pos = altitude - self.pos
@@ -82,6 +82,7 @@ class Date_Marker(pygame.sprite.Sprite):
         self.temp_time = time_point
         self.time = time.mktime(self.temp_time.timetuple())
         self.real_time = time.ctime(self.time)
+        self.pos = 0
         
         self.font = pygame.font.Font('fonts/static/Raleway-ExtraLightItalic.ttf', 33)
     

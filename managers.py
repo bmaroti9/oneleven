@@ -14,6 +14,9 @@ class Tile_space(pygame.sprite.Sprite):
         super().__init__()
 
         self.tiles = []
+        self.space_progress = -10
+        self.i = 0
+        self.origin = 0
 
     def set_tiles(self, paths, origin):
         self.tiles = []
@@ -46,17 +49,38 @@ class Tile_space(pygame.sprite.Sprite):
             if n.close_setting < 110:
                 n.temp_time += timedelta(days=-1)
                 n.sync()
+            n.pos = -999999
         
         self.space(origin)
+        self.space(-999999999)
+        set_closest(None)
+        self.space_work()
     
     def space(self, origin):
-        i = -self.tiles[0].close_setting
-        for n in self.tiles:
+        self.space_progress = -1
+        self.origin = origin
+
+    def space_work(self):
+        if self.space_progress == -1:
+            self.original_closest = get_closest()
+            if self.original_closest != None:
+                self.before = self.original_closest.pos
+            self.i = -999999999
+        elif self.space_progress < len(self.tiles):
+            n = self.tiles[self.space_progress]
             if n.close_setting != 100:    
                 n.set_my_surf()
-            i += n.push
-            n.pos = origin - i
-            i += n.push
+            self.i += n.push
+            n.pos = self.origin - self.i
+            self.i += n.push
+        else: 
+            if self.original_closest != None:
+                after = self.original_closest.pos
+                change = self.before - after
+                for n in self.tiles:
+                    n.pos += change
+            self.space_progress = -10
+        self.space_progress += 1
 
     def add_tile(self, time, path):
         x = Tile(time, path)
@@ -77,6 +101,8 @@ class Tile_space(pygame.sprite.Sprite):
     def update(self, surface, focus_time, smooth_scroll):
         for n in self.tiles:
             n.update(surface, focus_time + surface.get_height() / 2, smooth_scroll)
+        if self.space_progress > -2:
+            self.space_work()
 
 class Directory_manager(pygame.sprite.Sprite):
     def __init__(self):

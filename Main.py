@@ -61,7 +61,7 @@ while RUNNING:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 150:
-                SCROLL += event.y * full_set_get()[1] / 15
+                SCROLL += event.y * full_set_get()[1] / 14
                 SCROLL = SCROLL * (1 - (full_set_get()[1] * 0.0003))
             if not MAX.__contains__(1):
                 SCROLLING = 1
@@ -85,7 +85,7 @@ while RUNNING:
 
     SURFACE.fill(get_colors()[0])
 
-    if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.05:
+    if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.2:
         x = find_end_altitude(SMOOTH_SCROLL)
         requested_altitude = TILE_SPACE.any_close(x, ALTITUDE)
         if requested_altitude != None:
