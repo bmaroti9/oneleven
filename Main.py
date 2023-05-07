@@ -70,7 +70,7 @@ while RUNNING:
                 full_set_change()
                 TILE_SPACE.space(0)
 
-    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
+    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.3
     ALTITUDE += SMOOTH_SCROLL
     SCROLL -= sign_function(SCROLL)
     MAX.append(SCROLLING)

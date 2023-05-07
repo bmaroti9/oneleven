@@ -43,7 +43,12 @@ class Folder(pygame.sprite.Sprite):
             zoomx = min(min(width, 50) / wrighting.get_height(), 70 / wrighting.get_height())
             wrighting = pygame.transform.rotozoom(wrighting, -90, zoomx)
             self.surf.blit(wrighting, [self.points[n], 0])
-        blit_text(self.surf, c, self.name, [0, 300], self.font, 0)
+        
+        wrighting = self.font.render(self.name, True, c)
+        width = min(surface.get_width() - 60, wrighting.get_width())
+        zoomx = width / wrighting.get_width()
+        wrighting = pygame.transform.rotozoom(wrighting, 0, zoomx)
+        self.surf.blit(wrighting, [0, 300])
             
         self.surf = self.surf.convert_alpha()
     

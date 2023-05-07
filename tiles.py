@@ -33,14 +33,14 @@ class Tile(pygame.sprite.Sprite):
         wanted = self.full_set / 2
         if abs(distance) > surface.get_height() / 2 * 0.6 or abs(smooth_scroll) > 24:
             wanted = self.full_set / 2 - abs(distance) * 0.15
-        self.size += (wanted - self.size) * 0.1
+        self.size += (wanted - self.size) * 0.15
 
     def update(self, surface, altitude, smooth_scroll):
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
         distance = target - real_pos
 
-        if abs(distance) < surface.get_height() + 100:
+        if abs(distance) < surface.get_height():
             self.size_adjust(surface, distance, smooth_scroll)
             self.texture(surface, real_pos)
             if abs(distance) < self.close_setting:    
@@ -62,7 +62,7 @@ class Tile(pygame.sprite.Sprite):
         self.full_set = full_set_get()[1]
         self.xy_ratio = full_set_get()[0] / full_set_get()[1]
         self.close_setting = self.full_set * 0.6 #when scrolling will jump on it
-        self.push = self.full_set * 0.54 #push the ones next to it farther away
+        self.push = self.full_set * 0.5 #push the ones next to it farther away
         self.surf = pygame.Surface((full_set_get()[0], self.full_set))
         app = decide_tile_app(self.path)
         
