@@ -145,5 +145,4 @@ def file_color(path, back = 1):
     h = generate_number_from_string(path, 1, 0) * 255
     hihi = transition_colors(first_c[generate_number_from_string(path, 1, 2)], (h, h, h), 
                                 generate_number_from_string(path, 100, 1) / 100)
-    #print(path, '/', name, '/', c)
     return hihi

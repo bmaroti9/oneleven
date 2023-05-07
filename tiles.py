@@ -27,20 +27,20 @@ class Tile(pygame.sprite.Sprite):
         self.abs_time = self.real_time[0:3] + self.real_time[10:16]
 
         self.pos = 0
-        self.size = self.full_set
+        self.size = self.full_set / 2
 
     def size_adjust(self, surface, distance, smooth_scroll):
-        wanted = self.full_set
+        wanted = self.full_set / 2
         if abs(distance) > surface.get_height() / 2 * 0.6 or abs(smooth_scroll) > 24:
-            wanted = self.full_set - abs(distance) * 0.08
+            wanted = self.full_set / 2 - abs(distance) * 0.15
         self.size += (wanted - self.size) * 0.2
 
     def update(self, surface, altitude, smooth_scroll):
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
-        distance = target - real_pos + 3
+        distance = target - real_pos
 
-        if abs(distance) < surface.get_height():
+        if abs(distance) < surface.get_height() + 100:
             self.size_adjust(surface, distance, smooth_scroll)
             self.texture(surface, real_pos)
             if abs(distance) < self.close_setting:    
@@ -48,22 +48,22 @@ class Tile(pygame.sprite.Sprite):
                 set_closest(self)
 
     def texture(self, surface, real_pos):
-        coolsize = self.size * 2
+        coolsize = self.size * self.xy_ratio
         coolheight = self.size
 
         mid = surface.get_width() // 2
-        top = real_pos - coolheight + 4    #REVERSE FOR SIDEWAYS SCROLLING
+        top = real_pos - coolheight    #REVERSE FOR SIDEWAYS SCROLLING
         side = mid - coolsize
 
         surface.blit(pygame.transform.scale(self.surf.convert_alpha(),
-                              [int(coolsize * 2), int(coolheight * 2)]), [side, top + 5])
+                              [int(coolsize * 2), int(coolheight * 2)]), [side, top + 10])
         
     def set_my_surf(self):
-        self.full_set = full_set_get()
-        self.close_setting = self.full_set * 0.8 #when scrolling will jump on it
-        self.push = self.full_set * 1.1 #push the ones next to it farther away
-        print(self.full_set)
-        self.surf = pygame.Surface((4 * self.full_set, 2 * self.full_set))
+        self.full_set = full_set_get()[1]
+        self.xy_ratio = full_set_get()[0] / full_set_get()[1]
+        self.close_setting = self.full_set * 0.6 #when scrolling will jump on it
+        self.push = self.full_set * 0.54 #push the ones next to it farther away
+        self.surf = pygame.Surface((full_set_get()[0], self.full_set))
         app = decide_tile_app(self.path)
         
         self.app = app(self.surf, self.path)

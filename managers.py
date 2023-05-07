@@ -76,7 +76,7 @@ class Tile_space(pygame.sprite.Sprite):
 
     def update(self, surface, focus_time, smooth_scroll):
         for n in self.tiles:
-            n.update(surface, focus_time + 360, smooth_scroll)
+            n.update(surface, focus_time + surface.get_height() / 2, smooth_scroll)
 
 class Directory_manager(pygame.sprite.Sprite):
     def __init__(self):

@@ -43,12 +43,12 @@ def get_colors():
     return THEME
 
 FULL_SET = False
-SIZES = [0, 0]
+SIZES = [[0, 0], [0, 0]]
 
 def full_set_initialize(surface):
     global SIZES
-    SIZES[0] = (surface.get_width() / 4 - 20) * 0.7
-    SIZES[1] = surface.get_width() / 4 - 20
+    SIZES[0] = [(surface.get_width() - 20) * 0.6, (surface.get_height() - 50) * 0.6]
+    SIZES[1] = [surface.get_width() - 20, surface.get_height() - 50]
 
 def full_set_change():
     global FULL_SET
