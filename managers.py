@@ -67,7 +67,6 @@ class Tile_space(pygame.sprite.Sprite):
                 self.before = self.original_closest.pos
             self.i = -999999999
         elif self.space_progress < len(self.tiles):
-            print(self.space_progress)
             n = self.tiles[self.space_progress]
             if n.close_setting != 100:    
                 n.set_my_surf()

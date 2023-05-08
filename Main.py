@@ -25,6 +25,8 @@ SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 
 pygame.display.set_caption("©2022-2023 Eternal")
 
+print(pygame.mouse.get_cursor())
+
 ALTITUDE = 0
 SCROLL = -28
 SMOOTH_SCROLL = 0
