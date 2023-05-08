@@ -323,9 +323,9 @@ def sign_function(a):
 
 def generate_number_from_string(t, l, c = 0):
     primes = [
-        [74419, 98597, 39929],
-        [96059, 81901, 65413],
-        [25919, 68669, 34171]
+        [33149, 21871, 58151],
+        [16103, 26951, 99577],
+        [41081, 50891, 79153]
     ]
 
     num = 0
@@ -333,4 +333,5 @@ def generate_number_from_string(t, l, c = 0):
     for n in x:
         f = ((ord(n) * primes[c][0]) + primes[c][1]) % primes[c][2]
         num += f
+    num = ((num * primes[c][0]) + primes[c][1]) % primes[c][2]
     return num % l
