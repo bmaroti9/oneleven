@@ -42,7 +42,7 @@ class Tile(pygame.sprite.Sprite):
         if abs(distance) < surface.get_height() - 6:
             self.size_adjust(surface, distance, smooth_scroll)
             self.texture(surface, real_pos)
-            if abs(distance) < self.close_setting:    
+            if abs(distance) < self.close_setting:
                 self.app.update(self.surf)
                 set_closest(self)
 
@@ -56,7 +56,7 @@ class Tile(pygame.sprite.Sprite):
 
         surface.blit(pygame.transform.scale(self.surf.convert_alpha(),
                               [int(coolsize * 2), int(coolheight * 2)]), [side, top + 10])
-        
+
     def set_my_surf(self):
         self.full_set = full_set_get()[1]
         self.xy_ratio = full_set_get()[0] / full_set_get()[1]
@@ -64,7 +64,7 @@ class Tile(pygame.sprite.Sprite):
         self.push = self.full_set * 0.485 #push the ones next to it farther away
         self.surf = pygame.Surface((full_set_get()[0], self.full_set))
         app = decide_tile_app(self.path)
-        
+
         self.app = app(self.surf, self.path)
         self.app.update(self.surf)
         self.size = self.full_set / 2 * (1 - (self.full_set * 0.0001))
@@ -83,9 +83,9 @@ class Date_Marker(pygame.sprite.Sprite):
         self.time = time.mktime(self.temp_time.timetuple())
         self.real_time = time.ctime(self.time)
         self.pos = 0
-        
+
         self.font = pygame.font.Font('fonts/static/Raleway-ExtraLightItalic.ttf', 33)
-    
+
     def sync(self):
         self.time = time.mktime(self.temp_time.timetuple())
         self.real_time = time.ctime(self.time)
@@ -101,15 +101,15 @@ class Date_Marker(pygame.sprite.Sprite):
         distance = target - real_pos + 3
 
         if abs(distance) < surface.get_height():
-            pygame.draw.line(surface, get_colors()[3], 
+            pygame.draw.line(surface, get_colors()[3],
                                 [20, real_pos + 10], [surface.get_width() - 60, real_pos + 10])
             blit_text(surface, get_colors()[3], str(self.blit_time), [20, real_pos - 2], self.font, 4)
             if abs(distance) < self.close_setting:
                 set_closest(self)
-        
+
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip
-    
+
 
 FROM = ['.png', '.eml']
 TO = [Image_viewer, Email]
@@ -122,7 +122,7 @@ def decide_tile_app(name):
         return Unloadable
     else:
         return Folder
-    
+
 CLOSEST = None
 
 def set_closest(me):
