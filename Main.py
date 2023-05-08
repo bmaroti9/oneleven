@@ -66,7 +66,7 @@ while RUNNING:
             if not MAX.__contains__(1):
                 SCROLLING = 1
         elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 2:
+            if event.button == 3:
                 full_set_change()
                 TILE_SPACE.space(0)
 
