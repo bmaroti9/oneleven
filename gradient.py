@@ -144,5 +144,5 @@ def file_color(path, back = 1):
     first_c.append((255 - first_c[0][0], 255 - first_c[0][1], 255 - first_c[0][2]))
     h = generate_number_from_string(path, 1, 0) * 255
     hihi = transition_colors(first_c[generate_number_from_string(path, 1, 2)], (h, h, h), 
-                                generate_number_from_string(path, 100, 1) / 100)
+                                generate_number_from_string(path, 70, 1) / 100)
     return hihi
