@@ -70,16 +70,17 @@ while RUNNING:
                 full_set_change()
                 TILE_SPACE.space(0)
 
+    z = reload()
+    if z != None:
+        ALTITUDE = z + full_set_get()[1] * 0.5
+        SCROLLING = 1
+        SMOOTH_SCROLL = 0
+        SCROLL = -full_set_get()[1] / 24
+
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.3
     ALTITUDE += SMOOTH_SCROLL
     SCROLL -= sign_function(SCROLL)
     MAX.append(SCROLLING)
-
-    z = reload()
-    if z != None:
-        ALTITUDE = z + 300
-        SMOOTH_SCROLL = 0
-        SCROLL = -28
 
     del MAX[0]
 

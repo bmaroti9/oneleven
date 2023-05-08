@@ -67,6 +67,7 @@ class Tile_space(pygame.sprite.Sprite):
                 self.before = self.original_closest.pos
             self.i = -999999999
         elif self.space_progress < len(self.tiles):
+            print(self.space_progress)
             n = self.tiles[self.space_progress]
             if n.close_setting != 100:    
                 n.set_my_surf()
@@ -99,10 +100,12 @@ class Tile_space(pygame.sprite.Sprite):
         return requested_altitude
 
     def update(self, surface, focus_time, smooth_scroll):
-        for n in self.tiles:
-            n.update(surface, focus_time + surface.get_height() / 2, smooth_scroll)
-        if self.space_progress > -2:
-            self.space_work()
+        for n in range(2):
+            if self.space_progress > -2:
+                self.space_work()
+        else:
+            for n in self.tiles:
+                n.update(surface, focus_time + surface.get_height() / 2, smooth_scroll)
 
 class Directory_manager(pygame.sprite.Sprite):
     def __init__(self):
@@ -111,7 +114,7 @@ class Directory_manager(pygame.sprite.Sprite):
         self.path = "."
         self.altitudes = []
         #self.font1 = pygame.font.SysFont('texgyreadventor', 20)
-        self.font1 = pygame.font.Font('fonts/static/Raleway-ExtraLight.ttf', 22)
+        self.font1 = pygame.font.Font('fonts/static/Raleway-ExtraLight.ttf', 23)
 
     def load_directory(self, tile_space):
         generate_palette()
@@ -146,9 +149,10 @@ class Directory_manager(pygame.sprite.Sprite):
 
     def update(self, surface, tile_space, altitude):
         p = get_closest()
+        #blit_image(surface, 'images/eternal_white.png', [18, 24], 0.135)
         if p != None:
             x = self.path + '/' + p.name
-            pos = 5
+            pos = 9
             s = x.split('/')
             for n in range(len(s)):
                 if n == len(s) - 2:
@@ -157,9 +161,9 @@ class Directory_manager(pygame.sprite.Sprite):
                     c = (255, 255, 255)
                 text = '/' + s[n]
                 if text == '/.':
-                    text = '~~~'
+                    text = 'Q'
 
-                hihi = button(surface, self.font1, c, text, [pos, 12, 2],
+                hihi = button(surface, self.font1, c, text, [pos, 14, 2],
                     None, get_colors()[3], 1, [0, 0], 15)
                 if hihi:
                     v = s[:(n + 1)]
@@ -172,7 +176,7 @@ class Directory_manager(pygame.sprite.Sprite):
                 pos += test_text_rect(text, self.font1).right + 8
 
             blit_text(surface, (255, 255, 255), p.abs_time, [surface.get_width() - 10, 2], self.font1, 2)
-            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, -1, 0],
+            b = button(surface, self.font1, (255, 255, 255), '<', [pos + 8, 14, 2],
                     None, get_colors()[3], 1, [0, 0], 15)
             if b:
                 self.backward(tile_space, altitude)

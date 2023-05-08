@@ -71,7 +71,7 @@ def button(surface, font, color, text, pos, rect_color, tuch_color, width, mouse
 
     saint_rect[0] -= 5
     saint_rect[2] += 10
-    saint_rect[1] += 5
+    saint_rect[1] += 3
     saint_rect[3] -= 3
 
     mouse_pos = [pygame.mouse.get_pos()[0] + mouse_add[0],
