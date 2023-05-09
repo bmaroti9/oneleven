@@ -38,6 +38,8 @@ TILE_SPACE = Tile_space()
 DIRECTORY_MANAGER = Directory_manager()
 DIRECTORY_MANAGER.load_directory(TILE_SPACE)
 
+frame_set(CLOCK.tick(65))
+
 RUNNING = True
 while RUNNING:
     SCROLLING = 0
@@ -78,7 +80,7 @@ while RUNNING:
         SCROLL = -full_set_get()[1] / 24
 
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.3
-    ALTITUDE += SMOOTH_SCROLL
+    ALTITUDE += SMOOTH_SCROLL * frame_get()
     SCROLL -= sign_function(SCROLL)
     MAX.append(SCROLLING)
 
@@ -96,4 +98,4 @@ while RUNNING:
     DIRECTORY_MANAGER.update(SURFACE, TILE_SPACE, ALTITUDE)
 
     pygame.display.update()
-    CLOCK.tick(65)
+    frame_set(CLOCK.tick(65))

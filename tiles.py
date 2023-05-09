@@ -32,7 +32,7 @@ class Tile(pygame.sprite.Sprite):
         wanted = self.full_set / 2
         if abs(distance) > surface.get_height() / 2 * 0.6 or abs(smooth_scroll) > 24:
             wanted = self.full_set / 2 * (1 - (abs(distance) * 0.0002))
-        self.size += (wanted - self.size) * 0.11
+        self.size += (wanted - self.size) * 0.11 * frame_get()
 
     def update(self, surface, altitude, smooth_scroll):
         real_pos = altitude - self.pos

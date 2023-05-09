@@ -294,23 +294,6 @@ def every_ticks(gap, limit = 0):
         return True
     return False
 
-def find_end_altitude(v):
-    # t = v because: t = v / 1
-    s = ((0.5 * (v ** 2)) - abs(v / 2)) * sign_function(v * -10000)
-
-    return s
-
-def required_speed(s):
-    # t = v because: t = v / 1
-    v = math.sqrt(abs(s) / 0.5) * sign_function(s * -1000)
-    return v
-
-def change_speed(v_current, s):
-    v_wanted = required_speed(s)
-    delta_v = v_wanted - v_current
-    a = delta_v * 0.7
-    return a
-
 def get_precise_date(t):
     return datetime.fromtimestamp(t)
 

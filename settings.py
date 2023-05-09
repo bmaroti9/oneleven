@@ -56,3 +56,14 @@ def full_set_change():
 
 def full_set_get():
     return SIZES[FULL_SET]
+
+MIL = 1
+WANTED_SPEED = 20
+
+def frame_set(miliseconds):
+    global MIL
+    MIL = miliseconds
+
+def frame_get():
+    print(MIL / WANTED_SPEED)
+    return MIL / WANTED_SPEED
