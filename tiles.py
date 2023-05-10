@@ -60,7 +60,7 @@ class Tile(pygame.sprite.Sprite):
     def set_my_surf(self):
         self.full_set = full_set_get()[1]
         self.xy_ratio = full_set_get()[0] / full_set_get()[1]
-        self.close_setting = self.full_set * 0.6 #when scrolling will jump on it
+        self.close_setting = self.full_set * 0.5 #when scrolling will jump on it
         self.push = self.full_set * 0.485 #push the ones next to it farther away
         self.surf = pygame.Surface((full_set_get()[0], self.full_set))
         app = decide_tile_app(self.path)
@@ -77,7 +77,7 @@ class Date_Marker(pygame.sprite.Sprite):
         super().__init__()
 
         self.name = ''
-        self.close_setting = 100 #when scrolling will jump on it
+        self.close_setting = 0 #when scrolling will jump on it
         self.push = 50 #push the ones next to it farther away
         self.temp_time = time_point
         self.time = time.mktime(self.temp_time.timetuple())

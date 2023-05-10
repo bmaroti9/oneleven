@@ -25,15 +25,15 @@ SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 
 pygame.display.set_caption("©2022-2023 Eternal")
 
-ALTITUDE = 0
-SCROLL = -28
+full_set_initialize(SURFACE)
+ALTITUDE = -full_set_get()[1] * 0.7
+SCROLL = 2
 SMOOTH_SCROLL = 0
 MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 events = pygame.event.get()
 upload_event(events)
 
-full_set_initialize(SURFACE)
 TILE_SPACE = Tile_space()
 DIRECTORY_MANAGER = Directory_manager()
 DIRECTORY_MANAGER.load_directory(TILE_SPACE)
@@ -77,7 +77,7 @@ while RUNNING:
         ALTITUDE = z + full_set_get()[1] * 0.5
         SCROLLING = 1
         SMOOTH_SCROLL = 0
-        SCROLL = -full_set_get()[1] / 24
+        SCROLL = -full_set_get()[1] / 18
 
     SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.3
     ALTITUDE += SMOOTH_SCROLL * frame_get()
@@ -88,7 +88,7 @@ while RUNNING:
 
     SURFACE.fill(get_colors()[0])
 
-    if not MAX.__contains__(1) and abs(SMOOTH_SCROLL) > 0.2:
+    if not MAX.__contains__(1) and abs(SCROLL) > 0.05:
         x = find_end_altitude(SMOOTH_SCROLL)
         requested_altitude = TILE_SPACE.any_close(x, ALTITUDE)
         if requested_altitude != None:

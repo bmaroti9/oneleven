@@ -68,7 +68,7 @@ class Tile_space(pygame.sprite.Sprite):
             self.i = -999999999
         elif self.space_progress < len(self.tiles):
             n = self.tiles[self.space_progress]
-            if n.close_setting != 100:    
+            if n.close_setting > 120:    
                 n.set_my_surf()
             self.i += n.push
             n.pos = self.origin - self.i
