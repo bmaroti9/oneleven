@@ -74,7 +74,7 @@ while RUNNING:
 
     z = reload()
     if z != None:
-        ALTITUDE = z + full_set_get()[1] * 0.5
+        ALTITUDE = z
         SCROLLING = 1
         SMOOTH_SCROLL = 0
         SCROLL = -full_set_get()[1] / 18
