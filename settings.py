@@ -43,7 +43,7 @@ def get_colors():
     return THEME
 
 FULL_SET = False
-SIZES = [[0, 0], [0, 0]]
+SIZES = [[100, 100], [100, 100]]
 
 def full_set_initialize(surface):
     global SIZES

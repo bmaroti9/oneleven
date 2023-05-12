@@ -33,7 +33,7 @@ class Tile(pygame.sprite.Sprite):
         if abs(distance) > surface.get_height() / 2 * 0.6 or abs(smooth_scroll) > 24:
             wanted = self.full_set / 2 * (1 - (abs(distance) * 0.0002))
         self.size += (wanted - self.size) * 0.11 * frame_get()
-
+        
     def update(self, surface, altitude, smooth_scroll):
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
@@ -67,8 +67,8 @@ class Tile(pygame.sprite.Sprite):
 
         self.app = app(self.surf, self.path)
         self.app.update(self.surf)
-        self.size = self.full_set / 2 * (1 - (self.full_set * 0.0001))
-
+        self.size = self.full_set / 2 * (1 - self.full_set * 0.0002)
+    
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip
 

@@ -79,7 +79,7 @@ class Tile_space(pygame.sprite.Sprite):
                 change = self.before - after
                 for n in self.tiles:
                     n.pos += change
-                self.original_closest.size = full_set_get()[1] / 3
+                #self.original_closest.size = 100
             self.space_progress = -10
         self.space_progress += 1
 
