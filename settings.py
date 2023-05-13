@@ -60,12 +60,13 @@ def full_set_get():
 def get_the_screen_max():
     return SIZES[1]
 
-MIL = 17
-WANTED_SPEED = 17
+MIL = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+WANTED_SPEED = 20
 
 def frame_set(miliseconds):
     global MIL
-    MIL = miliseconds
+    MIL.append(miliseconds / WANTED_SPEED)
+    del MIL[0]
 
 def frame_get():
-    return min(MIL / WANTED_SPEED, 10)
+    return sum(MIL) / len(MIL)

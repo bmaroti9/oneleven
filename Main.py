@@ -77,8 +77,7 @@ while RUNNING:
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 3:
                 full_set_change()
-                TILE_SPACE.surface_init()
-
+            
     z = reload()
     if z != None:
         ALTITUDE = z
@@ -95,7 +94,7 @@ while RUNNING:
 
     SURFACE.fill(get_colors()[0])
 
-    if not MAX.__contains__(1) and abs(SCROLL) > 0.05:
+    if not MAX.__contains__(1) and abs(SCROLL) > 0.03:
         x = find_end_altitude(SMOOTH_SCROLL)
         requested_altitude = TILE_SPACE.any_close(x, ALTITUDE)
         if requested_altitude != None:

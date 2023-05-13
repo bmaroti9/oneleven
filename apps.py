@@ -24,7 +24,7 @@ class Folder(pygame.sprite.Sprite):
         self.font = pygame.font.Font('fonts/static/Raleway-ExtraLight.ttf', 200)
 
         for n in self.contents:
-            self.points.append(generate_number_from_string(path + '/' + n, surface.get_width()))
+            self.points.append(generate_number_from_string(path + '/' + n, 1000) * surface.get_width() / 1000)
         self.points.append(surface.get_width())
 
         self.points = sorted(self.points)

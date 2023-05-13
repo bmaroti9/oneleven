@@ -46,12 +46,7 @@ class Tile_space(pygame.sprite.Sprite):
                 index += 1
         del self.tiles[-1]
 
-        self.surface_init()
-
-    def surface_init(self):
-        for n in self.tiles:
-            if n.type == 0:
-                n.set_my_surf()
+        set_closest(self.tiles[1])
 
     def add_tile(self, time, path):
         x = Tile(time, path)
@@ -60,6 +55,11 @@ class Tile_space(pygame.sprite.Sprite):
     def add_marker(self, time):
         x = Date_Marker(time)
         self.tiles.append(x)
+    
+    def get_closests_pos(self, focus_time):
+        x = get_closest()
+        real_pos = focus_time - x.pos
+        return real_pos
 
     def any_close(self, est_time, focus_time):
         requested_altitude = None
@@ -91,7 +91,6 @@ class Directory_manager(pygame.sprite.Sprite):
             #x = x[2:]
             paths.append(x)
         tile_space.set_tiles(paths, 0)
-        set_closest(None)
 
     def forward(self, tile_space, altitude):
         x = self.path + '/' + get_closest().name

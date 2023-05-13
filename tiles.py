@@ -28,6 +28,8 @@ class Tile(pygame.sprite.Sprite):
         self.pos = 0
         self.size = 0
         self.set_my_surf()
+        self.size = full_set_get()[1] / 2 * (1 - (full_set_get()[1] * 0.0002))
+        self.new = 0
 
     def size_adjust(self, surface, distance, smooth_scroll):
         wanted = full_set_get()[1] / 2
@@ -36,20 +38,27 @@ class Tile(pygame.sprite.Sprite):
         self.size += (wanted - self.size) * 0.11  * frame_get()
         
     def update(self, surface, altitude, smooth_scroll, tiles):
-        i = tiles.index(self) - 1
-        if i > -1:
-            pos = tiles[i].pos - full_set_get()[1]
-            self.pos += (pos - self.pos) * 0.2 * frame_get()
+        i = tiles.index(self)
+        x = tiles.index(get_closest())
+        d = sign_function((x - i) * 10)
+        if 0 < i + d < len(tiles) - 1:
+            pos = tiles[i + d].pos + full_set_get()[1] * d
+            self.pos += (pos - self.pos) * min(0.2 * frame_get(), 1)
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
         distance = target - real_pos
 
         if abs(distance) < surface.get_height() - 6:
-            self.size_adjust(surface, distance, smooth_scroll)
-            self.texture(surface, real_pos)
+            if self.new != full_set_get()[0] and abs(smooth_scroll) < 1:
+                self.set_my_surf()
+                self.new = full_set_get()[0]
             if abs(distance) < self.close_setting:
                 self.app.update(self.surf)
                 set_closest(self)
+            self.size_adjust(surface, distance, smooth_scroll)
+            self.texture(surface, real_pos)
+        else:
+            self.new = 0
 
     def texture(self, surface, real_pos):
         coolsize = self.size * self.xy_ratio
@@ -63,15 +72,14 @@ class Tile(pygame.sprite.Sprite):
                               [int(coolsize * 2), int(coolheight * 2)]), [side, top + 10])
 
     def set_my_surf(self):
-        self.xy_ratio = full_set_get()[0] / full_set_get()[1]
-        self.close_setting = full_set_get()[1] * 0.5
-        self.surf = pygame.Surface((full_set_get()[0], full_set_get()[1]))
+        full = full_set_get()
+        self.xy_ratio = full[0] / full[1]
+        self.close_setting = full[1] * 0.5
+        self.surf = pygame.Surface((full[0], full[1]))
         app = decide_tile_app(self.path)
 
         self.app = app(self.surf, self.path)
         self.app.update(self.surf)
-        
-        self.size = full_set_get()[1] / 2 * (1 - (full_set_get()[1] * 0.0002))
     
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip
@@ -89,7 +97,7 @@ class Date_Marker(pygame.sprite.Sprite):
         self.pos = 0
         self.blit_time = 'hihi'
 
-        self.font = pygame.font.Font('fonts/static/Raleway-ExtraLightItalic.ttf', 33)
+        self.font = pygame.font.Font('fonts/static/Raleway-ExtraLightItalic.ttf', 40)
 
     def sync(self):
         self.time = time.mktime(self.temp_time.timetuple())
@@ -101,18 +109,22 @@ class Date_Marker(pygame.sprite.Sprite):
         self.abs_time = ''
 
     def update(self, surface, altitude, smooth_scroll, tiles):
-        i = tiles.index(self) - 1
-        if i > 0:
-            pos = tiles[i].pos - 200
-            self.pos += (pos - self.pos) * 0.3 * frame_get()
-        real_pos = altitude - self.pos + full_set_get()[1] / 2 - 100
+        i = tiles.index(self)
+        x = tiles.index(get_closest())
+        d = sign_function((x - i) * 10)
+        if 0 < i + d < len(tiles) - 1:
+            pos = tiles[i + d].pos + 200 * d
+            self.pos += (pos - self.pos) * min(0.2 * frame_get(), 1)
+
+        real_pos = altitude - self.pos - 200 * d
         target = surface.get_height() // 2
         distance = target - real_pos + 3
 
         if abs(distance) < surface.get_height():
             pygame.draw.line(surface, get_colors()[3],
                                 [20, real_pos + 10], [surface.get_width() - 60, real_pos + 10])
-            blit_text(surface, get_colors()[3], str(self.blit_time), [20, real_pos - 2], self.font, 4)
+            blit_text(surface, get_colors()[3], str(self.blit_time), [20, real_pos - 4], self.font, 4)
+            print(pos, self.blit_time)
             if abs(distance) < self.close_setting:
                 set_closest(self)
 
