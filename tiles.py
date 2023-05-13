@@ -17,24 +17,29 @@ class Tile(pygame.sprite.Sprite):
     def __init__(self, time_point, path):
         super().__init__()
 
+        self.type = 0
         self.path = path
         self.name = basename(path)
-
-        self.set_my_surf()
 
         self.time = time_point
         self.real_time = time.ctime(time_point)
         self.abs_time = self.real_time[0:3] + self.real_time[10:16]
 
         self.pos = 0
+        self.size = 0
+        self.set_my_surf()
 
     def size_adjust(self, surface, distance, smooth_scroll):
-        wanted = self.full_set / 2
+        wanted = full_set_get()[1] / 2
         if abs(distance) > surface.get_height() / 2 * 0.6 or abs(smooth_scroll) > 24:
-            wanted = self.full_set / 2 * (1 - (abs(distance) * 0.0002))
-        self.size += (wanted - self.size) * 0.11 * frame_get()
+            wanted = full_set_get()[1] / 2 * (1 - (abs(distance) * 0.0002))
+        self.size += (wanted - self.size) * 0.11  * frame_get()
         
-    def update(self, surface, altitude, smooth_scroll):
+    def update(self, surface, altitude, smooth_scroll, tiles):
+        i = tiles.index(self) - 1
+        if i > -1:
+            pos = tiles[i].pos - full_set_get()[1]
+            self.pos += (pos - self.pos) * 0.2 * frame_get()
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
         distance = target - real_pos
@@ -49,7 +54,7 @@ class Tile(pygame.sprite.Sprite):
     def texture(self, surface, real_pos):
         coolsize = self.size * self.xy_ratio
         coolheight = self.size
-
+    
         mid = surface.get_width() // 2
         top = real_pos - coolheight    #REVERSE FOR SIDEWAYS SCROLLING
         side = mid - coolsize
@@ -58,16 +63,15 @@ class Tile(pygame.sprite.Sprite):
                               [int(coolsize * 2), int(coolheight * 2)]), [side, top + 10])
 
     def set_my_surf(self):
-        self.full_set = full_set_get()[1]
         self.xy_ratio = full_set_get()[0] / full_set_get()[1]
-        self.close_setting = self.full_set * 0.5 #when scrolling will jump on it
-        self.push = self.full_set * 0.485 #push the ones next to it farther away
-        self.surf = pygame.Surface((full_set_get()[0], self.full_set))
+        self.close_setting = full_set_get()[1] * 0.5
+        self.surf = pygame.Surface((full_set_get()[0], full_set_get()[1]))
         app = decide_tile_app(self.path)
 
         self.app = app(self.surf, self.path)
         self.app.update(self.surf)
-        self.size = self.full_set / 2 * (1 - self.full_set * 0.0002)
+        
+        self.size = full_set_get()[1] / 2 * (1 - (full_set_get()[1] * 0.0002))
     
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip
@@ -76,13 +80,14 @@ class Date_Marker(pygame.sprite.Sprite):
     def __init__(self, time_point):
         super().__init__()
 
+        self.type = 1
         self.name = ''
         self.close_setting = 0 #when scrolling will jump on it
-        self.push = 50 #push the ones next to it farther away
         self.temp_time = time_point
         self.time = time.mktime(self.temp_time.timetuple())
         self.real_time = time.ctime(self.time)
         self.pos = 0
+        self.blit_time = 'hihi'
 
         self.font = pygame.font.Font('fonts/static/Raleway-ExtraLightItalic.ttf', 33)
 
@@ -95,8 +100,12 @@ class Date_Marker(pygame.sprite.Sprite):
         self.blit_time = self.blit_time + '     ' + TIMES['days'][day]
         self.abs_time = ''
 
-    def update(self, surface, altitude, smooth_scroll):
-        real_pos = altitude - self.pos
+    def update(self, surface, altitude, smooth_scroll, tiles):
+        i = tiles.index(self) - 1
+        if i > 0:
+            pos = tiles[i].pos - 200
+            self.pos += (pos - self.pos) * 0.3 * frame_get()
+        real_pos = altitude - self.pos + full_set_get()[1] / 2 - 100
         target = surface.get_height() // 2
         distance = target - real_pos + 3
 

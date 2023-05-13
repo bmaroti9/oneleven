@@ -57,6 +57,9 @@ def full_set_change():
 def full_set_get():
     return SIZES[FULL_SET]
 
+def get_the_screen_max():
+    return SIZES[1]
+
 MIL = 17
 WANTED_SPEED = 17
 
@@ -65,4 +68,4 @@ def frame_set(miliseconds):
     MIL = miliseconds
 
 def frame_get():
-    return MIL / WANTED_SPEED
+    return min(MIL / WANTED_SPEED, 10)

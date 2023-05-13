@@ -77,7 +77,7 @@ while RUNNING:
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 3:
                 full_set_change()
-                TILE_SPACE.space(0)
+                TILE_SPACE.surface_init()
 
     z = reload()
     if z != None:

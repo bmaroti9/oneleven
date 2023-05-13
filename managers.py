@@ -34,7 +34,8 @@ class Tile_space(pygame.sprite.Sprite):
         last = False
         index = 0
         for _ in range(len(self.tiles)):
-            if self.tiles[index].close_setting < 110:
+            if self.tiles[index].type == 1:
+                self.tiles[index].sync()
                 if last:
                     del self.tiles[index - 1]
                 else:
@@ -45,43 +46,12 @@ class Tile_space(pygame.sprite.Sprite):
                 index += 1
         del self.tiles[-1]
 
-        for n in self.tiles:
-            if n.close_setting < 110:
-                n.temp_time += timedelta(days=-1)
-                n.sync()
-            n.pos = -999999
-        
-        self.space(origin)
-        self.space(-999999999)
-        set_closest(None)
-        self.space_work()
-    
-    def space(self, origin):
-        self.space_progress = -1
-        self.origin = origin
+        self.surface_init()
 
-    def space_work(self):
-        if self.space_progress == -1:
-            self.original_closest = get_closest()
-            if self.original_closest != None:
-                self.before = self.original_closest.pos
-            self.i = -999999999
-        elif self.space_progress < len(self.tiles):
-            n = self.tiles[self.space_progress]
-            if n.close_setting > 120:    
+    def surface_init(self):
+        for n in self.tiles:
+            if n.type == 0:
                 n.set_my_surf()
-            self.i += n.push
-            n.pos = self.origin - self.i
-            self.i += n.push
-        else: 
-            if self.original_closest != None:
-                after = self.original_closest.pos
-                change = self.before - after
-                for n in self.tiles:
-                    n.pos += change
-                #self.original_closest.size = 100
-            self.space_progress = -10
-        self.space_progress += 1
 
     def add_tile(self, time, path):
         x = Tile(time, path)
@@ -100,12 +70,8 @@ class Tile_space(pygame.sprite.Sprite):
         return requested_altitude
 
     def update(self, surface, focus_time, smooth_scroll):
-        for n in range(2):
-            if self.space_progress > -2:
-                self.space_work()
-        else:
-            for n in self.tiles:
-                n.update(surface, focus_time + surface.get_height() / 2, smooth_scroll)
+        for n in self.tiles:
+            n.update(surface, focus_time + surface.get_height() / 2, smooth_scroll, self.tiles)
 
 class Directory_manager(pygame.sprite.Sprite):
     def __init__(self):
@@ -129,7 +95,7 @@ class Directory_manager(pygame.sprite.Sprite):
 
     def forward(self, tile_space, altitude):
         x = self.path + '/' + get_closest().name
-        if not isfile(x) and get_closest().close_setting > 200:
+        if not isfile(x) and get_closest().type == 0:
             self.path = x
             self.load_directory(tile_space)
             self.altitudes.append(altitude)
