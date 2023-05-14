@@ -36,7 +36,7 @@ class Tile(pygame.sprite.Sprite):
         if abs(distance) > surface.get_height() / 2 * 0.6 or abs(smooth_scroll) > 24:
             wanted = full_set_get()[1] / 2 * (1 - (abs(distance) * 0.0002))
         self.size += (wanted - self.size) * 0.11  * frame_get()
-        
+
     def update(self, surface, altitude, smooth_scroll, tiles):
         i = tiles.index(self)
         x = tiles.index(get_closest())
@@ -63,7 +63,7 @@ class Tile(pygame.sprite.Sprite):
     def texture(self, surface, real_pos):
         coolsize = self.size * self.xy_ratio
         coolheight = self.size
-    
+
         mid = surface.get_width() // 2
         top = real_pos - coolheight    #REVERSE FOR SIDEWAYS SCROLLING
         side = mid - coolsize
@@ -80,7 +80,7 @@ class Tile(pygame.sprite.Sprite):
 
         self.app = app(self.surf, self.path)
         self.app.update(self.surf)
-    
+
     def get_my_time(self):
         return -self.time #we want the most reccent on the top so its necessary to flip
 
@@ -124,7 +124,6 @@ class Date_Marker(pygame.sprite.Sprite):
             pygame.draw.line(surface, get_colors()[3],
                                 [20, real_pos + 10], [surface.get_width() - 60, real_pos + 10])
             blit_text(surface, get_colors()[3], str(self.blit_time), [20, real_pos - 4], self.font, 4)
-            print(pos, self.blit_time)
             if abs(distance) < self.close_setting:
                 set_closest(self)
 
