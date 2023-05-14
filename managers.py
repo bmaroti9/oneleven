@@ -34,7 +34,7 @@ class Tile_space(pygame.sprite.Sprite):
         last = False
         index = 0
         for _ in range(len(self.tiles)):
-            if self.tiles[index].type == 1:
+            if self.tiles[index].type == 0:
                 self.tiles[index].sync()
                 if last:
                     del self.tiles[index - 1]
@@ -94,7 +94,7 @@ class Directory_manager(pygame.sprite.Sprite):
 
     def forward(self, tile_space, altitude):
         x = self.path + '/' + get_closest().name
-        if not isfile(x) and get_closest().type == 0:
+        if not isfile(x) and get_closest().type == 1:
             self.path = x
             self.load_directory(tile_space)
             self.altitudes.append(altitude)

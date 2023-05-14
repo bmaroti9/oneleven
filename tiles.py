@@ -17,7 +17,7 @@ class Tile(pygame.sprite.Sprite):
     def __init__(self, time_point, path):
         super().__init__()
 
-        self.type = 0
+        self.type = 1
         self.path = path
         self.name = basename(path)
 
@@ -26,6 +26,7 @@ class Tile(pygame.sprite.Sprite):
         self.abs_time = self.real_time[0:3] + self.real_time[10:16]
 
         self.pos = 0
+        self.push = 1
         self.size = 0
         self.set_my_surf()
         self.size = full_set_get()[1] / 2 * (1 - (full_set_get()[1] * 0.0002))
@@ -42,7 +43,7 @@ class Tile(pygame.sprite.Sprite):
         x = tiles.index(get_closest())
         d = sign_function((x - i) * 10)
         if 0 < i + d < len(tiles) - 1:
-            pos = tiles[i + d].pos + full_set_get()[1] * d
+            pos = tiles[i + d].pos + full_set_get()[1] * d * ((self.push + tiles[i + d].push) / 2)
             self.pos += (pos - self.pos) * min(0.2 * frame_get(), 1)
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
@@ -88,9 +89,10 @@ class Date_Marker(pygame.sprite.Sprite):
     def __init__(self, time_point):
         super().__init__()
 
-        self.type = 1
+        self.type = 0
         self.name = ''
-        self.close_setting = 0 #when scrolling will jump on it
+        self.close_setting = 70 #when scrolling will jump on it
+        self.push = 0.5
         self.temp_time = time_point
         self.time = time.mktime(self.temp_time.timetuple())
         self.real_time = time.ctime(self.time)
@@ -113,10 +115,10 @@ class Date_Marker(pygame.sprite.Sprite):
         x = tiles.index(get_closest())
         d = sign_function((x - i) * 10)
         if 0 < i + d < len(tiles) - 1:
-            pos = tiles[i + d].pos + 200 * d
+            pos = tiles[i + d].pos + full_set_get()[1] * d * ((self.push + tiles[i + d].push) / 2)
             self.pos += (pos - self.pos) * min(0.2 * frame_get(), 1)
 
-        real_pos = altitude - self.pos - 200 * d
+        real_pos = altitude - self.pos
         target = surface.get_height() // 2
         distance = target - real_pos + 3
 
