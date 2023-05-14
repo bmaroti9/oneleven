@@ -26,9 +26,9 @@ SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 SURFACE.fill(get_colors()[0])
 blit_image(SURFACE, 'images/eternal_whole.png', [SURFACE.get_width() / 2, SURFACE.get_height() / 2], 0.5)
 pygame.display.update()
-for n in range(15):
-    pygame.time.delay(60)
-    frame_set(CLOCK.tick(65))
+
+pygame.time.delay(1500)
+frame_set(CLOCK.tick(65))
 
 pygame.display.set_caption("©2022-2023 Eternal")
 

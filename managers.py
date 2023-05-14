@@ -46,7 +46,7 @@ class Tile_space(pygame.sprite.Sprite):
                 index += 1
         del self.tiles[-1]
 
-        set_closest(self.tiles[1])
+        set_closest(self.tiles[0])
 
     def add_tile(self, time, path):
         x = Tile(time, path)

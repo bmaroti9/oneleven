@@ -44,7 +44,7 @@ class Tile(pygame.sprite.Sprite):
         d = sign_function((x - i) * 10)
         if 0 < i + d < len(tiles) - 1:
             pos = tiles[i + d].pos + full_set_get()[1] * d * ((self.push + tiles[i + d].push) / 2)
-            self.pos += (pos - self.pos) * min(0.2 * frame_get(), 1)
+            self.pos += (pos - self.pos) * min(0.15 * frame_get(), 1)
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
         distance = target - real_pos
@@ -92,7 +92,7 @@ class Date_Marker(pygame.sprite.Sprite):
         self.type = 0
         self.name = ''
         self.close_setting = 70 #when scrolling will jump on it
-        self.push = 0.5
+        self.push = 0.3
         self.temp_time = time_point
         self.time = time.mktime(self.temp_time.timetuple())
         self.real_time = time.ctime(self.time)
@@ -116,7 +116,7 @@ class Date_Marker(pygame.sprite.Sprite):
         d = sign_function((x - i) * 10)
         if 0 < i + d < len(tiles) - 1:
             pos = tiles[i + d].pos + full_set_get()[1] * d * ((self.push + tiles[i + d].push) / 2)
-            self.pos += (pos - self.pos) * min(0.2 * frame_get(), 1)
+            self.pos += (pos - self.pos) * min(0.15 * frame_get(), 1)
 
         real_pos = altitude - self.pos
         target = surface.get_height() // 2
