@@ -121,6 +121,10 @@ def uniform_colors(number, c):
 
 PALETTE = [(0, 0, 0), (0, 0, 0)]
 
+def pastel_color(base, pastel_factor = 0.5):
+    color = [(x+pastel_factor)/(1.0+pastel_factor) for x in base]
+    return (int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
+
 def generate_palette():
     global PALETTE
     PALETTE = []
@@ -138,7 +142,9 @@ def file_color(path, back = 1):
     name = pathy[x - back]
     c = []
     for n in range(3):
-        c.append(generate_number_from_string(name, 255, n))
+        c.append(generate_number_from_string(name, 100, n) / 100)
+    c = pastel_color(c, 0.8)
+    
     first_c = []
     first_c.append(c)
     first_c.append((255 - first_c[0][0], 255 - first_c[0][1], 255 - first_c[0][2]))

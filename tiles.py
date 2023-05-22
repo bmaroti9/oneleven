@@ -50,7 +50,7 @@ class Tile(pygame.sprite.Sprite):
         distance = target - real_pos
 
         if abs(distance) < surface.get_height() - 6:
-            if self.new != full_set_get()[0] and abs(smooth_scroll) < 1:
+            if self.new != full_set_get()[0] and abs(smooth_scroll) < 0.02 and False:
                 self.set_my_surf()
                 self.new = full_set_get()[0]
             if abs(distance) < self.close_setting:

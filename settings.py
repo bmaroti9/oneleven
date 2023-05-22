@@ -61,7 +61,7 @@ def get_the_screen_max():
     return SIZES[1]
 
 MIL = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-WANTED_SPEED = 20
+WANTED_SPEED = 22
 
 def frame_set(miliseconds):
     global MIL

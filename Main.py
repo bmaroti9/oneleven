@@ -14,14 +14,15 @@ from settings import *
 pygame.init()
 pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEWHEEL])
 
-SCREEN_WIDTH = 1920
-SCREEN_HEIGHT = 1020
+SCREEN_WIDTH = 1440 * 1
+SCREEN_HEIGHT = 900 * 1
 
 print(pygame.font.get_fonts())
 
 CLOCK = pygame.time.Clock()
 
-SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+#SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN, pygame.SCALED)
+SURFACE = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.SCALED | pygame.FULLSCREEN)
 
 SURFACE.fill(get_colors()[0])
 blit_image(SURFACE, 'images/eternal_whole.png', [SURFACE.get_width() / 2, SURFACE.get_height() / 2], 0.5)
@@ -70,7 +71,7 @@ while RUNNING:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 150:
-                SCROLL += event.y * SURFACE.get_height() / 45
+                SCROLL += event.y * SURFACE.get_height() / 42
                 SCROLL = SCROLL * (1 - (full_set_get()[1] * 0.0003))
             if not MAX.__contains__(1):
                 SCROLLING = 1
@@ -94,7 +95,7 @@ while RUNNING:
 
     SURFACE.fill(get_colors()[0])
 
-    if not MAX.__contains__(1) and abs(SCROLL) > 0.03:
+    if not MAX.__contains__(1) and abs(SCROLL) > 0.2:
         x = find_end_altitude(SMOOTH_SCROLL)
         requested_altitude = TILE_SPACE.any_close(x, ALTITUDE)
         if requested_altitude != None:
@@ -104,4 +105,4 @@ while RUNNING:
     DIRECTORY_MANAGER.update(SURFACE, TILE_SPACE, ALTITUDE)
 
     pygame.display.update()
-    frame_set(CLOCK.tick(65))
+    frame_set(CLOCK.tick(140))
