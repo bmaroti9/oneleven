@@ -37,7 +37,7 @@ full_set_initialize(SURFACE)
 ALTITUDE = 0
 SCROLL = 0
 SMOOTH_SCROLL = 0
-MAX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+MAX = list(range(15))
 
 events = pygame.event.get()
 upload_event(events)
@@ -71,8 +71,8 @@ while RUNNING:
                 random_theme()
         if event.type == pygame.MOUSEWHEEL:
             if abs(SCROLL) < 150:
-                SCROLL += event.y * SURFACE.get_height() / 80
-                SCROLL = SCROLL * (1 - (full_set_get()[1] * 0.0001))
+                SCROLL += event.y * SURFACE.get_height() / 200
+                SCROLL = SCROLL * (1 - (full_set_get()[1] * 0.00005))
             if not MAX.__contains__(1):
                 SCROLLING = 1
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -86,7 +86,7 @@ while RUNNING:
         SMOOTH_SCROLL = 0
         SCROLL = 0
 
-    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.3
+    SMOOTH_SCROLL += (SCROLL - SMOOTH_SCROLL) * 0.4
     ALTITUDE += SMOOTH_SCROLL * frame_get()
     print(ALTITUDE)
     SCROLL -= sign_function(SCROLL)
@@ -96,11 +96,11 @@ while RUNNING:
 
     SURFACE.fill(get_colors()[0])
 
-    if not MAX.__contains__(1) and abs(SCROLL) > 1:
+    if not MAX.__contains__(1) and abs(SCROLL) > 0.05:
         x = find_end_altitude(SMOOTH_SCROLL)
         requested_altitude = TILE_SPACE.any_close(x, ALTITUDE)
         if requested_altitude != None:
-            SCROLL += change_speed(SMOOTH_SCROLL, requested_altitude)
+            SMOOTH_SCROLL += change_speed(SMOOTH_SCROLL, requested_altitude)
 
     TILE_SPACE.update(SURFACE, ALTITUDE, SMOOTH_SCROLL)
     DIRECTORY_MANAGER.update(SURFACE, TILE_SPACE, ALTITUDE)
