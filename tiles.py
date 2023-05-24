@@ -57,8 +57,8 @@ class Tile(pygame.sprite.Sprite):
                 self.app.update(self.surf)
                 set_closest(self)
             #self.size_adjust(surface, distance, smooth_scroll)
-            x = full_set_get()[1] / 2 
-            self.size = x - max((abs(smooth_scroll * 0.1) ** 2), 50) - abs(distance) * 0.03
+            x = full_set_get()[1] * 0.49
+            self.size = max(x - (abs(smooth_scroll * 0.13) ** 2) - abs(distance) * 0.01, 40)
             real_pos = target - (distance) * (self.size / x + 0.05)
             self.texture(surface, real_pos)
         else:
