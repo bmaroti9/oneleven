@@ -82,12 +82,15 @@ class Supertile(pygame.sprite.Sprite):
                         self.center += 1
                 if event.type == pygame.MOUSEWHEEL:
                     self.scroll += event.y * 4
-                    self.scroll = self.scroll * 0.9
+                    self.scroll = self.scroll * 0.93
         
-        self.scroll -= sign_function(self.scroll) * 0.3
-        self.smooth_scroll += (self.scroll - self.smooth_scroll) * 0.4
+        self.scroll -= sign_function(self.scroll) * 0.5
+        self.smooth_scroll += (self.scroll - self.smooth_scroll) * 0.3
         self.altitude += self.smooth_scroll
         self.zoom = max(1 - abs((self.smooth_scroll * 0.8) ** 2 * 0.0007), 0.2)
+
+        if abs(self.smooth_scroll) < 0.5:
+            self.altitude = self.altitude * 0.97
 
         origin = self.blit_to_center(surface, self.altitude, self.zoom, self.timeline[self.center])
         before = self.timeline[:self.center]
@@ -105,13 +108,15 @@ class Supertile(pygame.sprite.Sprite):
             a += x
         if abs(self.altitude - origin) < abs(self.altitude):
             if self.center == 0:
-               self.altitude -= self.smooth_scroll * 0.9
+               self.scroll = 0
+               self.altitude += self.smooth_scroll * 5
             else:
                 self.center -= 1
                 self.altitude = self.altitude - origin
         elif abs(self.altitude + origin) < abs(self.altitude):
             if self.center == len(self.timeline) - 1:
-                self.altitude -= self.smooth_scroll * 0.9
+                self.scroll = 0
+                self.altitude += self.smooth_scroll * 5
             else:
                 self.center += 1
                 self.altitude = self.altitude + origin
