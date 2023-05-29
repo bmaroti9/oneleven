@@ -125,6 +125,12 @@ def pastel_color(base, pastel_factor = 0.5):
     color = [(x+pastel_factor)/(1.0+pastel_factor) for x in base]
     return (int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
 
+def random_paste_color():
+    c = []
+    for n in range(3):
+        c.append(random.randint(0, 100) / 100)
+    return pastel_color(c, 0.8)
+
 def generate_palette():
     global PALETTE
     PALETTE = []

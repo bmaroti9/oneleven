@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Box",
+    "color": [
+      239,
+      205,
+      242
+    ],
+    "app": "Box",
+    "mili_timepoint": 1685366760067.427
+  },
+  {
+    "title": "Box",
+    "color": [
+      147,
+      226,
+      137
+    ],
+    "app": "Box",
+    "mili_timepoint": 1685368641507.383
+  },
+  {
+    "title": "Box",
+    "color": [
+      150,
+      229,
+      208
+    ],
+    "app": "Box",
+    "mili_timepoint": 1685368644074.0881
+  }
+]

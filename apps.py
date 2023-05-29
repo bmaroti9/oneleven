@@ -5,7 +5,7 @@ from os import listdir
 from os.path import isfile, join, basename
 
 from helpers import *
-from gradient import uniform_colors, file_color
+from gradient import *
 from inputs import *
 from designs import textbox
 
@@ -125,4 +125,18 @@ class Email(pygame.sprite.Sprite):
                 pygame.draw.line(surface, self.font_color, [end_pos[0] + 2, end_pos[1] + 9], 
                                  [end_pos[0] + 2, end_pos[1] + 30], 1)
         
-
+class Box(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        
+    pass
+    
+    def setup(self):
+        x = {
+            'title' : 'Box',
+            'color' : random_paste_color(),
+        }
+        return x
+    
+    def update(surface, storage):
+        surface.fill(storage['color'])
