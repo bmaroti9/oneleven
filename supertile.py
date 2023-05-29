@@ -18,8 +18,12 @@ class Supertile(pygame.sprite.Sprite):
 
         self.full_set = [surface.get_width() - 20, surface.get_height() - 20]
         self.xy_ratio = self.full_set[0] / self.full_set[1]
+        
         self.scroll = 0
         self.smooth_scroll = 0
+        self.altitude = 0
+        self.zoom = 0.9
+        
         self.pull()
 
         self.center = 0
@@ -57,7 +61,7 @@ class Supertile(pygame.sprite.Sprite):
         self.push()
     
     def blit_to_center(self, surface, pos, zoom, storage):
-        size = (zoom - (abs(pos) * 0.0002)) * self.full_set[1]
+        size = (zoom - (abs(pos) * 0.0001)) * self.full_set[1]
         top = self.screen_center[1] - (size / 2) + pos
         side = self.screen_center[0] - (size / 2) * self.xy_ratio
         surf = pygame.Surface((size * self.xy_ratio, size))
@@ -77,18 +81,38 @@ class Supertile(pygame.sprite.Sprite):
                     elif event.key == pygame.K_DOWN:
                         self.center += 1
                 if event.type == pygame.MOUSEWHEEL:
-                    self.scroll += event.y
-        origin = self.blit_to_center(surface, 0, 0.3, self.timeline[self.center])
+                    self.scroll += event.y * 4
+                    self.scroll = self.scroll * 0.9
+        
+        self.scroll -= sign_function(self.scroll) * 0.3
+        self.smooth_scroll += (self.scroll - self.smooth_scroll) * 0.4
+        self.altitude += self.smooth_scroll
+        self.zoom = max(1 - abs((self.smooth_scroll * 0.8) ** 2 * 0.0007), 0.2)
+
+        origin = self.blit_to_center(surface, self.altitude, self.zoom, self.timeline[self.center])
         before = self.timeline[:self.center]
         before.reverse()
-        print('before', before)
-        b = -origin
+        before = before[:2]
+        b = self.altitude - origin
         for n in before:
-            x = self.blit_to_center(surface, b, 0.3, n)
+            x = self.blit_to_center(surface, b, self.zoom, n)
             b -= x
         after = self.timeline[(self.center + 1):]
-        print('after', after)
-        a = origin
+        after = after[:2]
+        a = self.altitude + origin
         for n in after:
-            x = self.blit_to_center(surface, a, 0.3, n)
+            x = self.blit_to_center(surface, a, self.zoom, n)
             a += x
+        if abs(self.altitude - origin) < abs(self.altitude):
+            if self.center == 0:
+               self.altitude -= self.smooth_scroll * 0.9
+            else:
+                self.center -= 1
+                self.altitude = self.altitude - origin
+        elif abs(self.altitude + origin) < abs(self.altitude):
+            if self.center == len(self.timeline) - 1:
+                self.altitude -= self.smooth_scroll * 0.9
+            else:
+                self.center += 1
+                self.altitude = self.altitude + origin
+
