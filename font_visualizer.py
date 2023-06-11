@@ -28,28 +28,28 @@ SCROLL = 0
 RUNNING = True
 
 while RUNNING:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            RUNNING = False
-        if event.type == KEYDOWN:
-            if event.key == K_q:
-                RUNNING = False
-        if event.type == pygame.MOUSEWHEEL:
-            ALTITUDE += event.y * 50
+      for event in pygame.event.get():
+            if event.type == QUIT:
+                  RUNNING = False
+            if event.type == KEYDOWN:
+                  if event.key == K_q:
+                        RUNNING = False
+            if event.type == pygame.MOUSEWHEEL:
+                  ALTITUDE += event.y * 50
 
-    SURFACE.fill((0, 0, 0))
+      SURFACE.fill((0, 0, 0))
 
-    x = ALTITUDE
-    for n in FONTS:
-        he = pygame.font.SysFont(str(n), 30)
-        try:
-            #blit_text(SURFACE, (250, 250, 250), "2022  HIHI   " + str(n), [10, x], he)
-            blit_text(SURFACE, (250, 250, 250), "Hello this is Balint the?   " + str(n), [10, x], he)
-        except:
-            continue
-        x += 70
-    
+      x = ALTITUDE
+      for n in FONTS:
+            he = pygame.font.SysFont(str(n), 30)
+            try:
+                  #blit_text(SURFACE, (250, 250, 250), "2022  HIHI   " + str(n), [10, x], he)
+                  blit_text(SURFACE, (250, 250, 250), "Hello this is Balint the?   " + str(n), [10, x], he)
+            except:
+                  continue
+            x += 70
+      
 
-    pygame.display.update()
-    CLOCK.tick(10)
+      pygame.display.update()
+      CLOCK.tick(10)
 

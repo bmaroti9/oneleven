@@ -70,3 +70,12 @@ def frame_set(miliseconds):
 
 def frame_get():
     return sum(MIL) / len(MIL)
+
+EVENT = 0
+
+def upload_event(event):
+    global EVENT
+    EVENT = event
+
+def get_event():
+    return EVENT

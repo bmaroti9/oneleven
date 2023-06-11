@@ -158,3 +158,10 @@ def file_color(path, back = 1):
     hihi = transition_colors(first_c[generate_number_from_string(path, 1, 2)], (h, h, h), 
                                 generate_number_from_string(path, 70, 1) / 100)
     return hihi
+
+def small_change_to_color(original, factor = 40):
+    new = []
+    for n in range(3):
+        x = min(max(original[n] + random.randint(-factor, factor), 0), 255)
+        new.append(x)
+    return new
