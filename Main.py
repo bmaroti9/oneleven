@@ -43,6 +43,8 @@ frame_set(CLOCK.tick(65))
 
 SUPERTILE = Supertile(SURFACE)
 
+BACK = upload_gradient(SURFACE, 150)
+
 RUNNING = True
 while RUNNING:
       SCROLLING = 0
@@ -57,9 +59,10 @@ while RUNNING:
                   elif event.key == K_0:
                         set_theme(0)
                   elif event.key == K_9:
-                        random_theme()
+                        BACK = upload_gradient(SURFACE, 150)
 
       SURFACE.fill(get_colors()[0])
+      SURFACE.blit(BACK, (0, 0))
 
       if False:
             x = find_end_altitude(SMOOTH_SCROLL)

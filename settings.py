@@ -3,6 +3,9 @@ import math
 from pygame.locals import*
 import random
 
+from gradient import *
+from helpers import *
+
 KEY = None
 
 def log_key(event):
@@ -79,3 +82,24 @@ def upload_event(event):
 
 def get_event():
     return EVENT
+
+def create_gradient_surface(c1, c2, x, y):
+      x = pygame.Surface((x, y))
+      gradientRect_w(x, c1, c2, x.get_rect())
+      return x
+
+GRADIENT = 0
+
+def upload_gradient(surface, start):
+      c1 = small_change_to_color((start, start, start), 50)
+      c2 = small_change_to_color(c1, 100)
+      to_be = create_gradient_surface(c1, c2, surface.get_width(), surface.get_height())
+      c1 = transition_colors(c1, (255, 255, 255), 0.15)
+      c2 = transition_colors(c2, (255, 255, 255), 0.15)
+      global GRADIENT
+      GRADIENT = create_gradient_surface(c1, c2, surface.get_width(), surface.get_height())
+      return to_be
+
+def get_uploaded_gradient():
+      return GRADIENT
+

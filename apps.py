@@ -130,7 +130,7 @@ class Box(pygame.sprite.Sprite):
       def __init__(self, surface):
             super().__init__()
             
-            pass
+            self.font = pygame.font.Font('fonts/static/Quicksand-Regular.ttf', 100)
       
       def setup(self):
             x = {
@@ -140,13 +140,20 @@ class Box(pygame.sprite.Sprite):
             return x
       
       def update(self, surface, storage):
-            surface.fill(storage['color'])
+            #surface.fill(storage['color'])
+            x = get_uploaded_gradient()
+            z = x.get_rect()
+            cent = [surface.get_width() / 2, surface.get_height() / 2]
+            z.center = list(cent)
+            surface.blit(x, z)
+            blit_text(surface, (255, 255, 255), str(pygame.time.get_ticks()), cent, self.font, 1)
 
 class Music(pygame.sprite.Sprite):
       def __init__(self, surface):
             super().__init__()
 
             self.backg = pygame.Surface((surface.get_width(), surface.get_height()))
+            self.font = pygame.font.Font('fonts/static/Quicksand-Regular.ttf', 100)
             original_c = small_change_to_color((200, 200, 200), 50)
             gradientRect_w(self.backg, original_c, small_change_to_color(original_c, 100), self.backg.get_rect())
 
@@ -160,5 +167,4 @@ class Music(pygame.sprite.Sprite):
       def update(self, surface, storage):
             #surface.fill((200, 200, 200))
             surface.blit(self.backg, [0, 0])
-            blit_text(surface, (255, 255, 255), storage['file'], [50, 50], 
-                        pygame.font.Font('fonts/static/Quicksand-Regular.ttf', 100))
+            blit_text(surface, (255, 255, 255), storage['file'], [50, 50], self.font)
