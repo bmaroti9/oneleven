@@ -43,7 +43,9 @@ frame_set(CLOCK.tick(65))
 
 SUPERTILE = Supertile(SURFACE)
 
-BACK = upload_gradient(SURFACE, 150)
+gradient_init_surface(SURFACE)
+#upload_random_gradient(100)
+upload_specific_gradient([163, 177, 179], [224, 198, 146])
 
 RUNNING = True
 while RUNNING:
@@ -59,10 +61,10 @@ while RUNNING:
                   elif event.key == K_0:
                         set_theme(0)
                   elif event.key == K_9:
-                        BACK = upload_gradient(SURFACE, 150)
+                        upload_random_gradient(random.randint(80, 200))
 
       SURFACE.fill(get_colors()[0])
-      SURFACE.blit(BACK, (0, 0))
+      SURFACE.blit(get_uploaded_gradient()[0], (0, 0))
 
       if False:
             x = find_end_altitude(SMOOTH_SCROLL)

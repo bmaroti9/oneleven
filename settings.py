@@ -88,17 +88,29 @@ def create_gradient_surface(c1, c2, x, y):
       gradientRect_w(x, c1, c2, x.get_rect())
       return x
 
-GRADIENT = 0
+GRADIENT = [0, 0]
+SURFACE = 0
 
-def upload_gradient(surface, start):
+def gradient_init_surface(surface):
+      global SURFACE
+      SURFACE = surface
+
+def upload_random_gradient(start):
+      global GRADIENT
       c1 = small_change_to_color((start, start, start), 50)
       c2 = small_change_to_color(c1, 100)
-      to_be = create_gradient_surface(c1, c2, surface.get_width(), surface.get_height())
+      print(c1, c2)
+      GRADIENT[0] = create_gradient_surface(c1, c2, SURFACE.get_width(), SURFACE.get_height())
       c1 = transition_colors(c1, (255, 255, 255), 0.15)
       c2 = transition_colors(c2, (255, 255, 255), 0.15)
+      GRADIENT[1] = create_gradient_surface(c1, c2, SURFACE.get_width(), SURFACE.get_height())
+
+def upload_specific_gradient(c1, c2):
       global GRADIENT
-      GRADIENT = create_gradient_surface(c1, c2, surface.get_width(), surface.get_height())
-      return to_be
+      GRADIENT[0] = create_gradient_surface(c1, c2, SURFACE.get_width(), SURFACE.get_height())
+      c1 = transition_colors(c1, (255, 255, 255), 0.15)
+      c2 = transition_colors(c2, (255, 255, 255), 0.15)
+      GRADIENT[1] = create_gradient_surface(c1, c2, SURFACE.get_width(), SURFACE.get_height())
 
 def get_uploaded_gradient():
       return GRADIENT

@@ -77,6 +77,12 @@ class Supertile(pygame.sprite.Sprite):
                   top = self.screen_center[1] - (size[1] / 2) + pos[1]
                   side = self.screen_center[0] - (size[0] / 2) + pos[0]
                   surf = pygame.Surface(size)
+                  
+                  x = get_uploaded_gradient()[1]
+                  hihi = x.get_rect()
+                  hihi.center = [surf.get_width() / 2 -pos[0], surf.get_height() / 2 -pos[1]]
+                  surf.blit(x, hihi)
+
                   z = self.text_to_app(storage['app'])
                   z.update(surf, storage)
                   surface.blit(surf, [side, top])
@@ -106,7 +112,7 @@ class Supertile(pygame.sprite.Sprite):
             self.handle_scroll(surface)
 
       def handle_scroll(self, surface):
-            for d in [0, 1]:
+            for d in [0]:
                   self.scroll[d] -= sign_function(self.scroll[d]) * 0.5
                   self.smooth_scroll[d] += (self.scroll[d] - self.smooth_scroll[d]) * 0.3
 

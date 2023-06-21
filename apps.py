@@ -131,6 +131,8 @@ class Box(pygame.sprite.Sprite):
             super().__init__()
             
             self.font = pygame.font.Font('fonts/static/Quicksand-Regular.ttf', 100)
+            self.c1 = small_change_to_color((200, 200, 200), 50)
+            self.c2 = small_change_to_color(self.c1, 100)
       
       def setup(self):
             x = {
@@ -141,11 +143,7 @@ class Box(pygame.sprite.Sprite):
       
       def update(self, surface, storage):
             #surface.fill(storage['color'])
-            x = get_uploaded_gradient()
-            z = x.get_rect()
             cent = [surface.get_width() / 2, surface.get_height() / 2]
-            z.center = list(cent)
-            surface.blit(x, z)
             blit_text(surface, (255, 255, 255), str(pygame.time.get_ticks()), cent, self.font, 1)
 
 class Music(pygame.sprite.Sprite):
