@@ -66,11 +66,11 @@ class Supertile(pygame.sprite.Sprite):
             size = (self.zoom - (max(abs(pos[0]), abs(pos[1])) * 0.0001)) * self.full_set[1]
             size = [size * self.xy_ratio, size]
 
-            if abs(self.max_speed) < 20 * self.zoom:
-                  for d in (0, 1):
+            for d in (0, 1):
+                  if abs(self.max_speed) < 0.02 * size[d]:
                         if abs(self.prediction[d] - pos[d]) < size[d] / 2:
-                              z = change_speed(self.smooth_scroll[d], pos[d]) * 1.4
-                              if abs(z) > 0.15:
+                              z = change_speed(self.smooth_scroll[d], pos[d]) * abs(pos[d]) * 0.02
+                              if abs(z) > 0.00001 * size[d]:
                                     self.altitude[d] += z
 
             if abs(pos[0]) < surface.get_width() and abs(pos[1]) < surface.get_height():
